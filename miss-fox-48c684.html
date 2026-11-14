@@ -207,6 +207,7 @@ textarea.page {
 .facts { margin: 6px 0 8px; padding-left: 1.4rem; }
 .facts li { margin-bottom: 2px; }
 .facts .row { display: flex; gap: 6px; align-items: flex-start; }
+.facts textarea, .person textarea, .quest textarea, .inv textarea { field-sizing: content; }
 .facts textarea { flex: 1; border: 0; border-bottom: 1px dotted transparent; background: transparent; resize: none; overflow: hidden; line-height: 1.5; padding: 1px 0; min-height: 1.6em; }
 .facts textarea:hover { border-bottom-color: var(--ink-soft); }
 .facts textarea:focus { outline: none; border-bottom-color: var(--accent); background: var(--paper); }
@@ -961,6 +962,12 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     requestAnimationFrame(function () { document.querySelectorAll(".facts textarea, .person textarea, .quest textarea, .inv textarea").forEach(fit); });
   }
   window.addEventListener("resize", refitAll);
+  /* the web fonts arrive after first paint and change where lines wrap: measure again once they are in */
+  if (document.fonts) {
+    if (document.fonts.ready) document.fonts.ready.then(refitAll);
+    if (document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", refitAll);
+  }
+  window.addEventListener("load", refitAll);
   window.addEventListener("hashchange", route);
   route();
 
@@ -1183,7 +1190,18 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   });
 
   /* ---------------- editable lists: key facts, journey ---------------- */
-  function fit(ta) { if (!ta.offsetParent) return; ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; }
+  /* Auto-height text boxes. Browsers with field-sizing grow them natively; elsewhere we measure,
+     and measure again whenever a box's width changes (e.g. a scrollbar appears and lines re-wrap). */
+  var NATIVE_FIT = !!(window.CSS && CSS.supports && CSS.supports("field-sizing", "content"));
+  var fitObserver = (!NATIVE_FIT && window.ResizeObserver) ? new ResizeObserver(function (entries) {
+    entries.forEach(function (en) { var t = en.target; if (t.__w !== en.contentRect.width) { t.__w = en.contentRect.width; measure(t); } });
+  }) : null;
+  function measure(ta) { if (!ta.offsetParent) return; ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; }
+  function fit(ta) {
+    if (NATIVE_FIT) return;
+    if (fitObserver && !ta.__observed) { ta.__observed = true; fitObserver.observe(ta); }
+    measure(ta);
+  }
   var LISTS = {
     facts: { doc: DOCS.facts, ol: "facts", form: "factForm", input: "factAdd", label: "Önemli bilgi", empty: "Henüz bilgi yok." },
     journey: { doc: DOCS.journey, ol: "journey", form: "journeyForm", input: "journeyAdd", label: "Olay", empty: "Henüz bir şey yazılmadı." }
