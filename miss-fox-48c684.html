@@ -174,8 +174,9 @@ dl.feats dd { margin: .1rem 0 0; max-width: 64ch; }
 .coin input { width: 100%; border: 0; border-bottom: 1px solid var(--rule); background: transparent; font-family: var(--f-num); font-size: 1.2rem; }
 .coin.gold { border-color: #8a6b1f; }
 .inv input { border: 0; border-bottom: 1px dotted transparent; background: transparent; width: 100%; padding: 2px 0; }
-.inv input:hover { border-bottom-color: var(--ink-soft); }
-.inv input:focus { border-bottom-color: var(--accent); outline: none; background: var(--paper-deep); }
+.inv textarea { border: 0; border-bottom: 1px dotted transparent; background: transparent; width: 100%; padding: 2px 0; resize: none; overflow: hidden; line-height: 1.45; font-size: .95rem; }
+.inv input:hover, .inv textarea:hover { border-bottom-color: var(--ink-soft); }
+.inv input:focus, .inv textarea:focus { border-bottom-color: var(--accent); outline: none; background: var(--paper-deep); }
 .inv input.n { font-family: var(--f-num); text-align: right; width: 56px; }
 .inv td.x { width: 30px; text-align: right; }
 .xbtn { border: 0; background: none; cursor: pointer; color: var(--ink-soft); font-size: 1.1rem; line-height: 1; padding: 2px 4px; }
@@ -486,7 +487,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     <div class="subh"><h3>Items</h3><span class="small muted">bulduğun, aldığın, sana verilen</span></div>
     <div class="tablewrap">
       <table class="inv">
-        <thead><tr><th>Name</th><th class="r">Qty</th><th>Notes</th><th></th></tr></thead>
+        <thead><tr><th style="width:30%">Name</th><th class="r" style="width:56px">Qty</th><th>Açıklama</th><th></th></tr></thead>
         <tbody id="itBody"><tr><td colspan="4" class="muted">Yükleniyor…</td></tr></tbody>
       </table>
     </div>
@@ -510,16 +511,17 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       <div><b>Primal Order</b>Warden</div>
     </div>
 
-    <blockquote>Yeni bir yere girdiğimde ilk işim, değerli olan her şeyin ya da böyle şeylerin saklanabileceği yerlerin nerede olduğunu aklıma yazmaktır.<span class="src">Personality Traits</span></blockquote>
-    <blockquote>Hayırseverlik. Muhtaç insanlara yardım edebilmek için zenginlerden çalarım.<span class="src">Ideals</span></blockquote>
-
     <div class="ta">
+      <label for="st-trait" style="margin-top:0">Personality Traits <span class="muted small">· nasıl birisin?</span></label>
+      <textarea class="page" id="st-trait" data-story="trait" placeholder="Alışkanlıkların, tavırların…"></textarea>
+      <label for="st-ideal">Ideals <span class="muted small">· neye inanırsın?</span></label>
+      <textarea class="page" id="st-ideal" data-story="ideal" placeholder="Seni yönlendiren ilke…"></textarea>
       <label for="st-bond">Bonds <span class="muted small">· kime ya da neye bağlısın?</span></label>
       <textarea class="page" id="st-bond" data-story="bond" placeholder="Bir kişi, bir yer, bir borç…"></textarea>
       <label for="st-flaw">Flaws <span class="muted small">· seni neyle yakalarlar?</span></label>
       <textarea class="page" id="st-flaw" data-story="flaw" placeholder="Zaafın, korkun, alışkanlığın…"></textarea>
       <label for="st-look">Character Appearance</label>
-      <textarea class="page" id="st-look" data-story="look" placeholder="İlk bakışta ne görülür?"></textarea>
+      <textarea class="page" id="st-look" data-story="look" placeholder="Karakterin nasıl gözüküyor?"></textarea>
       <label for="st-tale">Character Backstory <span class="muted small">· Zümre'den önce</span></label>
       <textarea class="page" id="st-tale" data-story="tale" style="min-height:180px" placeholder="Nerede doğdun, kimden öğrendin, neden çalmaya başladın?"></textarea>
       <p class="small muted">Yazdıkların bu cihaza, bu tarayıcıya kaydedilir.</p>
@@ -712,7 +714,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
 /* Local stand-in for the claude.ai database: same calls, saved in this browser. */
 (function () {
   "use strict";
-  var NS = "scutari:miss-fox:", SEED = {"fox/facts": {"items": [{"id": "f01", "text": "Partiniz bir geri sarma yaşadı ve hepiniz onun izini taşıyorsunuz."}]}, "fox/inventory": {"gold": 100, "equipment": [{"id": "e01", "name": "Shield", "note": "Equipped"}, {"id": "e02", "name": "Leather", "note": "Equipped"}, {"id": "e03", "name": "Sickle", "note": ""}, {"id": "e04", "name": "Staff", "note": ""}], "items": [], "kit": [{"id": "k01", "name": "Giysi"}, {"id": "k02", "name": "Sırt çantası"}, {"id": "k03", "name": "Yatak rulosu"}, {"id": "k04", "name": "Erzak"}, {"id": "k05", "name": "Su tulumu"}, {"id": "k06", "name": "Çakmak kutusu"}, {"id": "k07", "name": "Meşale"}, {"id": "k08", "name": "Halat"}, {"id": "k09", "name": "Levye"}, {"id": "k10", "name": "Lamba yağı"}, {"id": "k11", "name": "Herbalism Kit"}]}, "fox/journey": {"items": [{"id": "j01", "text": "Zümre'de insanların kağıt değirmenlerinde çalıştığını gördün. Kasaba biraz fazla yeşildi."}, {"id": "j02", "text": "Eşkıya Osma Naga'yı yendiniz ve canını bağışladınız."}, {"id": "j03", "text": "Victor Fortis'le tanıştınız, hikâyesini dinlediniz. Size bir sikke verdi."}, {"id": "j04", "text": "Istec'in seçim ekibinin kasabaya geldiğini gördünüz; kasabadan yeteneklerine göre çocuk toplayacaklarını biliyorsunuz."}, {"id": "j05", "text": "Sikkeyle oynarken parmağını kestin. Kanının damladığı yerde çimenler büyüyüp canlandı."}]}, "fox/people": {"known": [{"id": "p04", "info": "Size hikâyesini anlattı ve bir sikke verdi.", "name": "Victor Fortis"}, {"id": "p05", "info": "Yendiğiniz ve canını bağışladığınız eşkıya.", "name": "Osma Naga"}]}, "fox/quests": {"items": []}, "fox/spells": {"prepared": []}}, UID = "local";
+  var NS = "scutari:miss-fox:", SEED = {"fox/facts": {"items": [{"id": "f01", "text": "Partiniz bir geri sarma yaşadı ve hepiniz onun izini taşıyorsunuz."}]}, "fox/inventory": {"gold": 100, "equipment": [{"id": "e01", "name": "Shield", "note": "Equipped"}, {"id": "e02", "name": "Leather", "note": "Equipped"}, {"id": "e03", "name": "Sickle", "note": ""}, {"id": "e04", "name": "Staff", "note": ""}], "items": [{"id": "c01", "name": "Victor'un sikkesi", "qty": 1, "note": "Victor Fortis'in size verdiği sikke."}], "kit": [{"id": "k01", "name": "Giysi"}, {"id": "k02", "name": "Sırt çantası"}, {"id": "k03", "name": "Yatak rulosu"}, {"id": "k04", "name": "Erzak"}, {"id": "k05", "name": "Su tulumu"}, {"id": "k06", "name": "Çakmak kutusu"}, {"id": "k07", "name": "Meşale"}, {"id": "k08", "name": "Halat"}, {"id": "k09", "name": "Levye"}, {"id": "k10", "name": "Lamba yağı"}, {"id": "k11", "name": "Herbalism Kit"}]}, "fox/journey": {"items": [{"id": "j01", "text": "Zümre'de insanların kağıt değirmenlerinde çalıştığını gördün. Kasaba biraz fazla yeşildi."}, {"id": "j02", "text": "Eşkıya Osma Naga'yı yendiniz ve canını bağışladınız."}, {"id": "j03", "text": "Victor Fortis'le tanıştınız, hikâyesini dinlediniz. Size bir sikke verdi."}, {"id": "j04", "text": "Istec'in seçim ekibinin kasabaya geldiğini gördünüz; kasabadan yeteneklerine göre çocuk toplayacaklarını biliyorsunuz."}, {"id": "j05", "text": "Sikkeyle oynarken parmağını kestin. Kanının damladığı yerde çimenler büyüyüp canlandı."}, {"id": "j06", "text": "Sikkeyi başka kimseye veremiyorsun gibi görünüyor."}]}, "fox/people": {"known": [{"id": "p04", "info": "Size hikâyesini anlattı ve bir sikke verdi.", "name": "Victor Fortis"}, {"id": "p05", "info": "Yendiğiniz ve canını bağışladığınız eşkıya.", "name": "Osma Naga"}]}, "fox/quests": {"items": []}, "fox/spells": {"prepared": []}, "fox/story": {"trait": "Yeni bir yere girdiğimde ilk işim, değerli olan her şeyin ya da böyle şeylerin saklanabileceği yerlerin nerede olduğunu aklıma yazmaktır.", "ideal": "Hayırseverlik. Muhtaç insanlara yardım edebilmek için zenginlerden çalarım.", "bond": "", "flaw": "", "look": "", "tale": ""}}, PATCHES = [{"id": "2026-11-14-coin", "path": "fox/inventory", "list": "items", "item": {"id": "c01", "name": "Victor'un sikkesi", "qty": 1, "note": "Victor Fortis'in size verdiği sikke."}}, {"id": "2026-11-14-coin-journey", "path": "fox/journey", "list": "items", "item": {"id": "j06", "text": "Sikkeyi başka kimseye veremiyorsun gibi görünüyor."}}, {"id": "2026-11-14-story", "path": "fox/story", "fields": {"trait": "Yeni bir yere girdiğimde ilk işim, değerli olan her şeyin ya da böyle şeylerin saklanabileceği yerlerin nerede olduğunu aklıma yazmaktır.", "ideal": "Hayırseverlik. Muhtaç insanlara yardım edebilmek için zenginlerden çalarım."}}], UID = "local";
   function key(p) { return NS + p; }
   function read(p) {
     try { var v = localStorage.getItem(key(p)); if (v != null) return JSON.parse(v); } catch (e) {}
@@ -774,6 +776,27 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       add: function (d) { var r = this.doc(); return r.set(d).then(function () { return r; }); }
     };
   }
+  /* DM updates: applied once per browser on top of what the player already saved */
+  (function applyPatches() {
+    var doneKey = NS + "__patches", done = [];
+    try { done = JSON.parse(localStorage.getItem(doneKey) || "[]"); } catch (e) {}
+    PATCHES.forEach(function (pt) {
+      if (done.indexOf(pt.id) >= 0) return;
+      var stored = null;
+      try { stored = localStorage.getItem(key(pt.path)); } catch (e) {}
+      if (stored != null) {
+        var d = JSON.parse(stored);
+        if (pt.list) {
+          d[pt.list] = Array.isArray(d[pt.list]) ? d[pt.list] : [];
+          if (!d[pt.list].some(function (x) { return x && x.id === pt.item.id; })) d[pt.list].push(pt.item);
+        }
+        if (pt.fields) Object.keys(pt.fields).forEach(function (f) { if (!d[f]) d[f] = pt.fields[f]; });
+        try { write(pt.path, d); } catch (e) {}
+      }
+      done.push(pt.id);
+    });
+    try { localStorage.setItem(doneKey, JSON.stringify(done)); } catch (e) {}
+  })();
   var db = { doc: docRef, collection: function (p) { return collRef(p); } };
   var user = { id: function () { return Promise.resolve(UID); }, can: function () { return Promise.resolve(true); }, isOwner: function () { return true; } };
   window.claude = { use: function (n) { return Promise.resolve(n === "db" ? db : n === "user" ? user : null); } };
@@ -863,7 +886,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   var S = {
     table: Object.assign({}, DEFAULT_TABLE),
     inv: null,
-    story: { bond: "", flaw: "", look: "", tale: "" },
+    story: { trait: "", ideal: "", bond: "", flaw: "", look: "", tale: "" },
     prepared: [],
     notes: [],
     facts: null,
@@ -935,7 +958,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   }
   /* auto-height text boxes can only be measured while their tab is visible */
   function refitAll() {
-    requestAnimationFrame(function () { document.querySelectorAll(".facts textarea, .person textarea, .quest textarea").forEach(fit); });
+    requestAnimationFrame(function () { document.querySelectorAll(".facts textarea, .person textarea, .quest textarea, .inv textarea").forEach(fit); });
   }
   window.addEventListener("resize", refitAll);
   window.addEventListener("hashchange", route);
@@ -1061,12 +1084,15 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     var tr = el("tr");
     fields.forEach(function (f) {
       var td = el("td");
-      var inp = el("input", { "data-list": list, "data-item": it.id, "data-f": f[0], "aria-label": f[1] + ": " + (it.name || "") });
+      var long = list === "items" && f[0] === "note";
+      var inp = el(long ? "textarea" : "input", { "data-list": list, "data-item": it.id, "data-f": f[0], "aria-label": f[1] + ": " + (it.name || "") });
+      if (long) { inp.rows = 1; inp.className = "grow"; }
       if (f[0] === "qty") { inp.className = "n"; inp.setAttribute("inputmode", "numeric"); }
       inp.value = it[f[0]] == null ? "" : it[f[0]];
-      if (f[0] === "note") inp.placeholder = "—";
+      if (f[0] === "note") inp.placeholder = long ? "İsteğe bağlı kısa açıklama" : "—";
       inp.disabled = !canWrite;
       inp.addEventListener("input", onItemInput);
+      if (long) { inp.addEventListener("input", function () { fit(inp); }); requestAnimationFrame(function () { fit(inp); }); }
       td.appendChild(inp); tr.appendChild(td);
     });
     var tdx = el("td", { class: "x" });
@@ -1087,7 +1113,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
 
     var ib = $("itBody"); ib.textContent = "";
     if (!S.inv.items.length) { var i0 = el("tr"); i0.appendChild(el("td", { colspan: "4", class: "muted" }, "Henüz bir şey yok.")); ib.appendChild(i0); }
-    S.inv.items.forEach(function (it) { ib.appendChild(rowInputs("items", it, [["name", "Name"], ["qty", "Qty"], ["note", "Notes"]])); });
+    S.inv.items.forEach(function (it) { ib.appendChild(rowInputs("items", it, [["name", "Name"], ["qty", "Qty"], ["note", "Açıklama"]])); });
 
     var kit = $("kit"); kit.textContent = "";
     S.inv.kit.forEach(function (it) {
@@ -1100,7 +1126,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     $("kitAdd").disabled = !canWrite;
 
     if (keep) {
-      var back = document.querySelector('input[data-list="' + keep.l + '"][data-item="' + keep.id + '"][data-f="' + keep.f + '"]');
+      var back = document.querySelector('[data-list="' + keep.l + '"][data-item="' + keep.id + '"][data-f="' + keep.f + '"]');
       if (back) { back.focus(); try { back.setSelectionRange(keep.s, keep.s); } catch (e) {} }
     }
   }
@@ -1109,7 +1135,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     var it = (S.inv[list] || []).find(function (x) { return x.id === id; });
     if (!it) return;
     if (f === "qty") it.qty = toInt(e.target.value, 0, 99999);
-    else it[f] = e.target.value.slice(0, 200);
+    else it[f] = e.target.value.slice(0, f === "note" ? 600 : 200);
     saveInv(700);
   }
   function removeFrom(list, id) {
@@ -1424,7 +1450,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       S.people = { party: ok(d && d.party), known: ok(d && d.known) }; renderPeople();
     });
     watch(DOCS.quests, function (d) { S.quests = listFrom(d); renderQuests(); });
-    watch(DOCS.story, function (d) { S.story = Object.assign({ bond: "", flaw: "", look: "", tale: "" }, d || {}); renderStory(); });
+    watch(DOCS.story, function (d) { S.story = Object.assign({ trait: "", ideal: "", bond: "", flaw: "", look: "", tale: "" }, d || {}); renderStory(); });
 
     if (uid) {
       db.collection("data/users/" + uid).orderBy("at", "desc").limit(300).onSnapshot(function (qs) {
