@@ -65,8 +65,11 @@ button, input, textarea { font: inherit; color: inherit; }
 .level { display: inline-flex; align-items: baseline; gap: 8px; margin: 2px 0 6px; padding: 2px 12px 3px; border: 1.5px solid var(--accent); background: var(--accent-soft); }
 .level .lv-k { font-family: var(--f-display); letter-spacing: .08em; font-size: 1rem; color: var(--accent); }
 .level .lv-n { font-family: var(--f-num); font-size: 1.35rem; font-weight: 500; color: var(--ink); }
+.photo { position: relative; margin: 0; align-self: start; justify-self: end; width: 168px; padding: 6px 6px 8px; background: #f3f5ef; border: 1px solid var(--ink); box-shadow: 2px 3px 0 rgba(31, 36, 30, .18); transform: rotate(1.2deg); }
+.photo img { display: block; width: 100%; height: auto; border: 1px solid rgba(31, 36, 30, .35); }
+.photo .stamp { position: absolute; left: -78px; bottom: 18px; z-index: 2; mix-blend-mode: normal; opacity: .9; background: rgba(240, 243, 236, .82); }
 .stamp {
-  align-self: start; justify-self: end; transform: rotate(-7deg);
+  transform: rotate(-9deg);
   border: 3px double var(--seal); color: var(--seal); padding: 8px 14px 6px;
   font-family: var(--f-display); text-align: center; line-height: 1.1; opacity: .82;
   mix-blend-mode: multiply;
@@ -287,8 +290,9 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
 @media (max-width: 560px) {
   body { font-size: 16px; background-image: linear-gradient(to right, transparent 0 8px, var(--margin) 8px 9px, transparent 9px), repeating-linear-gradient(to bottom, transparent 0 27px, var(--rule) 27px 28px); }
   .wrap { padding: 16px 16px 56px 24px; }
-  .register { grid-template-columns: 1fr; }
-  .stamp { position: absolute; right: -4px; top: 50px; transform: rotate(-7deg) scale(.72); }
+  .register { grid-template-columns: 1fr auto; gap: 10px; }
+  .photo { width: 104px; padding: 4px 4px 5px; }
+  .photo .stamp { left: -52px; bottom: 4px; transform: rotate(-9deg) scale(.62); transform-origin: left bottom; }
   .addrow { grid-template-columns: 1fr 1fr; }
   .addrow .btn { grid-column: 1 / -1; }
   .addrow .grow { grid-column: 1 / -1; }
@@ -309,7 +313,10 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       <div class="level"><span class="lv-k">Seviye</span><span class="lv-n">1</span></div>
       <div class="idline">Druid 1 · Warden &nbsp;·&nbsp; Human · Small &nbsp;·&nbsp; Neutral</div>
     </div>
-    <div class="stamp" aria-hidden="true"><b>GEÇTİ</b><span>ZÜMRE KAPISI</span></div>
+    <figure class="photo">
+      <img src="miss-fox-portrait.jpg" width="480" height="640" alt="Miss Fox'un portresi: yeşil gözlü, çilli, örgülü kızıl saçlı, saçında sarmaşık yaprakları ve alnında yeşil taşlı ince bir taç olan genç bir kadın; deri zırhının üstünde yeşil bir pelerin.">
+      <div class="stamp" aria-hidden="true"><b>GEÇTİ</b><span>ZÜMRE KAPISI</span></div>
+    </figure>
   </header>
 
   <div class="figures">
