@@ -67,7 +67,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .level .lv-n { font-family: var(--f-num); font-size: 1.35rem; font-weight: 500; color: var(--ink); }
 .photo { position: relative; margin: 0; align-self: start; justify-self: end; width: 168px; padding: 6px 6px 8px; background: #f3f5ef; border: 1px solid var(--ink); box-shadow: 2px 3px 0 rgba(31, 36, 30, .18); transform: rotate(1.2deg); }
 .photo img { display: block; width: 100%; height: auto; border: 1px solid rgba(31, 36, 30, .35); }
-.photo .stamp { position: absolute; left: -84px; bottom: -14px; z-index: 2; mix-blend-mode: normal; opacity: .9; background: rgba(240, 243, 236, .82); }
+.photo .stamp { position: absolute; left: -84px; top: 10px; z-index: 2; mix-blend-mode: normal; opacity: .9; background: rgba(240, 243, 236, .82); }
 .stamp {
   transform: rotate(-9deg);
   border: 3px double var(--seal); color: var(--seal); padding: 8px 14px 6px;
@@ -298,7 +298,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   .wrap { padding: 16px 16px 56px 24px; }
   .register { grid-template-columns: 1fr auto; gap: 10px; }
   .photo { width: 104px; padding: 4px 4px 5px; }
-  .photo .stamp { left: -52px; bottom: 4px; transform: rotate(-9deg) scale(.62); transform-origin: left bottom; }
+  .photo .stamp { left: 6px; top: calc(100% + 4px); bottom: auto; transform: rotate(-6deg) scale(.6); transform-origin: left top; }
   .addrow { grid-template-columns: 1fr 1fr; }
   .addrow .btn { grid-column: 1 / -1; }
   .addrow .grow { grid-column: 1 / -1; }
@@ -320,7 +320,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       <div class="idline">Wizard 1 &nbsp;·&nbsp; Human · Medium</div>
     </div>
     <figure class="photo">
-      <img src="ged-portrait.jpg" width="520" height="520" alt="Ged'in portresi: dağınık koyu saçlı, yarım ağızla gülümseyen genç bir adam; yıldız işlemeli koyu yeşil-mavi bir cüppe ve ucunda mavi bir kristal olan eğri bir asa.">
+      <img src="ged-portrait-2.jpg" width="520" height="520" alt="Ged'in portresi: dağınık koyu saçlı, yarım ağızla gülümseyen genç bir adam; yıldız işlemeli koyu yeşil-mavi bir cüppe, ucunda mavi bir kristal olan eğri bir asa ve omzunda gözlüklü, küçük çantalı kırmızı bir papağan.">
       <div class="stamp" aria-hidden="true"><b>GEÇTİ</b><span>ZÜMRE KAPISI</span></div>
     </figure>
   </header>
@@ -461,6 +461,8 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
           <dd>Short Rest'te bir kez, 1. seviye bir spell slotunu geri alırsın. Long Rest başına 1 kez (Masa'da işaretle).</dd>
           <dt>Magic Initiate (Cleric)</dt>
           <dd>İki cantrip (<i>Light</i>, <i>Sacred Flame</i>) ve <i>Cure Wounds</i>. Bu büyüleri Intelligence ile yaparsın. Cure Wounds'u her Long Rest'te bir kez slot harcamadan yapabilirsin.</dd>
+          <dt>Familiar: Papağan Erdo</dt>
+          <dd>Omzundaki papağan. <b>Flyby:</b> yanından uçup gittiğinde Opportunity Attack'lere maruz kalmaz. Find Familiar ile çağrılır.</dd>
           <dt>Skilled</dt>
           <dd>Üç skill ya da tool'da fazladan yeterlilik aldın.</dd>
           <dt>Resourceful</dt>
@@ -912,6 +914,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     { n: "Sacred Flame", m: "1 Action · 60 ft · Instantaneous · DEX 13", d: "Hedef Dexterity save'i başaramazsa 1d8 Radiant hasar alır; siper işe yaramaz. Magic Initiate'ten; Intelligence ile." }
   ];
   var ALWAYS = [
+    { n: "Find Familiar", m: "1 Hour · 10 ft · Instantaneous · Ritual", d: "Papağan Erdo'yu çağırırsın. 100 ft içindeyken onunla zihinden konuşursun; Bonus Action ile onun gözünden görüp kulağından duyabilirsin. Touch menzilli büyülerini onun üzerinden yapabilirsin. 0 Hit Points'e düşerse kaybolur; büyüyü yeniden yaparak geri çağırırsın." },
     { n: "Cure Wounds", m: "1 Action · Touch · Instantaneous", d: "Dokunduğun yaratık 2d8 + 3 Hit Points kazanır. Magic Initiate ile her Long Rest'te bir kez slot harcamadan (Masa'da işaretle)." }
   ];
   var DRUID = [
