@@ -255,9 +255,6 @@ textarea.page {
 .seal .r { clip-path: polygon(52% 0, 100% 0, 100% 100%, 47% 100%, 56% 61%, 44% 38%); }
 .seal.broken .l { transform: translate(-46px, 18px) rotate(-24deg); opacity: 0; }
 .seal.broken .r { transform: translate(46px, 26px) rotate(19deg); opacity: 0; }
-.pwform { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
-.pwform .field { width: 200px; }
-#pwMsg { flex-basis: 100%; color: var(--seal); min-height: 1.2em; }
 .card { text-align: left; display: none; border-top: 1px solid var(--ink); margin-top: 6px; padding-top: 16px; }
 .card.open { display: block; animation: rise .6s ease both; }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
@@ -513,8 +510,8 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       <div><b>Primal Order</b>Warden</div>
     </div>
 
-    <blockquote>The first thing I do in a new place is note the locations of everything valuable—or where such things could be hidden.<span class="src">Personality Traits</span></blockquote>
-    <blockquote>Charity. I steal from the wealthy so that I can help people in need.<span class="src">Ideals</span></blockquote>
+    <blockquote>Yeni bir yere girdiğimde ilk işim, değerli olan her şeyin ya da böyle şeylerin saklanabileceği yerlerin nerede olduğunu aklıma yazmaktır.<span class="src">Personality Traits</span></blockquote>
+    <blockquote>Hayırseverlik. Muhtaç insanlara yardım edebilmek için zenginlerden çalarım.<span class="src">Ideals</span></blockquote>
 
     <div class="ta">
       <label for="st-bond">Bonds <span class="muted small">· kime ya da neye bağlısın?</span></label>
@@ -663,14 +660,13 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
         <svg class="half l" viewBox="0 0 150 150" aria-hidden="true"><use href="#waxseal"/></svg>
         <svg class="half r" viewBox="0 0 150 150" aria-hidden="true"><use href="#waxseal"/></svg>
       </button>
-      <div class="small muted" id="sealHint">Mührü kırmak için şifreni gir</div>
-      <form id="pwForm" class="pwform" autocomplete="off">
-        <input class="field" id="pwInput" type="password" aria-label="Zarfın şifresi" placeholder="Şifre">
-        <button class="btn primary" type="submit">Mührü kır</button>
-        <div class="small" id="pwMsg" role="status" aria-live="polite"></div>
-      </form>
+      <div class="small muted" id="sealHint">Mührü kırmak için dokun</div>
       <div class="card" id="card">
-        <div id="cardBody"></div>
+        <ul>
+          <li>Druid klanları şifa büyüsü üzerine tartışıyor: Şifa ruha dokunmaksa, nekromansiye yakın sayılmaz mı? Henüz bir taraf tutmadın.</li>
+          <li>Çimenlerin büyümesine senin kanın yol açtı. Nedenini bilmiyorsun.</li>
+        </ul>
+        <div class="from">— DM · Birinci oturumdan sonra</div>
         <button type="button" class="btn" id="reseal" style="margin-top:14px">Zarfı yeniden mühürle</button>
       </div>
     </div>
@@ -935,7 +931,13 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     document.querySelectorAll("nav.tabs a").forEach(function (a) {
       if (a.getAttribute("href") === "#" + h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
+    refitAll();
   }
+  /* auto-height text boxes can only be measured while their tab is visible */
+  function refitAll() {
+    requestAnimationFrame(function () { document.querySelectorAll(".facts textarea, .person textarea, .quest textarea").forEach(fit); });
+  }
+  window.addEventListener("resize", refitAll);
   window.addEventListener("hashchange", route);
   route();
 
@@ -1155,7 +1157,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   });
 
   /* ---------------- editable lists: key facts, journey ---------------- */
-  function fit(ta) { ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; }
+  function fit(ta) { if (!ta.offsetParent) return; ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; }
   var LISTS = {
     facts: { doc: DOCS.facts, ol: "facts", form: "factForm", input: "factAdd", label: "Önemli bilgi", empty: "Henüz bilgi yok." },
     journey: { doc: DOCS.journey, ol: "journey", form: "journeyForm", input: "journeyAdd", label: "Olay", empty: "Henüz bir şey yazılmadı." }
@@ -1356,30 +1358,8 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     $("sealHint").style.visibility = open ? "hidden" : "visible";
     $("seal").style.pointerEvents = open ? "none" : "";
   }
-  var SEALED = {"salt": "phb4OoMIkYBxPKR07/6fFw==", "iv": "APkbyHnWrHw3d0Hz", "ct": "9XzXZ9S0cFEDSvkvp8fOh7kMRkwIJrZHFV/J1qJDFCbgj0Ghi6TrUIxL9nl8ti73g/3fraCSx1uFAi9S/LtmlNatRA1xT9RHLWiilagfYVEt9PcVdp1MfDI5j83rxIG7Z6EtyvOvoYBdRYdCN4e5WUxvPe9tuhYhz1qfBN1XI1lqAF81sgU4Y6iBIE8QoGZsrz+NR3g9MNQYqa6ghnbXUX9BM4BE1h2/W5KTiVj/uop7RiwI9QCTGaHhtWk5WqVR+rYvq+5/KYIwzIa1Br/dmR6sVB9OXA6VLWsGAhimKoWbCok/9QQy2MdD6GC8h92cceJWqaGc/qsqhExfYfij5TcTlVxuZJ0w9QGODfLKGTJq3k6ARxkNKn38y6FW1SuBLtx51XZjUwLr62Obg/i2kpUuZqihmrmfKv/Sl2R5OohT4iYWECbLnugWaO4GWoq+H35SHq2NroqYnDWcgYbMZg==", "iter": 210000};
-  function b64d(t) { var b = atob(t), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
-  async function unseal(pw) {
-    var base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
-    var key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64d(SEALED.salt), iterations: SEALED.iter, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
-    var plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64d(SEALED.iv) }, key, b64d(SEALED.ct));
-    return new TextDecoder().decode(plain);
-  }
-  $("seal").addEventListener("click", function () { $("pwInput").focus(); });
-  $("pwForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    var pw = $("pwInput").value;
-    if (!pw) return;
-    if (!window.crypto || !crypto.subtle) { $("pwMsg").textContent = "Bu tarayıcı zarfı açamıyor."; return; }
-    $("pwMsg").textContent = "";
-    unseal(pw).then(function (html) {
-      $("cardBody").innerHTML = html;
-      $("pwInput").value = ""; $("pwForm").style.display = "none";
-      openSeal(true);
-    }, function () { $("pwMsg").textContent = "Şifre yanlış."; });
-  });
-  $("reseal").addEventListener("click", function () {
-    openSeal(false); $("cardBody").textContent = ""; $("pwForm").style.display = "";
-  });
+  $("seal").addEventListener("click", function () { openSeal(true); });
+  $("reseal").addEventListener("click", function () { openSeal(false); });
 
   /* ---------------- write gate ---------------- */
   function applyWriteGate() {
