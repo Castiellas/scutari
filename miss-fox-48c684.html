@@ -271,6 +271,12 @@ textarea.page {
 .backup label.btn { display: inline-block; }
 footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; font-size: .82rem; color: var(--ink-soft); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
+.modal { position: fixed; inset: 0; background: rgba(20, 24, 19, .45); display: grid; place-items: center; padding: 16px; z-index: 50; }
+.modal[hidden] { display: none; }
+.modal-card { background: var(--paper); border: 1.5px solid var(--ink); box-shadow: 0 10px 30px rgba(0,0,0,.25); max-width: 440px; width: 100%; padding: 18px 20px 16px; }
+.modal-card h2 { margin: 2px 0 8px; font-size: 1.3rem; }
+.modal-k { color: var(--accent); font-size: .85rem; letter-spacing: .1em; }
+.modal-acts { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 .toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--paper); padding: 8px 16px; font-size: .92rem; opacity: 0; transition: opacity .25s, transform .25s; pointer-events: none; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -715,6 +721,19 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<div class="modal" id="restModal" role="dialog" aria-modal="true" aria-labelledby="restTitle" hidden>
+  <div class="modal-card">
+    <div class="sc modal-k">Long Rest</div>
+    <h2 id="restTitle">Büyülerini seçme zamanı</h2>
+    <p>Dinlendin: Hit Points, slotlar, Hit Dice ve Transformations yenilendi, 1 Heroic Inspiration kazandın.</p>
+    <p>Şimdi bugün hazırlayacağın <b>4 büyüyü</b> seç. İstersen dünküleri koruyabilirsin.</p>
+    <div class="modal-acts">
+      <button type="button" class="btn primary" id="restGo">Büyüleri seç</button>
+      <button type="button" class="btn" id="restLater">Sonra</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* Local stand-in for the claude.ai database: same calls, saved in this browser. */
 (function () {
@@ -1037,8 +1056,17 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     var insp = Math.min(INSP_MAX, (S.table.insp || 0) + 1);
     S.table = Object.assign({}, DEFAULT_TABLE, { insp: insp });
     commitTable(0);
-    toast("Long Rest: Hit Points, slotlar, Hit Dice ve Transformations yenilendi; +1 Heroic Inspiration (en fazla 4).");
+    openRestModal();
   });
+
+  /* ---------------- long-rest reminder ---------------- */
+  var restBack = null;
+  function openRestModal() { restBack = document.activeElement; $("restModal").hidden = false; $("restGo").focus(); }
+  function closeRestModal() { $("restModal").hidden = true; if (restBack && restBack.focus) restBack.focus(); }
+  $("restGo").addEventListener("click", function () { closeRestModal(); location.hash = "#buyuler"; setTimeout(function () { var d = $("druidList"); if (d) d.scrollIntoView({ block: "start", behavior: "smooth" }); }, 50); });
+  $("restLater").addEventListener("click", closeRestModal);
+  $("restModal").addEventListener("click", function (e) { if (e.target === $("restModal")) closeRestModal(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("restModal").hidden) closeRestModal(); });
 
   /* ---------------- spells ---------------- */
   function spellRow(sp, mode) {
