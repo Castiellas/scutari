@@ -335,6 +335,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       <div class="trk"><span class="lbl">Hit Dice d8</span><div class="pips" id="hdPips"></div></div>
       <div class="trk"><span class="lbl">Heroic Inspiration</span><div class="pips" id="inspPips"></div></div>
       <div class="trk"><span class="lbl">Animal Friendship 1/LR</span><div class="pips" id="afPips"></div></div>
+      <div class="trk"><span class="lbl">Transformations 3/gün</span><div class="pips" id="tfPips"></div></div>
     </div>
     <div class="masa-row">
       <div class="trk"><span class="lbl">Death Saves</span><div class="pips" id="dsOk"></div><div class="pips" id="dsBad"></div></div>
@@ -440,7 +441,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
             <span class="chip">Bat</span><span class="chip">Panther</span><span class="chip">Fox</span>
             <span class="chip">Venomous Snake</span><span class="chip">Mountain Goat</span><span class="chip">Rat</span>
           </div>
-          <p class="small muted" style="margin-top:8px">Bu altı biçime girebilirsin. Ne zaman ve nasıl kullanılacağını DM'le konuş.</p>
+          <p class="small muted" style="margin-top:8px">Bu altı biçime günde 3 kez girebilirsin; Masa'da işaretle. Long Rest'te yenilenir.</p>
         </div>
       </div>
     </div>
@@ -508,7 +509,6 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     <div class="idgrid">
       <div><b>Species</b>Human</div>
       <div><b>Size</b>Small</div>
-      <div><b>Alignment</b>Neutral</div>
       <div><b>Primal Order</b>Warden</div>
     </div>
 
@@ -881,7 +881,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     { n: "Thunderwave", m: "1 Action · Self (15 ft Cube) · Instantaneous · CON 12", d: "Başaramayan 2d8 Thunder hasarı alır ve 10 ft itilir; başaran yarı hasar alır. Ses 300 ft öteden duyulur." }
   ];
 
-  var DEFAULT_TABLE = { hp: MAX_HP, temp: 0, slotsUsed: 0, hdUsed: 0, insp: 0, afUsed: false, dsOk: 0, dsBad: 0 };
+  var DEFAULT_TABLE = { hp: MAX_HP, temp: 0, slotsUsed: 0, hdUsed: 0, insp: 0, afUsed: false, tfUsed: 0, dsOk: 0, dsBad: 0 };
 
   /* ---------------- state ---------------- */
   var S = {
@@ -1003,6 +1003,13 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       var on = i < t.insp;
       ip.appendChild(pip("", !on, "Heroic Inspiration " + (i + 1) + (on ? ", var" : ", yok"), function () { S.table.insp = on ? i : i + 1; commitTable(); }));
     })(i);
+    var tp = $("tfPips"); tp.textContent = "";
+    for (i = 0; i < 3; i++) (function (i) {
+      var spent = i >= 3 - (t.tfUsed || 0);
+      tp.appendChild(pip("", spent, "Transformation " + (i + 1) + (spent ? ", kullanıldı" : ", hazır"), function () {
+        S.table.tfUsed = spent ? Math.max(0, (S.table.tfUsed || 0) - 1) : Math.min(3, (S.table.tfUsed || 0) + 1); commitTable();
+      }));
+    })(i);
     var ap = $("afPips"); ap.textContent = "";
     ap.appendChild(pip("", t.afUsed, "Yuvasız Animal Friendship" + (t.afUsed ? ", kullanıldı" : ", hazır"), function () { S.table.afUsed = !S.table.afUsed; commitTable(); }));
 
@@ -1026,7 +1033,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     var insp = Math.min(INSP_MAX, (S.table.insp || 0) + 1);
     S.table = Object.assign({}, DEFAULT_TABLE, { insp: insp });
     commitTable(0);
-    toast("Long Rest: Hit Points, slotlar ve Hit Dice yenilendi; +1 Heroic Inspiration (en fazla 4).");
+    toast("Long Rest: Hit Points, slotlar, Hit Dice ve Transformations yenilendi; +1 Heroic Inspiration (en fazla 4).");
   });
 
   /* ---------------- spells ---------------- */
