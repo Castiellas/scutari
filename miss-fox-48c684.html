@@ -277,6 +277,8 @@ textarea.page {
 .backup label.btn { display: inline-block; }
 footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; font-size: .82rem; color: var(--ink-soft); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
+.rest { display: inline-flex; flex-direction: column; gap: 2px; align-items: flex-start; }
+.rest-note { font-size: .78rem; color: var(--ink-soft); font-family: var(--f-num); letter-spacing: .02em; }
 .modal { position: fixed; inset: 0; background: rgba(20, 24, 19, .45); display: grid; place-items: center; padding: 16px; z-index: 50; }
 .modal[hidden] { display: none; }
 .modal-card { background: var(--paper); border: 1.5px solid var(--ink); box-shadow: 0 10px 30px rgba(0,0,0,.25); max-width: 440px; width: 100%; padding: 18px 20px 16px; }
@@ -352,14 +354,20 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
         <input id="tmpInput" class="tmp" inputmode="numeric" value="0">
       </div>
       <div class="trk"><span class="lbl">1st Level Slots</span><div class="pips" id="slotPips"></div></div>
-      <div class="trk"><span class="lbl">Hit Dice d8</span><div class="pips" id="hdPips"></div></div>
       <div class="trk"><span class="lbl">Heroic Inspiration</span><div class="pips" id="inspPips"></div></div>
       <div class="trk"><span class="lbl">Animal Friendship</span><div class="pips" id="afPips"></div></div>
       <div class="trk"><span class="lbl">Transformations</span><div class="pips" id="tfPips"></div></div>
     </div>
     <div class="masa-row">
       <div class="trk"><span class="lbl">Death Saves</span><div class="pips" id="dsOk"></div><div class="pips" id="dsBad"></div></div>
-      <button type="button" class="btn primary" id="longRest">Long Rest</button>
+      <div class="rest">
+        <button type="button" class="btn" id="shortRest">Short Rest</button>
+        <span class="rest-note">Hit Dice: d8 + 1 <span id="hdLeft">(1/1)</span></span>
+      </div>
+      <div class="rest">
+        <button type="button" class="btn primary" id="longRest">Long Rest</button>
+        <span class="rest-note">Her şey yenilenir</span>
+      </div>
     </div>
   </div>
   <div class="banner" id="banner" role="status"></div>
@@ -731,6 +739,20 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<div class="modal" id="shortModal" role="dialog" aria-modal="true" aria-labelledby="shortTitle" hidden>
+  <div class="modal-card">
+    <div class="sc modal-k">Short Rest</div>
+    <h2 id="shortTitle">Kısa bir mola</h2>
+    <p>Kısa dinlenmede Hit Dice harcayarak iyileşebilirsin: <b>d8 + 1</b> at ve sonucu yaz. Her seviye için 1 Hit Die'ın var; Long Rest'te geri gelir.</p>
+    <p class="small muted" id="shortLeft"></p>
+    <form id="shortForm" class="modal-acts" autocomplete="off">
+      <input class="field num" id="shortRoll" inputmode="numeric" aria-label="Zarın sonucu (d8 + 1)" placeholder="Sonuç" style="width:110px">
+      <button type="submit" class="btn primary" id="shortHeal">İyileş</button>
+      <button type="button" class="btn" id="shortClose">Kapat</button>
+    </form>
+  </div>
+</div>
+
 <div class="modal" id="restModal" role="dialog" aria-modal="true" aria-labelledby="restTitle" hidden>
   <div class="modal-card">
     <div class="sc modal-k">Long Rest</div>
@@ -1030,11 +1052,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
         S.table.slotsUsed = spent ? Math.max(0, S.table.slotsUsed - 1) : Math.min(SLOTS, S.table.slotsUsed + 1); commitTable();
       }));
     })(i);
-    var hp = $("hdPips"); hp.textContent = "";
-    for (i = 0; i < HIT_DICE; i++) (function () {
-      var spent = t.hdUsed > 0;
-      hp.appendChild(pip("", spent, "Can zarı" + (spent ? ", harcandı" : ", hazır"), function () { S.table.hdUsed = spent ? 0 : 1; commitTable(); }));
-    })();
+    $("hdLeft").textContent = "(" + (HIT_DICE - (t.hdUsed || 0)) + "/" + HIT_DICE + ")";
     var ip = $("inspPips"); ip.textContent = "";
     for (i = 0; i < INSP_MAX; i++) (function (i) {
       var on = i < t.insp;
@@ -1073,6 +1091,32 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     openRestModal();
   });
 
+  /* ---------------- short rest ---------------- */
+  var shortBack = null;
+  function openShort() {
+    shortBack = document.activeElement;
+    var left = HIT_DICE - (S.table.hdUsed || 0);
+    $("shortLeft").textContent = left > 0 ? "Kalan Hit Dice: " + left + "/" + HIT_DICE : "Hit Dice'ın kalmadı; Long Rest'te geri gelir.";
+    $("shortRoll").disabled = $("shortHeal").disabled = left <= 0 || !canWrite;
+    $("shortRoll").value = "";
+    $("shortModal").hidden = false;
+    (left > 0 ? $("shortRoll") : $("shortClose")).focus();
+  }
+  function closeShort() { $("shortModal").hidden = true; if (shortBack && shortBack.focus) shortBack.focus(); }
+  $("shortRest").addEventListener("click", openShort);
+  $("shortClose").addEventListener("click", closeShort);
+  $("shortModal").addEventListener("click", function (e) { if (e.target === $("shortModal")) closeShort(); });
+  $("shortForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var n = toInt($("shortRoll").value, 0, 99);
+    if (!n) { $("shortRoll").focus(); return; }
+    var before = S.table.hp;
+    S.table.hp = Math.min(MAX_HP, S.table.hp + n);
+    S.table.hdUsed = Math.min(HIT_DICE, (S.table.hdUsed || 0) + 1);
+    commitTable(0); closeShort();
+    toast("+" + (S.table.hp - before) + " Hit Points. Hit Die harcandı.");
+  });
+
   /* ---------------- long-rest reminder ---------------- */
   var restBack = null;
   function openRestModal() { restBack = document.activeElement; $("restModal").hidden = false; $("restGo").focus(); }
@@ -1080,7 +1124,11 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   $("restGo").addEventListener("click", function () { closeRestModal(); location.hash = "#buyuler"; setTimeout(function () { var d = $("druidList"); if (d) d.scrollIntoView({ block: "start", behavior: "smooth" }); }, 50); });
   $("restLater").addEventListener("click", closeRestModal);
   $("restModal").addEventListener("click", function (e) { if (e.target === $("restModal")) closeRestModal(); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("restModal").hidden) closeRestModal(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if (!$("restModal").hidden) closeRestModal();
+    if (!$("shortModal").hidden) closeShort();
+  });
 
   /* ---------------- spells ---------------- */
   function spellRow(sp, mode) {
@@ -1478,7 +1526,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
 
   /* ---------------- write gate ---------------- */
   function applyWriteGate() {
-    ["hpMinus", "hpPlus", "hpInput", "tmpInput", "longRest"].forEach(function (id) { $(id).disabled = !canWrite; });
+    ["hpMinus", "hpPlus", "hpInput", "tmpInput", "longRest", "shortRest"].forEach(function (id) { $(id).disabled = !canWrite; });
     document.querySelectorAll("#addForm input, #addForm button").forEach(function (x) { x.disabled = !canWrite; });
     renderTable(); renderSpells(); renderInv(); renderGold(); renderStory(); renderFacts(); renderPeople(); renderQuests();
     $("addKind").disabled = !canWrite;
