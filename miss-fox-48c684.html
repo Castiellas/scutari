@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Miss Fox: Yolcu Kaydı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@400;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Plan: an Istec customs-register entry for one traveller. Ruled ledger paper,
+   iron-gall ink, an oxblood customs stamp; Miss Fox's own accent is verdigris.
+   Single visual world (paper), so one theme on purpose. */
+:root {
+  --paper: #e9eee5;
+  --paper-deep: #dde4d6;
+  --rule: rgba(92, 128, 150, 0.22);
+  --margin: #b8433b;
+  --ink: #1f241e;
+  --ink-soft: #565e53;
+  --seal: #86271f;
+  --accent: #2c6a5b;
+  --accent-soft: rgba(44, 106, 91, 0.12);
+  --f-display: "Alegreya SC", "Palatino Linotype", Georgia, serif;
+  --f-body: "Spectral", Georgia, "Times New Roman", serif;
+  --f-num: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, transparent 0 30px, var(--margin) 30px 31px, transparent 31px 34px, var(--margin) 34px 35px, transparent 35px),
+    repeating-linear-gradient(to bottom, transparent 0 27px, var(--rule) 27px 28px);
+  background-attachment: local;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.5;
+}
+.wrap { max-width: 1060px; margin: 0 auto; padding: 22px 20px 64px 56px; }
+h1, h2, h3, .sc { font-family: var(--f-display); font-weight: 400; letter-spacing: .04em; text-wrap: balance; }
+h2 { font-size: 1.45rem; margin: 0 0 .6rem; }
+h3 { font-size: 1.12rem; margin: 1.4rem 0 .5rem; color: var(--accent); }
+p { margin: 0 0 .7rem; max-width: 68ch; }
+.num { font-family: var(--f-num); font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-soft); }
+.small { font-size: .86rem; }
+a { color: var(--accent); }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- register header ---------- */
+.register {
+  display: grid; grid-template-columns: 1fr auto; gap: 18px;
+  border-top: 3px double var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 14px 0 16px; position: relative;
+}
+.regline { font-family: var(--f-num); font-size: .74rem; letter-spacing: .08em; color: var(--ink-soft); text-transform: uppercase; }
+.name { font-family: var(--f-display); font-size: clamp(2.4rem, 7vw, 3.6rem); line-height: 1; margin: 6px 0 6px; letter-spacing: .02em; }
+.name em { font-style: normal; color: var(--accent); }
+.idline { font-size: 1rem; }
+.stamp {
+  align-self: start; justify-self: end; transform: rotate(-7deg);
+  border: 3px double var(--seal); color: var(--seal); padding: 8px 14px 6px;
+  font-family: var(--f-display); text-align: center; line-height: 1.1; opacity: .82;
+  mix-blend-mode: multiply;
+}
+.stamp b { display: block; font-size: 1.25rem; font-weight: 700; letter-spacing: .12em; }
+.stamp span { font-family: var(--f-num); font-size: .66rem; letter-spacing: .1em; }
+
+.figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin: 14px 0 0; }
+.fig { border: 1px solid var(--ink); background: var(--paper-deep); padding: 6px 10px 7px; }
+.fig .lbl { font-family: var(--f-display); font-size: .8rem; color: var(--ink-soft); letter-spacing: .06em; }
+.fig .val { font-family: var(--f-num); font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+.fig .val small { font-size: .8rem; color: var(--ink-soft); }
+
+/* ---------- table tracker ---------- */
+.masa { margin-top: 14px; border: 1.5px solid var(--accent); background: var(--accent-soft); padding: 10px 12px; display: grid; gap: 10px; }
+.masa-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.masa-head .sc { font-size: 1.05rem; color: var(--accent); }
+.masa-row { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
+.trk { display: flex; align-items: center; gap: 8px; }
+.trk .lbl { font-family: var(--f-display); font-size: .86rem; letter-spacing: .04em; }
+.hpbox { display: flex; align-items: center; border: 1px solid var(--ink); background: var(--paper); }
+.hpbox button { border: 0; background: none; width: 34px; height: 34px; font-size: 1.15rem; cursor: pointer; }
+.hpbox button:hover { background: var(--accent-soft); }
+.hpbox input { width: 44px; text-align: center; border: 0; border-left: 1px solid var(--rule); border-right: 1px solid var(--rule); background: none; font-family: var(--f-num); font-size: 1.15rem; height: 34px; }
+.tmp { width: 52px; text-align: center; border: 1px solid var(--ink); background: var(--paper); font-family: var(--f-num); height: 34px; }
+.pips { display: flex; gap: 6px; }
+.pip { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--ink); cursor: pointer; padding: 0; }
+.pip.spent { background: transparent; }
+.pip.ds-ok { border-color: var(--accent); background: var(--accent); }
+.pip.ds-bad { border-color: var(--seal); background: var(--seal); }
+.pip.ds-ok.spent, .pip.ds-bad.spent { background: transparent; }
+.btn {
+  border: 1px solid var(--ink); background: var(--paper); padding: 5px 12px; cursor: pointer;
+  font-family: var(--f-display); letter-spacing: .05em; font-size: .92rem;
+}
+.btn:hover { background: var(--paper-deep); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #f2f5ef; }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.danger { border-color: var(--seal); color: var(--seal); }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.savestate { font-family: var(--f-num); font-size: .74rem; letter-spacing: .06em; color: var(--ink-soft); }
+.savestate.bad { color: var(--seal); }
+.banner { margin-top: 12px; border-left: 4px solid var(--seal); background: rgba(134, 39, 31, .07); padding: 8px 12px; font-size: .92rem; display: none; }
+.banner.show { display: block; }
+
+/* ---------- tabs ---------- */
+nav.tabs { display: flex; gap: 4px; margin: 26px 0 0; border-bottom: 1.5px solid var(--ink); overflow-x: auto; scrollbar-width: thin; }
+nav.tabs a {
+  flex: 0 0 auto; text-decoration: none; color: var(--ink-soft); font-family: var(--f-display); letter-spacing: .05em;
+  padding: 7px 10px 5px; font-size: .95rem; letter-spacing: .03em; border: 1px solid transparent; border-bottom: 0; margin-bottom: -1.5px; white-space: nowrap;
+}
+nav.tabs a:hover { color: var(--ink); }
+nav.tabs a[aria-current="page"] { color: var(--ink); background: var(--paper); border-color: var(--ink); border-bottom: 1.5px solid var(--paper); }
+nav.tabs a.sealed { color: var(--seal); }
+section.view { display: none; padding-top: 22px; }
+section.view.on { display: block; }
+
+/* ---------- sheet ---------- */
+.cols { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; }
+.abilities { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.ab { border: 1px solid var(--ink); text-align: center; padding: 6px 2px 8px; background: var(--paper-deep); }
+.ab .k { font-family: var(--f-display); font-size: .84rem; letter-spacing: .02em; overflow-wrap: anywhere; }
+.ab .m { font-family: var(--f-num); font-size: 1.5rem; line-height: 1.2; }
+.ab .s { font-family: var(--f-num); font-size: .78rem; color: var(--ink-soft); }
+.ab .sv { font-size: .74rem; margin-top: 4px; border-top: 1px dotted var(--ink-soft); padding-top: 3px; }
+.ab .sv.prof { color: var(--accent); font-weight: 600; }
+table { border-collapse: collapse; width: 100%; }
+th { font-family: var(--f-display); font-weight: 400; text-align: left; font-size: .84rem; letter-spacing: .05em; color: var(--ink-soft); border-bottom: 1px solid var(--ink); padding: 4px 8px 3px 0; }
+td { padding: 4px 8px 3px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+td.r, th.r { text-align: right; }
+.skills td:first-child { width: 16px; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--ink-soft); }
+.dot.on { background: var(--accent); border-color: var(--accent); }
+.en { color: var(--ink-soft); font-size: .8rem; font-style: italic; }
+.tablewrap { overflow-x: auto; }
+dl.feats { margin: 0; }
+dl.feats dt { font-weight: 600; margin-top: .7rem; }
+dl.feats dd { margin: .1rem 0 0; max-width: 64ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--accent); color: var(--accent); padding: 1px 10px; font-size: .9rem; background: var(--paper); }
+.house { border: 1px dashed var(--accent); padding: 10px 12px; margin-top: 1rem; }
+.house .tag { font-family: var(--f-num); font-size: .7rem; letter-spacing: .1em; color: var(--accent); text-transform: uppercase; }
+
+/* ---------- spells ---------- */
+.spellhead { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: baseline; margin-bottom: 8px; }
+.spell { border-bottom: 1px solid var(--rule); padding: 8px 0 9px; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: start; }
+.spell .nm { font-weight: 600; }
+.spell .meta { font-family: var(--f-num); font-size: .74rem; color: var(--ink-soft); letter-spacing: .02em; }
+.spell .ds { grid-column: 2; font-size: .95rem; max-width: 70ch; }
+.prep { width: 26px; height: 26px; border: 1.5px solid var(--ink); background: var(--paper); cursor: pointer; padding: 0; margin-top: 1px; font-family: var(--f-num); }
+.prep[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #f2f5ef; }
+.prep.fixed { border-style: dotted; cursor: default; background: var(--accent-soft); }
+.count { font-family: var(--f-num); }
+.count.full { color: var(--accent); font-weight: 500; }
+
+/* ---------- declaration (inventory) ---------- */
+.purse { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.gold { border: 1.5px solid #8a6b1f; background: var(--paper-deep); padding: 6px 12px; display: flex; align-items: baseline; gap: 10px; }
+.gold label { font-family: var(--f-display); letter-spacing: .05em; color: #6f5618; }
+.gold input { width: 110px; border: 0; border-bottom: 1px solid var(--rule); background: transparent; font-family: var(--f-num); font-size: 1.4rem; }
+.kit { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 4px; }
+.kit .chip { display: inline-flex; align-items: center; gap: 4px; }
+.kit .chip .xbtn { font-size: .95rem; padding: 0 2px; }
+.kitadd { border: 1px dashed var(--accent); background: transparent; padding: 1px 8px; font-size: .9rem; width: 150px; }
+.subh { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.coin { border: 1px solid var(--ink); background: var(--paper-deep); padding: 6px 8px; }
+.coin label { display: block; font-family: var(--f-display); font-size: .78rem; letter-spacing: .05em; color: var(--ink-soft); }
+.coin input { width: 100%; border: 0; border-bottom: 1px solid var(--rule); background: transparent; font-family: var(--f-num); font-size: 1.2rem; }
+.coin.gold { border-color: #8a6b1f; }
+.inv input { border: 0; border-bottom: 1px dotted transparent; background: transparent; width: 100%; padding: 2px 0; }
+.inv input:hover { border-bottom-color: var(--ink-soft); }
+.inv input:focus { border-bottom-color: var(--accent); outline: none; background: var(--paper-deep); }
+.inv input.n { font-family: var(--f-num); text-align: right; width: 56px; }
+.inv td.x { width: 30px; text-align: right; }
+.xbtn { border: 0; background: none; cursor: pointer; color: var(--ink-soft); font-size: 1.1rem; line-height: 1; padding: 2px 4px; }
+.xbtn:hover { color: var(--seal); }
+.weight { display: flex; gap: 14px; align-items: center; margin: 12px 0 4px; flex-wrap: wrap; }
+.bar { flex: 1 1 200px; max-width: 360px; height: 8px; border: 1px solid var(--ink); background: var(--paper); position: relative; }
+.bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
+.bar.heavy i { background: var(--seal); }
+.addrow { display: grid; grid-template-columns: minmax(0, 1fr) 70px 150px auto; gap: 8px; margin-top: 14px; align-items: end; }
+.addrow label { font-family: var(--f-display); font-size: .8rem; color: var(--ink-soft); display: block; }
+.field { width: 100%; border: 1px solid var(--ink); background: var(--paper); padding: 5px 8px; font: inherit; color: inherit; }
+
+/* ---------- story & notebook ---------- */
+.idgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; border: 1px solid var(--ink); margin-bottom: 18px; }
+.idgrid div { padding: 6px 10px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.idgrid b { display: block; font-family: var(--f-display); font-weight: 400; font-size: .78rem; color: var(--ink-soft); letter-spacing: .05em; }
+blockquote { margin: 0 0 1rem; padding: 4px 0 4px 14px; border-left: 3px solid var(--accent); max-width: 66ch; }
+blockquote .src { display: block; font-size: .8rem; color: var(--ink-soft); font-style: italic; margin-top: 2px; }
+.ta label { font-family: var(--f-display); letter-spacing: .04em; display: block; margin: 1rem 0 .3rem; }
+textarea.page {
+  width: 100%; max-width: 72ch; min-height: 92px; resize: vertical; border: 1px solid var(--ink); padding: 8px 10px;
+  background: var(--paper) repeating-linear-gradient(to bottom, transparent 0 26px, var(--rule) 26px 27px); line-height: 27px;
+}
+.journey { max-width: 70ch; }
+.journey li { margin-bottom: .35rem; }
+.player-know { border: 1px solid var(--accent); padding: 8px 12px; margin-top: 12px; max-width: 70ch; }
+.player-know .sc { color: var(--accent); font-size: .95rem; }
+.facts { margin: 6px 0 8px; padding-left: 1.4rem; }
+.facts li { margin-bottom: 2px; }
+.facts .row { display: flex; gap: 6px; align-items: flex-start; }
+.facts textarea { flex: 1; border: 0; border-bottom: 1px dotted transparent; background: transparent; resize: none; overflow: hidden; line-height: 1.5; padding: 1px 0; min-height: 1.6em; }
+.facts textarea:hover { border-bottom-color: var(--ink-soft); }
+.facts textarea:focus { outline: none; border-bottom-color: var(--accent); background: var(--paper); }
+.factadd .field { border-style: dashed; border-color: var(--accent); background: transparent; }
+
+.notes { display: grid; gap: 14px; margin-top: 16px; }
+.note { border: 1px solid var(--ink); background: var(--paper); padding: 10px 12px; }
+.note .when { font-family: var(--f-num); font-size: .72rem; color: var(--ink-soft); letter-spacing: .05em; }
+.note h4 { margin: 2px 0 4px; font-family: var(--f-display); font-weight: 400; font-size: 1.1rem; }
+.note .body { white-space: pre-wrap; }
+.note .acts { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+.composer { display: grid; gap: 8px; max-width: 72ch; }
+.privacy { font-size: .88rem; color: var(--ink-soft); border-left: 3px solid var(--accent); padding-left: 10px; margin: 0 0 12px; max-width: 70ch; }
+
+/* ---------- people & quests ---------- */
+.people { display: grid; gap: 0; border-top: 1px solid var(--ink); max-width: 860px; }
+.person { display: grid; grid-template-columns: minmax(120px, 220px) 1fr auto; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+.person input, .person textarea, .quest textarea { border: 0; border-bottom: 1px dotted transparent; background: transparent; width: 100%; padding: 1px 0; resize: none; overflow: hidden; line-height: 1.5; }
+.person input { font-weight: 600; }
+.person input:hover, .person textarea:hover, .quest textarea:hover { border-bottom-color: var(--ink-soft); }
+.person input:focus, .person textarea:focus, .quest textarea:focus { outline: none; border-bottom-color: var(--accent); background: var(--paper); }
+.personadd { display: grid; grid-template-columns: minmax(120px, 220px) 1fr auto; gap: 12px; margin: 10px 0 6px; max-width: 860px; }
+.quests { display: grid; gap: 0; border-top: 1px solid var(--ink); max-width: 72ch; }
+.quest { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+.quest.done textarea { text-decoration: line-through; color: var(--ink-soft); }
+.qbox { width: 22px; height: 22px; border: 1.5px solid var(--ink); background: var(--paper); cursor: pointer; padding: 0; margin-top: 2px; font-family: var(--f-num); line-height: 1; }
+.qbox[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #f2f5ef; }
+.qsep { font-family: var(--f-display); color: var(--ink-soft); font-size: .86rem; letter-spacing: .05em; padding: 12px 0 2px; }
+@media (max-width: 560px) { .person, .personadd { grid-template-columns: 1fr auto; } .person textarea, .personadd input[name="info"] { grid-column: 1 / -1; grid-row: 2; } .personadd .btn { grid-column: 2; grid-row: 1; } }
+
+/* ---------- world ---------- */
+.world .tablewrap { margin-bottom: 1rem; }
+.world ul { padding-left: 1.2rem; max-width: 70ch; }
+.gods { margin: 4px 0 14px; border: 1px solid var(--ink); background: #15110d; padding: 0; }
+.gods img, .plate img { display: block; width: 100%; height: auto; }
+.plate { margin: 4px 0 14px; border: 1px solid var(--ink); padding: 0; }
+.sws { display: inline-flex; gap: 6px; align-items: center; }
+.sw { width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(31, 36, 30, .55); display: inline-block; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- sealed envelope ---------- */
+.envelope { max-width: 640px; margin: 10px auto 0; border: 1px solid var(--ink); background: var(--paper-deep); padding: 28px 22px 26px; position: relative; text-align: center; }
+.envelope .addr { font-family: var(--f-display); letter-spacing: .06em; }
+.seal { position: relative; width: 150px; height: 150px; margin: 20px auto 14px; cursor: pointer; border: 0; background: none; padding: 0; display: block; }
+.seal .half { position: absolute; inset: 0; transition: transform .7s cubic-bezier(.2,.7,.2,1), opacity .7s ease; }
+.seal .l { clip-path: polygon(0 0, 52% 0, 44% 38%, 56% 61%, 47% 100%, 0 100%); }
+.seal .r { clip-path: polygon(52% 0, 100% 0, 100% 100%, 47% 100%, 56% 61%, 44% 38%); }
+.seal.broken .l { transform: translate(-46px, 18px) rotate(-24deg); opacity: 0; }
+.seal.broken .r { transform: translate(46px, 26px) rotate(19deg); opacity: 0; }
+.pwform { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+.pwform .field { width: 200px; }
+#pwMsg { flex-basis: 100%; color: var(--seal); min-height: 1.2em; }
+.card { text-align: left; display: none; border-top: 1px solid var(--ink); margin-top: 6px; padding-top: 16px; }
+.card.open { display: block; animation: rise .6s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.card li { margin-bottom: .6rem; }
+.card .from { font-family: var(--f-num); font-size: .72rem; color: var(--ink-soft); letter-spacing: .06em; margin-top: 14px; }
+
+.backup { margin-top: 40px; border: 1px dashed var(--ink-soft); padding: 10px 12px; display: grid; gap: 8px; }
+.backup-acts { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.backup label.btn { display: inline-block; }
+footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; font-size: .82rem; color: var(--ink-soft); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+.toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--paper); padding: 8px 16px; font-size: .92rem; opacity: 0; transition: opacity .25s, transform .25s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 820px) {
+  .cols { grid-template-columns: 1fr; }
+  .abilities { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; background-image: linear-gradient(to right, transparent 0 8px, var(--margin) 8px 9px, transparent 9px), repeating-linear-gradient(to bottom, transparent 0 27px, var(--rule) 27px 28px); }
+  .wrap { padding: 16px 16px 56px 24px; }
+  .register { grid-template-columns: 1fr; }
+  .stamp { position: absolute; right: -4px; top: 50px; transform: rotate(-7deg) scale(.72); }
+  .addrow { grid-template-columns: 1fr 1fr; }
+  .addrow .btn { grid-column: 1 / -1; }
+  .addrow .grow { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .seal .half, .toast { transition: none; }
+  .card.open { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="register">
+    <div>
+      <div class="regline">Istec Gümrük Divanı · Yolcu Kaydı · Defter IV, sıra 0417</div>
+      <h1 class="name">Miss <em>Fox</em></h1>
+      <div class="idline">Druid 1 · Warden &nbsp;·&nbsp; Human · Small &nbsp;·&nbsp; Neutral</div>
+    </div>
+    <div class="stamp" aria-hidden="true"><b>GEÇTİ</b><span>ZÜMRE KAPISI</span></div>
+  </header>
+
+  <div class="figures">
+    <div class="fig"><div class="lbl">Armor Class</div><div class="val">12</div></div>
+    <div class="fig"><div class="lbl">Hit Points</div><div class="val"><span id="figHp">9</span><small> / 9</small></div></div>
+    <div class="fig"><div class="lbl">Speed</div><div class="val">30<small> ft</small></div></div>
+    <div class="fig"><div class="lbl">Initiative</div><div class="val">−1</div></div>
+    <div class="fig"><div class="lbl">Proficiency</div><div class="val">+2</div></div>
+    <div class="fig"><div class="lbl">Passive Perception</div><div class="val">14</div></div>
+    <div class="fig"><div class="lbl">Spell DC / Attack</div><div class="val">12<small> / </small>+4</div></div>
+  </div>
+
+  <div class="masa" aria-label="Masa takibi">
+    <div class="masa-head">
+      <span class="sc">Masa</span>
+      <span class="savestate" id="saveState" aria-live="polite">Bağlanıyor…</span>
+    </div>
+    <div class="masa-row">
+      <div class="trk">
+        <span class="lbl" id="hpLbl">Hit Points</span>
+        <div class="hpbox">
+          <button type="button" id="hpMinus" aria-label="Hit Points −1">−</button>
+          <input id="hpInput" class="num" inputmode="numeric" aria-labelledby="hpLbl" value="9">
+          <button type="button" id="hpPlus" aria-label="Hit Points +1">+</button>
+        </div>
+        <span class="muted num">/ 9</span>
+      </div>
+      <div class="trk">
+        <label class="lbl" for="tmpInput">Temp HP</label>
+        <input id="tmpInput" class="tmp" inputmode="numeric" value="0">
+      </div>
+      <div class="trk"><span class="lbl">1st Level Slots</span><div class="pips" id="slotPips"></div></div>
+      <div class="trk"><span class="lbl">Hit Dice d8</span><div class="pips" id="hdPips"></div></div>
+      <div class="trk"><span class="lbl">Heroic Inspiration</span><div class="pips" id="inspPips"></div></div>
+      <div class="trk"><span class="lbl">Animal Friendship 1/LR</span><div class="pips" id="afPips"></div></div>
+    </div>
+    <div class="masa-row">
+      <div class="trk"><span class="lbl">Death Saves</span><div class="pips" id="dsOk"></div><div class="pips" id="dsBad"></div></div>
+      <button type="button" class="btn primary" id="longRest">Long Rest</button>
+    </div>
+  </div>
+  <div class="banner" id="banner" role="status"></div>
+
+  <nav class="tabs" aria-label="Bölümler">
+    <a href="#karakter">Karakter</a>
+    <a href="#buyuler">Büyüler</a>
+    <a href="#beyanname">Envanter</a>
+    <a href="#gecmis">Karakter Geçmişi</a>
+    <a href="#karakterler">Diğer Karakterler</a>
+    <a href="#defter">Notlar</a>
+    <a href="#gorevler">Görevler</a>
+    <a href="#dunya">Dünya</a>
+    <a href="#zarf" class="sealed">Mühürlü Zarf</a>
+  </nav>
+
+  <!-- ============ KARAKTER ============ -->
+  <section class="view" id="v-karakter">
+    <div class="abilities">
+      <div class="ab"><div class="k">Strength</div><div class="m">+0</div><div class="s">10</div><div class="sv">Save +0</div></div>
+      <div class="ab"><div class="k">Dexterity</div><div class="m">−1</div><div class="s">8</div><div class="sv">Save −1</div></div>
+      <div class="ab"><div class="k">Constitution</div><div class="m">+1</div><div class="s">13</div><div class="sv">Save +1</div></div>
+      <div class="ab"><div class="k">Intelligence</div><div class="m">+2</div><div class="s">14</div><div class="sv prof">Save +4</div></div>
+      <div class="ab"><div class="k">Wisdom</div><div class="m">+2</div><div class="s">15</div><div class="sv prof">Save +4</div></div>
+      <div class="ab"><div class="k">Charisma</div><div class="m">+1</div><div class="s">12</div><div class="sv">Save +1</div></div>
+    </div>
+
+    <div class="cols" style="margin-top:22px">
+      <div>
+        <h2>Skills</h2>
+        <div class="tablewrap">
+        <table class="skills">
+          <thead><tr><th></th><th>Skill</th><th class="r">Mod</th></tr></thead>
+          <tbody>
+            <tr><td><span class="dot"></span></td><td>Acrobatics <span class="en">Dex</span></td><td class="r num">−1</td></tr>
+            <tr><td><span class="dot on"></span></td><td>Animal Handling <span class="en">Wis</span></td><td class="r num">+4</td></tr>
+            <tr><td><span class="dot"></span></td><td>Arcana <span class="en">Int</span></td><td class="r num">+2</td></tr>
+            <tr><td><span class="dot on"></span></td><td>Athletics <span class="en">Str</span></td><td class="r num">+2</td></tr>
+            <tr><td><span class="dot on"></span></td><td>Deception <span class="en">Cha</span></td><td class="r num">+3</td></tr>
+            <tr><td><span class="dot"></span></td><td>History <span class="en">Int</span></td><td class="r num">+2</td></tr>
+            <tr><td><span class="dot"></span></td><td>Insight <span class="en">Wis</span></td><td class="r num">+2</td></tr>
+            <tr><td><span class="dot"></span></td><td>Intimidation <span class="en">Cha</span></td><td class="r num">+1</td></tr>
+            <tr><td><span class="dot"></span></td><td>Investigation <span class="en">Int</span></td><td class="r num">+2</td></tr>
+            <tr><td><span class="dot"></span></td><td>Medicine <span class="en">Wis</span></td><td class="r num">+2</td></tr>
+            <tr><td><span class="dot"></span></td><td>Nature <span class="en">Int</span></td><td class="r num">+2</td></tr>
+            <tr><td><span class="dot on"></span></td><td>Perception <span class="en">Wis</span></td><td class="r num">+4</td></tr>
+            <tr><td><span class="dot"></span></td><td>Performance <span class="en">Cha</span></td><td class="r num">+1</td></tr>
+            <tr><td><span class="dot"></span></td><td>Persuasion <span class="en">Cha</span></td><td class="r num">+1</td></tr>
+            <tr><td><span class="dot"></span></td><td>Religion <span class="en">Int</span></td><td class="r num">+2</td></tr>
+            <tr><td><span class="dot"></span></td><td>Sleight of Hand <span class="en">Dex</span></td><td class="r num">−1</td></tr>
+            <tr><td><span class="dot on"></span></td><td>Stealth <span class="en">Dex</span></td><td class="r num">+1</td></tr>
+            <tr><td><span class="dot"></span></td><td>Survival <span class="en">Wis</span></td><td class="r num">+2</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="small muted" style="margin-top:8px">Passive Perception 14 · Passive Insight 12 · Passive Investigation 12</p>
+      </div>
+
+      <div>
+        <h2>Weapon Attacks</h2>
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>Name</th><th class="r">Hit</th><th>Damage</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Sickle</td><td class="r num">+2</td><td>1d4 Slashing</td><td class="small muted">Simple, Light, Nick</td></tr>
+            <tr><td>Staff</td><td class="r num">+2</td><td>1d6 Bludgeoning</td><td class="small muted">Simple, Versatile, Topple</td></tr>
+            <tr><td>Unarmed Strike</td><td class="r num">+2</td><td>1 Bludgeoning</td><td></td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="small muted" style="margin-top:6px">Staff'ı iki elle tutarsan hasar 1d8 olur.</p>
+
+        <h3>Proficiencies &amp; Training</h3>
+        <dl class="feats">
+          <dt>Armor</dt><dd>Light Armor, Medium Armor, Shields</dd>
+          <dt>Weapons</dt><dd>Martial Weapons, Simple Weapons</dd>
+          <dt>Tools</dt><dd>Darts, Herbalism Kit, Thieves' Tools</dd>
+          <dt>Languages</dt><dd>Common, Common Sign Language, Druidic, Elvish</dd>
+        </dl>
+
+        <h3>Features &amp; Traits</h3>
+        <dl class="feats">
+          <dt>Druidic</dt>
+          <dd>Druidlerin gizli dilini bilirsin; <i>Speak with Animals</i> her zaman hazırdır. Druidic ile gizli mesaj bırakabilirsin: Druidic bilen hemen görür, başkaları ancak Intelligence (Investigation) DC 15 ile mesajın varlığını fark eder ve büyü olmadan çözemez.</dd>
+          <dt>Primal Order: Warden</dt>
+          <dd>Savaş için eğitildin: Martial Weapons kullanabilir, Medium Armor giyebilirsin.</dd>
+          <dt>Resourceful</dt>
+          <dd>Her Long Rest sonunda 1 Heroic Inspiration kazanırsın. Ev kuralı: en fazla 4 biriktirebilirsin.</dd>
+          <dt>Skillful · Versatile</dt>
+          <dd>İnsan olarak fazladan bir skill ve bir origin feat aldın.</dd>
+          <dt>Magic Initiate (Druid)</dt>
+          <dd>İki cantrip (<i>Druidcraft</i>, <i>Elementalism</i>) ve <i>Animal Friendship</i>. Bu büyüleri Intelligence ile yaparsın. Animal Friendship'i her Long Rest'te bir kez slot harcamadan yapabilirsin.</dd>
+        </dl>
+
+        <div class="house">
+          <div class="tag">Ev kuralı</div>
+          <h3 style="margin-top:4px">Transformations</h3>
+          <div class="chips">
+            <span class="chip">Bat</span><span class="chip">Panther</span><span class="chip">Fox</span>
+            <span class="chip">Venomous Snake</span><span class="chip">Mountain Goat</span><span class="chip">Rat</span>
+          </div>
+          <p class="small muted" style="margin-top:8px">Bu altı biçime girebilirsin. Ne zaman ve nasıl kullanılacağını DM'le konuş.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BÜYÜLER ============ -->
+  <section class="view" id="v-buyuler">
+    <div class="spellhead">
+      <h2 style="margin:0">Büyüler</h2>
+      <span>Spellcasting Ability <b>Wisdom</b></span>
+      <span class="num">Spell Save DC 12 · Spell Attack +4</span>
+      <span>1st Level Slots <b class="num">2</b> <span class="muted small">(Masa'da işaretle)</span></span>
+    </div>
+
+    <h3>Cantrips <span class="muted small">· At Will</span></h3>
+    <div id="cantrips"></div>
+
+    <h3>Always Prepared</h3>
+    <div id="always"></div>
+
+    <h3>Prepared <span class="count" id="prepCount">0 / 4</span></h3>
+    <p class="small muted">Her Long Rest sonrası listeden 4 büyü hazırlarsın. Kutucuğa dokunarak hazırla ya da bırak.</p>
+    <div id="druidList"></div>
+  </section>
+
+  <!-- ============ BEYANNAME ============ -->
+  <section class="view" id="v-beyanname">
+    <h2>Envanter</h2>
+    <div class="purse">
+      <div class="gold"><label for="goldInput">Gold</label><input id="goldInput" inputmode="numeric" value="0"></div>
+    </div>
+
+    <div class="subh"><h3>Equipment</h3><span class="small muted">zırh ve silahlar</span></div>
+    <div class="tablewrap">
+      <table class="inv">
+        <thead><tr><th>Name</th><th>Notes</th><th></th></tr></thead>
+        <tbody id="eqBody"><tr><td colspan="3" class="muted">Yükleniyor…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="subh"><h3>Basic Kit</h3><span class="small muted">her zaman yanında; sayılmaz</span></div>
+    <div class="kit" id="kit"></div>
+    <form id="kitForm" autocomplete="off" style="margin-top:6px"><input class="kitadd" id="kitAdd" aria-label="Basic Kit'e ekle" placeholder="+ ekle"></form>
+
+    <div class="subh"><h3>Items</h3><span class="small muted">bulduğun, aldığın, sana verilen</span></div>
+    <div class="tablewrap">
+      <table class="inv">
+        <thead><tr><th>Name</th><th class="r">Qty</th><th>Notes</th><th></th></tr></thead>
+        <tbody id="itBody"><tr><td colspan="4" class="muted">Yükleniyor…</td></tr></tbody>
+      </table>
+    </div>
+
+    <form class="addrow" id="addForm" autocomplete="off">
+      <div class="grow"><label for="addName">Yeni</label><input class="field" id="addName" placeholder="Örn. paslı bir anahtar" required></div>
+      <div><label for="addQty">Qty</label><input class="field num" id="addQty" inputmode="numeric" value="1"></div>
+      <div><label for="addKind">Nereye</label>
+        <select class="field" id="addKind"><option value="items">Items</option><option value="equipment">Equipment</option></select></div>
+      <button class="btn primary" type="submit">Ekle</button>
+    </form>
+  </section>
+
+  <!-- ============ GEÇMİŞ ============ -->
+  <section class="view" id="v-gecmis">
+    <h2>Karakter Geçmişi</h2>
+    <div class="idgrid">
+      <div><b>Species</b>Human</div>
+      <div><b>Size</b>Small</div>
+      <div><b>Alignment</b>Neutral</div>
+      <div><b>Primal Order</b>Warden</div>
+    </div>
+
+    <blockquote>The first thing I do in a new place is note the locations of everything valuable—or where such things could be hidden.<span class="src">Personality Traits</span></blockquote>
+    <blockquote>Charity. I steal from the wealthy so that I can help people in need.<span class="src">Ideals</span></blockquote>
+
+    <div class="ta">
+      <label for="st-bond">Bonds <span class="muted small">· kime ya da neye bağlısın?</span></label>
+      <textarea class="page" id="st-bond" data-story="bond" placeholder="Bir kişi, bir yer, bir borç…"></textarea>
+      <label for="st-flaw">Flaws <span class="muted small">· seni neyle yakalarlar?</span></label>
+      <textarea class="page" id="st-flaw" data-story="flaw" placeholder="Zaafın, korkun, alışkanlığın…"></textarea>
+      <label for="st-look">Character Appearance</label>
+      <textarea class="page" id="st-look" data-story="look" placeholder="İlk bakışta ne görülür?"></textarea>
+      <label for="st-tale">Character Backstory <span class="muted small">· Zümre'den önce</span></label>
+      <textarea class="page" id="st-tale" data-story="tale" style="min-height:180px" placeholder="Nerede doğdun, kimden öğrendin, neden çalmaya başladın?"></textarea>
+      <p class="small muted">Yazdıkların bu cihaza, bu tarayıcıya kaydedilir.</p>
+    </div>
+
+    <h3>Şimdiye dek</h3>
+    <ol class="facts journey" id="journey"><li class="muted">Yükleniyor…</li></ol>
+    <form id="journeyForm" autocomplete="off" class="factadd" style="max-width:70ch"><input class="field" id="journeyAdd" aria-label="Şimdiye dek listesine ekle" placeholder="+ yeni olay ekle"></form>
+    <div class="player-know">
+      <div class="sc">Önemli bilgiler</div>
+      <ol class="facts" id="facts"><li class="muted">Yükleniyor…</li></ol>
+      <form id="factForm" autocomplete="off" class="factadd"><input class="field" id="factAdd" aria-label="Yeni önemli bilgi" placeholder="+ yeni bilgi ekle"></form>
+    </div>
+  </section>
+
+  <!-- ============ DİĞER KARAKTERLER ============ -->
+  <section class="view" id="v-karakterler">
+    <h2>Diğer Karakterler</h2>
+    <h3>Tanıdıklar</h3>
+    <div class="people" id="people-known"><p class="muted">Yükleniyor…</p></div>
+    <form class="personadd" data-list="known" autocomplete="off">
+      <input class="field" name="name" aria-label="Tanıdığın adı" placeholder="Ad">
+      <input class="field" name="info" aria-label="Tanıdık hakkında" placeholder="Hakkında">
+      <button class="btn" type="submit">Ekle</button>
+    </form>
+  </section>
+
+  <!-- ============ DEFTER ============ -->
+  <section class="view" id="v-defter">
+    <h2>Notlar</h2>
+    <p class="privacy">Notların yalnızca bu cihazda, bu tarayıcıda saklanır. DM de dahil kimse göremez.</p>
+    <form class="composer" id="noteForm" autocomplete="off">
+      <label class="sc" for="noteTitle">Yeni not</label>
+      <input class="field" id="noteTitle" placeholder="Başlık (isteğe bağlı)">
+      <textarea class="page" id="noteBody" placeholder="Şüphelerin, isimler, yerler, planlar…" required></textarea>
+      <div><button class="btn primary" type="submit" id="noteSave">Deftere yaz</button></div>
+    </form>
+    <div class="notes" id="notes"><p class="muted">Defter açılıyor…</p></div>
+  </section>
+
+  <!-- ============ GÖREVLER ============ -->
+  <section class="view" id="v-gorevler">
+    <h2>Görevler</h2>
+    <div class="quests" id="quests"><p class="muted">Yükleniyor…</p></div>
+    <form id="questForm" autocomplete="off" class="factadd" style="max-width:72ch;margin-top:10px"><input class="field" id="questAdd" aria-label="Yeni görev" placeholder="+ yeni görev ekle"></form>
+  </section>
+
+  <!-- ============ DÜNYA ============ -->
+  <section class="view world" id="v-dunya">
+    <h2>Dünya</h2>
+    <p>Scutari, karadan çok denizin olduğu bir dünyadır. “Scutari” dünyanın adıdır; ortadaki kara parçasına Scutari Bölgesi denir.</p>
+
+    <h3>The Blue (Mavi)</h3>
+    <ul>
+      <li>Okyanusun adı Mavi'dir.</li>
+      <li>Tehlikelidir: korsanlar, tuhaf akıntılar, sert rüzgârlar, belki yaratıklar.</li>
+      <li>Güvenle geçmek için yol gösterecek bir büyücü gerekir.</li>
+    </ul>
+
+    <h3>Bölgeler</h3>
+    <figure class="plate"><img src="world-map.jpg" width="1800" height="1258" alt="Bilinen dünyanın haritası: ortada Scutari ve Istec, batıda Aldenmor, doğuda Galvenne, kuzeyde Zurum, güneydoğuda İskil, güneyde Loria adaları ve hepsini çevreleyen Mavi." loading="lazy"></figure>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Bölge</th><th>Yön</th><th>Bilinen yüzü</th></tr></thead>
+      <tbody>
+        <tr><td>Scutari Bölgesi</td><td>Merkez</td><td>Yaşadığınız yer; Istec'in hükmettiği topraklar</td></tr>
+        <tr><td>Aldenmor</td><td>Batı</td><td>Güçlü ve uzak bir ülke. Istec'in kurucularının oradan geldiği, halkının tanrılara tapmadığı söylenir</td></tr>
+        <tr><td>Galvenne</td><td>Doğu</td><td>Zengin ve güçlü bir krallık; aynı tanrılara tapar</td></tr>
+        <tr><td>Zurum</td><td>Kuzey</td><td>Donmuş ve yoksul</td></tr>
+        <tr><td>İskil</td><td>Güneydoğu</td><td>Çöl; madenleriyle bilinir</td></tr>
+        <tr><td>Loria</td><td>Güney</td><td>Korsan adaları</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Scutari Bölgesi</h3>
+    <figure class="plate"><img src="scutari-map.jpg" width="1024" height="565" alt="Scutari Bölgesi'nin el çizimi haritası: Istec, Zümre, The Ungreeted Lands, Serpent's Tower, Hook's Bay Monastery, Raven's Garden, Gate of Cinders ve Pasha's Grove." loading="lazy"></figure>
+    <p>İki büyük kara parçası dar bir kıstakla birleşir; batı yakası dağlıktır.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Yer</th><th>Gerçek karşılığı</th><th>Herkesin bildiği</th></tr></thead>
+      <tbody>
+        <tr><td>Istec, “Yüksek Şehir”</td><td class="muted">—</td><td>Kıstağın kuzeyindeki adada büyücülerin şehir devleti. Parşömen, kitap ve iksir satar; büyü eğitimi orada verilir. Ordusu yoktur, paladinleri ve büyücüleri vardır.</td></tr>
+        <tr><td>Zümre kasabaları</td><td class="muted">—</td><td>Zümre kasabaları işlerine göre ya da numaralarıyla anılırlar. Her birinin farklı bir işi vardır ve Istec için farklı bir şey üretir. Istec'in atadığı bir baron tarafından yönetilirler.</td></tr>
+        <tr><td>The Ungreeted Lands</td><td>Selamsız</td><td>Batıdaki dağlar. Goblinler buradan Zümre'ye baskın düzenler.</td></tr>
+        <tr><td>Raven's Garden</td><td>Kuzguncuk</td><td>Burada işportacılık yapılır, her şeyin kaçağı üretilir. Genelde eğitimsiz büyücülerin ve silah ustalarının bulunduğu bir yerdir.</td></tr>
+        <tr><td>Hook's Bay Monastery</td><td>Çengelköy</td><td>Keşişlerin büyüden uzak durmak için yaşadığı yer.</td></tr>
+        <tr><td>Pasha's Grove</td><td>Paşa Korusu</td><td>Kendi köyleri ve halkı olan geniş bir topraktır; korucular burada hayvan yetiştirir. Ortasında Istec'in işlettiği bir gözlemevi vardır.</td></tr>
+        <tr><td>Gate of Cinders</td><td>Haydarpaşa</td><td>Terk edilmiş bir harabedir. Burada az sayıda insan yaşar, ancak içeride ne olduğu tam olarak bilinmez. Yakınlarında Istec için mürekkep üretilen bir tesis vardır.</td></tr>
+        <tr><td>Cypress Necropolis</td><td class="muted">—</td><td>Bölgenin mezarlığıdır, ama insanlar ondan uzak durur.</td></tr>
+        <tr><td>Serpent's Tower</td><td>Kız Kulesi</td><td>Kıstağın güneyinde küçük bir adadaki hapishane. Adını, çok eskiden o sularda görüldüğü söylenen dev bir deniz yılanından alır.</td></tr>
+      </tbody>
+    </table></div>
+    <ul><li>Büyü yeteneği görülen çocuklar Istec'e eğitime götürülür. Istec'ten büyücü ve paladinler bunun için “seçme” adı verilen bir töreni gerçekleştirmek üzere Zümre'ye gelirler.</li></ul>
+
+    <h3>Tanrılar</h3>
+    <figure class="gods"><img src="gods.jpg" width="1538" height="1023" alt="Altı tanrının sancakları: Ulusoy, Huzrun, Bilgin / Ruhin, Liyuzan, Kimkil ve Ortay; her biri kendi renkleri ve simgesiyle." loading="lazy"></figure>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Tanrı</th><th>Alanları</th><th>Renkleri</th></tr></thead>
+      <tbody>
+        <tr><td>Ulusoy</td><td>Şan, Birlik, Disiplin, Medeniyet</td><td><span class="sws"><span class="sw" style="background:#1d1a17" title="Siyah"><span class="vh">Siyah</span></span><span class="sw" style="background:#c99a2e" title="Altın"><span class="vh">Altın</span></span><span class="sw" style="background:#a32a20" title="Kırmızı"><span class="vh">Kırmızı</span></span></span></td></tr>
+        <tr><td>Huzrun</td><td>Gelenek, Dindarlık, Ahlak, Şifa</td><td><span class="sws"><span class="sw" style="background:#3d7a2c" title="Yeşil"><span class="vh">Yeşil</span></span><span class="sw" style="background:#f3efe3" title="Beyaz"><span class="vh">Beyaz</span></span></span></td></tr>
+        <tr><td>Bilgin (ve Ruhin)</td><td>Özgürlük, Liyakat, İlerleme, Ticaret</td><td><span class="sws"><span class="sw" style="background:#e8b62c" title="Sarı"><span class="vh">Sarı</span></span><span class="sw" style="background:#b8bec6" title="Gümüş"><span class="vh">Gümüş</span></span></span></td></tr>
+        <tr><td>Liyuzan</td><td>Liyakat, Uzlaşı, Sosyal Adalet, Sanat</td><td><span class="sws"><span class="sw" style="background:#d64c86" title="Pembe"><span class="vh">Pembe</span></span><span class="sw" style="background:#24a9a2" title="Turkuaz"><span class="vh">Turkuaz</span></span></span></td></tr>
+        <tr><td>Kimkil</td><td>Eşitlik, Doğa, Tartışma, Müzik, Çeşitlilik</td><td><span class="sws"><span class="sw" style="background:#6a2a7e" title="Mor"><span class="vh">Mor</span></span><span class="sw" style="background:#3d7a2c" title="Yeşil"><span class="vh">Yeşil</span></span><span class="sw" style="background:#8cc8e6" title="Açık mavi"><span class="vh">Açık mavi</span></span></span></td></tr>
+        <tr><td>Ortay</td><td>Denge, Zaman, Uyum, Sessizlik</td><td><span class="sws"><span class="sw" style="background:#f3efe3" title="Beyaz"><span class="vh">Beyaz</span></span></span></td></tr>
+      </tbody>
+    </table></div>
+    <h3>Kilisenin anlattığı</h3>
+    <ul>
+      <li>Istec'in kurucuları, tehdit altında olduklarını hissederek Aldenmor'dan kaçtı ve bu topraklara gelerek Istec'i kurdu. Şehir üç tanrının lütfuyla kuruldu ve bölgeye barış, düzen, bilim ve zenginlik getirdi. Kutsal kilise de bu topraklardadır.</li>
+      <li>Kilisenin başı Pontifex'tir ve Istec'te oturur.</li>
+      <li>Istec'liler büyü gücünün kandan geldiğine inanır.</li>
+      <li>Istec'te ölüler diriltilmez. Kilise, ruhun huzur içinde yatması gerektiğini söyler. Başka ülkelerde diriltme yapıldığına dair söylentiler vardır ve insanlar bundan korkar.</li>
+    </ul>
+
+    <h3>Büyü hakkında herkesin bildiği</h3>
+    <ul>
+      <li>Büyücüler (wizard) bu bölgede Istec'te yetişir. Ya da özel eğitim alınabilir.</li>
+      <li>Denizlerde yol bulmak için bu iş için özel olarak eğitilmiş bir büyücü gerekir.</li>
+      <li>Zümre'de büyü yapmak insanları korkutur.</li>
+    </ul>
+
+    <h3>Masa kuralları</h3>
+    <p><b>Kör Talih Zarı.</b> Bir saldırı zarı doğal 20 gelirse savunan d20 atar; doğal 1 gelirse savunan için d6 atılır. Saldırı zarı doğal 1 gelirse savunan d20 atar; doğal 20 gelirse saldıran için d6 atılır.</p>
+    <div class="tablewrap" style="max-width:360px"><table>
+      <thead><tr><th>d6</th><th>Sonuç</th></tr></thead>
+      <tbody><tr><td class="num">1</td><td>Ölüm</td></tr><tr><td class="num">2–5</td><td>Kötü sonuç</td></tr><tr><td class="num">6</td><td>Kurtuluş</td></tr></tbody>
+    </table></div>
+    <ul><li>Bu zarlar herkesin gözü önünde atılır.</li><li>Kural düşmanlar için de geçerlidir.</li><li>Kötü sonuç kalıcı değildir; dövüş sırasında başına gelen bir aksiliktir.</li></ul>
+    <p><b>Hikâye.</b> Ne yapacağınız tamamen size kalmış; hiçbir şeye zorlanmayacaksınız. Scutari kendi kuralları ve sonuçları olan, yaşayan bir dünya. Peşine düşmek istediğiniz her hikâyenin peşine düşebilirsiniz. Hikâyeyi birlikte yazacağız.</p>
+    <p><b>Ölüm.</b> Zaman bir kez geri sarıldı. Muhtemelen bir daha olmayacak; ölürseniz ölmüş olacaksınız.</p>
+  </section>
+
+  <!-- ============ MÜHÜRLÜ ZARF ============ -->
+  <section class="view" id="v-zarf">
+    <div class="envelope">
+      <div class="addr">Yalnızca Miss Fox'a</div>
+      <div class="small muted">DM'den. Mührü kırmadan önce yanında başka oyuncu olmadığından emin ol.</div>
+      <button type="button" class="seal" id="seal" aria-label="Mührü kır ve kartı aç" aria-expanded="false" aria-controls="card">
+        <svg class="half l" viewBox="0 0 150 150" aria-hidden="true"><use href="#waxseal"/></svg>
+        <svg class="half r" viewBox="0 0 150 150" aria-hidden="true"><use href="#waxseal"/></svg>
+      </button>
+      <div class="small muted" id="sealHint">Mührü kırmak için şifreni gir</div>
+      <form id="pwForm" class="pwform" autocomplete="off">
+        <input class="field" id="pwInput" type="password" aria-label="Zarfın şifresi" placeholder="Şifre">
+        <button class="btn primary" type="submit">Mührü kır</button>
+        <div class="small" id="pwMsg" role="status" aria-live="polite"></div>
+      </form>
+      <div class="card" id="card">
+        <div id="cardBody"></div>
+        <button type="button" class="btn" id="reseal" style="margin-top:14px">Zarfı yeniden mühürle</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="backup" aria-label="Yedek">
+    <div><span class="sc">Yedek</span> <span class="small muted">Her şey bu cihaza kaydedilir. Başka bir cihaza geçmek ya da DM'e göndermek için yedek al. Yedek notlarını da içerir.</span></div>
+    <div class="backup-acts">
+      <button type="button" class="btn" id="bkSave">Yedek al</button>
+      <label class="btn" for="bkFile">Yedeği yükle</label>
+      <input type="file" id="bkFile" accept="application/json,.json" hidden>
+      <span class="small" id="bkMsg" role="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <footer>
+    <span>Mekanik bilgiler D&amp;D Beyond'dan alındı · 14 Kasım 2026</span>
+    <span>Zar ve seviye için D&amp;D Beyond geçerlidir</span>
+  </footer>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="wax" cx="40%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#b03a2e"/>
+      <stop offset=".65" stop-color="#86271f"/>
+      <stop offset="1" stop-color="#5e1a15"/>
+    </radialGradient>
+    <path id="sealRing" d="M75,30 a45,45 0 1,1 -0.1,0"/>
+    <g id="waxseal">
+      <path fill="url(#wax)" d="M75 6c9 0 13 6 21 7s14-1 19 6 3 13 8 19 12 9 12 18-6 12-6 20 6 13 1 21-12 7-17 13-4 13-12 16-13-1-21 1-12 9-21 9-12-6-20-8-14 1-19-5-2-12-8-18-12-8-13-17 5-13 5-21-6-12-2-20 11-9 16-14 3-13 10-17 13 1 21-1S66 6 75 6z"/>
+      <circle cx="75" cy="75" r="50" fill="none" stroke="#5e1a15" stroke-width="2" opacity=".7"/>
+      <circle cx="75" cy="75" r="38" fill="none" stroke="#c9564a" stroke-width="1" opacity=".55"/>
+      <text font-family="Alegreya SC, Georgia, serif" font-size="11" letter-spacing="2.2" fill="#e8b7ad" opacity=".85"><textPath href="#sealRing">ISTEC · MÜHÜRLÜ · YALNIZCA SANA ·</textPath></text>
+      <text x="75" y="88" text-anchor="middle" font-family="Alegreya SC, Georgia, serif" font-size="36" fill="#e8b7ad" opacity=".9">MF</text>
+    </g>
+  </defs>
+</svg>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* Local stand-in for the claude.ai database: same calls, saved in this browser. */
+(function () {
+  "use strict";
+  var NS = "scutari:miss-fox:", SEED = {"fox/facts": {"items": [{"id": "f01", "text": "Partiniz bir geri sarma yaşadı ve hepiniz onun izini taşıyorsunuz."}]}, "fox/inventory": {"gold": 100, "equipment": [{"id": "e01", "name": "Shield", "note": "Equipped"}, {"id": "e02", "name": "Leather", "note": "Equipped"}, {"id": "e03", "name": "Sickle", "note": ""}, {"id": "e04", "name": "Staff", "note": ""}], "items": [], "kit": [{"id": "k01", "name": "Giysi"}, {"id": "k02", "name": "Sırt çantası"}, {"id": "k03", "name": "Yatak rulosu"}, {"id": "k04", "name": "Erzak"}, {"id": "k05", "name": "Su tulumu"}, {"id": "k06", "name": "Çakmak kutusu"}, {"id": "k07", "name": "Meşale"}, {"id": "k08", "name": "Halat"}, {"id": "k09", "name": "Levye"}, {"id": "k10", "name": "Lamba yağı"}, {"id": "k11", "name": "Herbalism Kit"}]}, "fox/journey": {"items": [{"id": "j01", "text": "Zümre'de insanların kağıt değirmenlerinde çalıştığını gördün. Kasaba biraz fazla yeşildi."}, {"id": "j02", "text": "Eşkıya Osma Naga'yı yendiniz ve canını bağışladınız."}, {"id": "j03", "text": "Victor Fortis'le tanıştınız, hikâyesini dinlediniz. Size bir sikke verdi."}, {"id": "j04", "text": "Istec'in seçim ekibinin kasabaya geldiğini gördünüz; kasabadan yeteneklerine göre çocuk toplayacaklarını biliyorsunuz."}, {"id": "j05", "text": "Sikkeyle oynarken parmağını kestin. Kanının damladığı yerde çimenler büyüyüp canlandı."}]}, "fox/people": {"known": [{"id": "p04", "info": "Size hikâyesini anlattı ve bir sikke verdi.", "name": "Victor Fortis"}, {"id": "p05", "info": "Yendiğiniz ve canını bağışladığınız eşkıya.", "name": "Osma Naga"}]}, "fox/quests": {"items": []}, "fox/spells": {"prepared": []}}, UID = "local";
+  function key(p) { return NS + p; }
+  function read(p) {
+    try { var v = localStorage.getItem(key(p)); if (v != null) return JSON.parse(v); } catch (e) {}
+    return Object.prototype.hasOwnProperty.call(SEED, p) ? JSON.parse(JSON.stringify(SEED[p])) : undefined;
+  }
+  function write(p, d) { localStorage.setItem(key(p), JSON.stringify(d)); }
+  function drop(p) { try { localStorage.removeItem(key(p)); } catch (e) {} }
+  var subs = {};
+  function notify(p) {
+    (subs[p] || []).forEach(function (f) { f(); });
+    var parent = p.split("/").slice(0, -1).join("/");
+    (subs[parent] || []).forEach(function (f) { f(); });
+  }
+  function snap(p) {
+    var d = read(p);
+    return { id: p.split("/").pop(), exists: d !== undefined, data: function () { return d === undefined ? undefined : JSON.parse(JSON.stringify(d)); }, metadata: { fromCache: false, hasPendingWrites: false } };
+  }
+  function docRef(p) {
+    return {
+      id: p.split("/").pop(), path: p,
+      get: function () { return Promise.resolve(snap(p)); },
+      set: function (d) { try { write(p, d); } catch (e) { return Promise.reject({ code: "quota_exceeded", message: String(e) }); } notify(p); return Promise.resolve(); },
+      update: function (d) { var c = read(p) || {}; for (var k in d) c[k] = d[k]; try { write(p, c); } catch (e) { return Promise.reject({ code: "quota_exceeded" }); } notify(p); return Promise.resolve(); },
+      delete: function () { drop(p); notify(p); return Promise.resolve(); },
+      onSnapshot: function (next) {
+        var f = function () { next(snap(p)); };
+        (subs[p] = subs[p] || []).push(f); setTimeout(f, 0);
+        return function () { subs[p] = (subs[p] || []).filter(function (x) { return x !== f; }); };
+      },
+      collection: function (c) { return collRef(p + "/" + c); }
+    };
+  }
+  function ids(prefix) {
+    var out = [], pre = key(prefix + "/");
+    try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k.indexOf(pre) === 0 && k.slice(pre.length).indexOf("/") < 0) out.push(k.slice(pre.length)); } } catch (e) {}
+    Object.keys(SEED).forEach(function (sp) { if (sp.indexOf(prefix + "/") === 0) { var r = sp.slice(prefix.length + 1); if (r.indexOf("/") < 0 && out.indexOf(r) < 0) out.push(r); } });
+    return out;
+  }
+  function collRef(prefix, opts) {
+    opts = opts || {};
+    function query() {
+      var docs = ids(prefix).map(function (id) { return snap(prefix + "/" + id); }).filter(function (d) { return d.exists; });
+      if (opts.order) docs.sort(function (a, b) { var x = (a.data() || {})[opts.order], y = (b.data() || {})[opts.order]; return (x > y ? 1 : x < y ? -1 : 0) * (opts.dir === "desc" ? -1 : 1); });
+      if (opts.limit) docs = docs.slice(0, opts.limit);
+      return { docs: docs, size: docs.length, empty: !docs.length, docChanges: function () { return []; }, metadata: { fromCache: false, hasPendingWrites: false } };
+    }
+    return {
+      path: prefix,
+      orderBy: function (f, d) { return collRef(prefix, { order: f, dir: d || "asc", limit: opts.limit }); },
+      limit: function (n) { return collRef(prefix, { order: opts.order, dir: opts.dir, limit: n }); },
+      where: function () { return collRef(prefix, opts); },
+      get: function () { return Promise.resolve(query()); },
+      onSnapshot: function (next) {
+        var f = function () { next(query()); };
+        (subs[prefix] = subs[prefix] || []).push(f); setTimeout(f, 0);
+        return function () { subs[prefix] = (subs[prefix] || []).filter(function (x) { return x !== f; }); };
+      },
+      doc: function (id) { return docRef(prefix + "/" + (id || ("n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7)))); },
+      add: function (d) { var r = this.doc(); return r.set(d).then(function () { return r; }); }
+    };
+  }
+  var db = { doc: docRef, collection: function (p) { return collRef(p); } };
+  var user = { id: function () { return Promise.resolve(UID); }, can: function () { return Promise.resolve(true); }, isOwner: function () { return true; } };
+  window.claude = { use: function (n) { return Promise.resolve(n === "db" ? db : n === "user" ? user : null); } };
+
+  /* backup: everything this page saved in this browser */
+  window.__scutariBackup = {
+    dump: function () {
+      var o = { page: NS, saved: new Date().toISOString(), data: {} };
+      for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k.indexOf(NS) === 0) o.data[k.slice(NS.length)] = JSON.parse(localStorage.getItem(k)); }
+      return o;
+    },
+    load: function (o) {
+      if (!o || o.page !== NS || typeof o.data !== "object") throw new Error("wrong file");
+      var drop = []; for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k.indexOf(NS) === 0) drop.push(k); }
+      drop.forEach(function (k) { localStorage.removeItem(k); });
+      Object.keys(o.data).forEach(function (p) { localStorage.setItem(NS + p, JSON.stringify(o.data[p])); });
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    var msg = document.getElementById("bkMsg");
+    document.getElementById("bkSave").addEventListener("click", function () {
+      try {
+        var blob = new Blob([JSON.stringify(window.__scutariBackup.dump(), null, 2)], { type: "application/json" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = NS.replace(/:/g, "-").replace(/-+$/, "") + "-yedek-" + new Date().toISOString().slice(0, 10) + ".json";
+        document.body.appendChild(a); a.click(); a.remove();
+        msg.textContent = "Yedek indirildi.";
+      } catch (e) { msg.textContent = "Yedek alınamadı."; }
+    });
+    document.getElementById("bkFile").addEventListener("change", function (e) {
+      var f = e.target.files && e.target.files[0]; if (!f) return;
+      f.text().then(function (t) {
+        window.__scutariBackup.load(JSON.parse(t));
+        msg.textContent = "Yedek yüklendi; sayfa yenileniyor…";
+        setTimeout(function () { location.reload(); }, 600);
+      }).catch(function () { msg.textContent = "Bu dosya bu karakterin yedeği değil."; });
+    });
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- fixed sheet facts ---------------- */
+  var MAX_HP = 9, SLOTS = 2, HIT_DICE = 1, PREP_MAX = 4, INSP_MAX = 4;
+  var DOCS = { table: "fox/table", inv: "fox/inventory", story: "fox/story", spells: "fox/spells", facts: "fox/facts", journey: "fox/journey", people: "fox/people", quests: "fox/quests" };
+
+  var CANTRIPS = [
+    { n: "Druidcraft", m: "1 Action · 30 ft · Instantaneous", d: "Küçük doğa oyunları: yarının havasını sezersin, bir çiçeği açtırırsın, küçük bir koku, ses ya da yaprak etkisi yaratırsın, bir mumu yakar ya da söndürürsün. Magic Initiate'ten; Intelligence ile." },
+    { n: "Elementalism", m: "1 Action · 30 ft (5 ft Cube) · Instantaneous", d: "Elementlerle küçük işler: hafif bir esinti, bir avuç toprağı kıpırdatmak, küçük bir alevi yakıp söndürmek, sisi ya da suyu çağırmak." },
+    { n: "Resistance", m: "1 Action · Touch · Concentration, 1 minute", d: "Dokunduğun yaratık için bir hasar türü seçersin. O türden hasar aldığında, her turda bir kez, hasarı 1d4 azaltır." },
+    { n: "Spare the Dying", m: "1 Action · 15 ft · Instantaneous", d: "0 Hit Points'teki bir yaratığı stabilize edersin." }
+  ];
+  var ALWAYS = [
+    { n: "Speak with Animals", m: "1 Action · Self · 10 minutes · Ritual", d: "Hayvanlarla konuşabilirsin. Druidic sayesinde her zaman hazır." },
+    { n: "Animal Friendship", m: "1 Action · 30 ft · 24 hours · WIS 12", d: "Bir hayvan Wisdom save yapar; başaramazsa 24 saat seni dost bilir. Magic Initiate ile her Long Rest'te bir kez slot harcamadan (Masa'da işaretle)." }
+  ];
+  var DRUID = [
+    { n: "Absorb Elements", m: "1 Reaction · Self · 1 round", d: "Acid, Cold, Fire, Lightning ya da Thunder hasarı aldığında: o türe karşı resistance kazanırsın ve sonraki yakın dövüş vuruşun +1d6 o türden hasar verir." },
+    { n: "Beast Bond", m: "1 Action · Touch · Concentration, 10 minutes", d: "Dost bir hayvanla zihinsel bağ kurarsın; duygu ve düşünce paylaşırsınız. Görebildiğin düşmanlarına saldırırken advantage kazanır." },
+    { n: "Buzzing Bee", m: "1 Action · 120 ft · Concentration, 1 minute", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Charm Person", m: "1 Action · 30 ft · 1 hour · WIS 12", d: "Bir insansı Wisdom save yapar; başaramazsa 1 saat seni dost bilir. Büyü bitince büyülendiğini anlar." },
+    { n: "Create or Destroy Water", m: "1 Action · 30 ft · Instantaneous", d: "10 galon temiz su yaratırsın ya da yağmur olarak yağdırırsın; ya da o kadar suyu yok edersin, sisi dağıtırsın." },
+    { n: "Cure Wounds", m: "1 Action · Touch · Instantaneous", d: "Dokunduğun yaratık 2d8 + 2 Hit Points kazanır." },
+    { n: "Detect Magic", m: "1 Action · Self · Concentration, 10 minutes · Ritual", d: "30 ft içindeki büyüyü sezersin; görebildiğin büyülü bir şeyin aurasını ve okulunu öğrenebilirsin." },
+    { n: "Detect Poison and Disease", m: "1 Action · Self · Concentration, 10 minutes · Ritual", d: "30 ft içindeki zehirleri, zehirli yaratıkları ve hastalıkları sezer, türlerini öğrenirsin." },
+    { n: "Earth Tremor", m: "1 Action · 10 ft · Instantaneous · DEX 12", d: "Çevrendekiler Dexterity save yapar; başaramayan 1d6 Bludgeoning hasarı alır ve Prone olur. Gevşek zemin Difficult Terrain'e döner." },
+    { n: "Entangle", m: "1 Action · 90 ft (20 ft Square) · Concentration, 1 minute · STR 12", d: "Bitkiler fışkırır; alan Difficult Terrain olur. İçindekiler Strength save yapar, başaramayan Restrained olur." },
+    { n: "Faerie Fire", m: "1 Action · 60 ft (20 ft Cube) · Concentration, 1 minute · DEX 12", d: "Başaramayanlar ışık saçar: onlara yapılan saldırılar advantage alır ve görünmez kalamazlar." },
+    { n: "Fog Cloud", m: "1 Action · 120 ft (20 ft Sphere) · Concentration, 1 hour", d: "Yoğun bir sis küresi; içi tamamen görüşe kapalıdır (Heavily Obscured)." },
+    { n: "Goodberry", m: "1 Action · Self · 24 hours", d: "10 böğürtlen belirir. Her biri yiyene 1 Hit Point verir ve bir günlük besin sayılır." },
+    { n: "Healing Word", m: "1 Bonus Action · 60 ft · Instantaneous", d: "Görebildiğin bir yaratık 2d4 + 2 Hit Points kazanır." },
+    { n: "Ice Knife", m: "1 Action · 60 ft (5 ft Sphere) · Instantaneous · +4 / DEX 12", d: "Buz parçası fırlatırsın: vurursa 1d10 Piercing. Vursa da vurmasa da patlar; 5 ft içindekiler Dexterity save'i başaramazsa 2d6 Cold hasarı alır." },
+    { n: "Jump", m: "1 Bonus Action · Touch · 1 minute", d: "Dokunduğun yaratık 10 ft hareket harcayarak 30 ft'e kadar zıplayabilir." },
+    { n: "Longstrider", m: "1 Action · Touch · 1 hour", d: "Dokunduğun yaratığın Speed'i 10 ft artar." },
+    { n: "Protection from Evil and Good", m: "1 Action · Touch · Concentration, 10 minutes", d: "Aberration, Celestial, Elemental, Fey, Fiend ve Undead'lere karşı koruma: saldırıları disadvantage alır, seni Charmed, Frightened ya da possessed yapamazlar." },
+    { n: "Purify Food and Drink", m: "1 Action · 10 ft (5 ft Sphere) · Instantaneous · Ritual", d: "Yiyecek ve içeceği zehirden ve hastalıktan arındırır." },
+    { n: "Snare", m: "1 Minute · Touch · 8 hours · DEX 12", d: "Görünmez bir tuzak kurarsın. Basan Dexterity save'i başaramazsa baş aşağı asılır ve Restrained olur." },
+    { n: "Thunderwave", m: "1 Action · Self (15 ft Cube) · Instantaneous · CON 12", d: "Başaramayan 2d8 Thunder hasarı alır ve 10 ft itilir; başaran yarı hasar alır. Ses 300 ft öteden duyulur." }
+  ];
+
+  var DEFAULT_TABLE = { hp: MAX_HP, temp: 0, slotsUsed: 0, hdUsed: 0, insp: 0, afUsed: false, dsOk: 0, dsBad: 0 };
+
+  /* ---------------- state ---------------- */
+  var S = {
+    table: Object.assign({}, DEFAULT_TABLE),
+    inv: null,
+    story: { bond: "", flaw: "", look: "", tale: "" },
+    prepared: [],
+    notes: [],
+    facts: null,
+    journey: null,
+    people: null,
+    quests: null
+  };
+  var db = null, user = null, uid = null, canWrite = true, offline = true;
+  var writers = {};
+
+  /* ---------------- helpers ---------------- */
+  function $(id) { return document.getElementById(id); }
+  function el(tag, attrs, text) {
+    var e = document.createElement(tag);
+    if (attrs) for (var k in attrs) { if (k === "class") e.className = attrs[k]; else e.setAttribute(k, attrs[k]); }
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function toInt(v, lo, hi) { var n = parseInt(String(v).replace(/[^\d-]/g, ""), 10); if (isNaN(n)) n = 0; if (lo != null) n = Math.max(lo, n); if (hi != null) n = Math.min(hi, n); return n; }
+  function toNum(v) { var n = parseFloat(String(v).replace(",", ".")); return isNaN(n) || n < 0 ? 0 : n; }
+  var toastT;
+  function toast(msg) { var t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove("show"); }, 2200); }
+  function setSave(kind, msg) {
+    var s = $("saveState");
+    s.classList.toggle("bad", kind === "bad");
+    s.textContent = msg || ({ ok: "Kaydedildi", pending: "Kaydediliyor…", bad: "Kaydedilemedi" })[kind] || "";
+  }
+  function banner(msg) { var b = $("banner"); b.textContent = msg || ""; b.classList.toggle("show", !!msg); }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+
+  /* one write at a time per document, coalesced */
+  function writer(path) {
+    if (writers[path]) return writers[path];
+    var timer = null, inflight = false, pending = null;
+    function flush() {
+      if (inflight || !pending) return;
+      var data = pending; pending = null; inflight = true;
+      db.doc(path).set(data).then(function () {
+        inflight = false; if (pending) flush(); else setSave("ok");
+      }, function (e) {
+        inflight = false;
+        if (e && e.code === "invalid_argument") { canWrite = false; applyWriteGate(); setSave("bad", "Bu sayfada değişiklik yapma iznin yok"); }
+        else if (e && e.code === "quota_exceeded") { setSave("bad", "Kayıt alanı doldu; DM'e haber ver"); }
+        else { setSave("bad"); pending = pending || data; setTimeout(flush, 1500 + Math.random() * 1000); }
+      });
+    }
+    var w = {
+      push: function (data, delay) {
+        pending = clone(data);
+        if (!db) { pending = null; return; }
+        setSave("pending");
+        clearTimeout(timer); timer = setTimeout(flush, delay == null ? 450 : delay);
+      },
+      busy: function () { return !!pending || inflight; }
+    };
+    writers[path] = w; return w;
+  }
+
+  /* ---------------- tabs ---------------- */
+  var VIEWS = ["karakter", "buyuler", "beyanname", "gecmis", "karakterler", "defter", "gorevler", "dunya", "zarf"];
+  function route() {
+    var h = (location.hash || "").replace("#", "");
+    if (VIEWS.indexOf(h) < 0) h = "karakter";
+    VIEWS.forEach(function (v) { $("v-" + v).classList.toggle("on", v === h); });
+    document.querySelectorAll("nav.tabs a").forEach(function (a) {
+      if (a.getAttribute("href") === "#" + h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+  }
+  window.addEventListener("hashchange", route);
+  route();
+
+  /* ---------------- table tracker ---------------- */
+  function pip(cls, spent, label, onClick) {
+    var b = el("button", { type: "button", class: "pip " + cls + (spent ? " spent" : ""), "aria-label": label, "aria-pressed": String(!spent) });
+    b.addEventListener("click", onClick);
+    if (!canWrite) b.disabled = true;
+    return b;
+  }
+  function renderTable() {
+    var t = S.table, i;
+    var hpIn = $("hpInput");
+    if (document.activeElement !== hpIn) hpIn.value = t.hp;
+    var tmpIn = $("tmpInput");
+    if (document.activeElement !== tmpIn) tmpIn.value = t.temp;
+    $("figHp").textContent = t.hp + (t.temp ? " +" + t.temp : "");
+
+    var sp = $("slotPips"); sp.textContent = "";
+    for (i = 0; i < SLOTS; i++) (function (i) {
+      var spent = i >= SLOTS - t.slotsUsed;
+      sp.appendChild(pip("", spent, "Büyü yuvası " + (i + 1) + (spent ? ", kullanıldı" : ", hazır"), function () {
+        S.table.slotsUsed = spent ? Math.max(0, S.table.slotsUsed - 1) : Math.min(SLOTS, S.table.slotsUsed + 1); commitTable();
+      }));
+    })(i);
+    var hp = $("hdPips"); hp.textContent = "";
+    for (i = 0; i < HIT_DICE; i++) (function () {
+      var spent = t.hdUsed > 0;
+      hp.appendChild(pip("", spent, "Can zarı" + (spent ? ", harcandı" : ", hazır"), function () { S.table.hdUsed = spent ? 0 : 1; commitTable(); }));
+    })();
+    var ip = $("inspPips"); ip.textContent = "";
+    for (i = 0; i < INSP_MAX; i++) (function (i) {
+      var on = i < t.insp;
+      ip.appendChild(pip("", !on, "Heroic Inspiration " + (i + 1) + (on ? ", var" : ", yok"), function () { S.table.insp = on ? i : i + 1; commitTable(); }));
+    })(i);
+    var ap = $("afPips"); ap.textContent = "";
+    ap.appendChild(pip("", t.afUsed, "Yuvasız Animal Friendship" + (t.afUsed ? ", kullanıldı" : ", hazır"), function () { S.table.afUsed = !S.table.afUsed; commitTable(); }));
+
+    var ok = $("dsOk"), bad = $("dsBad"); ok.textContent = ""; bad.textContent = "";
+    for (i = 0; i < 3; i++) (function (i) {
+      var on = i < t.dsOk;
+      ok.appendChild(pip("ds-ok", !on, "Başarılı ölüm kurtarması " + (i + 1), function () { S.table.dsOk = on ? i : i + 1; commitTable(); }));
+    })(i);
+    for (i = 0; i < 3; i++) (function (i) {
+      var on = i < t.dsBad;
+      bad.appendChild(pip("ds-bad", !on, "Başarısız ölüm kurtarması " + (i + 1), function () { S.table.dsBad = on ? i : i + 1; commitTable(); }));
+    })(i);
+  }
+  function commitTable(delay) { renderTable(); writer(DOCS.table).push(S.table, delay); }
+
+  $("hpMinus").addEventListener("click", function () { S.table.hp = Math.max(0, S.table.hp - 1); commitTable(); });
+  $("hpPlus").addEventListener("click", function () { S.table.hp = Math.min(MAX_HP, S.table.hp + 1); commitTable(); });
+  $("hpInput").addEventListener("change", function (e) { S.table.hp = toInt(e.target.value, 0, MAX_HP); commitTable(); });
+  $("tmpInput").addEventListener("change", function (e) { S.table.temp = toInt(e.target.value, 0, 99); commitTable(); });
+  $("longRest").addEventListener("click", function () {
+    var insp = Math.min(INSP_MAX, (S.table.insp || 0) + 1);
+    S.table = Object.assign({}, DEFAULT_TABLE, { insp: insp });
+    commitTable(0);
+    toast("Long Rest: Hit Points, slotlar ve Hit Dice yenilendi; +1 Heroic Inspiration (en fazla 4).");
+  });
+
+  /* ---------------- spells ---------------- */
+  function spellRow(sp, mode) {
+    var row = el("div", { class: "spell" });
+    var box;
+    if (mode === "toggle") {
+      var on = S.prepared.indexOf(sp.n) >= 0;
+      box = el("button", { type: "button", class: "prep", "aria-pressed": String(on), "aria-label": sp.n + (on ? " hazır, bırak" : " hazırla") }, on ? "✓" : "");
+      box.addEventListener("click", function () { togglePrep(sp.n); });
+      if (!canWrite) box.disabled = true;
+    } else {
+      box = el("span", { class: "prep fixed", "aria-hidden": "true" }, mode === "fixed" ? "✓" : "∞");
+      box.style.display = "inline-grid"; box.style.placeItems = "center";
+    }
+    row.appendChild(box);
+    var head = el("div");
+    head.appendChild(el("div", { class: "nm" }, sp.n));
+    head.appendChild(el("div", { class: "meta" }, sp.m));
+    row.appendChild(head);
+    row.appendChild(el("div", { class: "ds" }, sp.d));
+    return row;
+  }
+  function renderSpells() {
+    var c = $("cantrips"); c.textContent = ""; CANTRIPS.forEach(function (s) { c.appendChild(spellRow(s, "cantrip")); });
+    var a = $("always"); a.textContent = ""; ALWAYS.forEach(function (s) { a.appendChild(spellRow(s, "fixed")); });
+    var d = $("druidList"); d.textContent = "";
+    var prepped = DRUID.filter(function (s) { return S.prepared.indexOf(s.n) >= 0; });
+    var rest = DRUID.filter(function (s) { return S.prepared.indexOf(s.n) < 0; });
+    prepped.concat(rest).forEach(function (s) { d.appendChild(spellRow(s, "toggle")); });
+    var cnt = $("prepCount"); cnt.textContent = S.prepared.length + " / " + PREP_MAX;
+    cnt.classList.toggle("full", S.prepared.length >= PREP_MAX);
+  }
+  function togglePrep(name) {
+    var i = S.prepared.indexOf(name);
+    if (i >= 0) S.prepared.splice(i, 1);
+    else {
+      if (S.prepared.length >= PREP_MAX) { toast("En fazla 4 büyü hazırlayabilirsin. Önce birini bırak."); return; }
+      S.prepared.push(name);
+    }
+    renderSpells();
+    writer(DOCS.spells).push({ prepared: S.prepared });
+  }
+
+  /* ---------------- inventory ---------------- */
+  function emptyInv() { return { gold: 0, equipment: [], kit: [], items: [] }; }
+  function normInv(d) {
+    var v = emptyInv();
+    if (!d) return v;
+    v.gold = typeof d.gold === "number" ? d.gold : (d.coins && +d.coins.gp) || 0;
+    ["equipment", "kit", "items"].forEach(function (k) { if (Array.isArray(d[k])) v[k] = d[k].filter(function (x) { return x && typeof x.id === "string"; }); });
+    return v;
+  }
+  function newId() { return "i" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function saveInv(delay) { writer(DOCS.inv).push(S.inv, delay); }
+  function renderGold() {
+    var g = $("goldInput");
+    if (S.inv && document.activeElement !== g) g.value = S.inv.gold || 0;
+    g.disabled = !canWrite;
+  }
+  function rowInputs(list, it, fields) {
+    var tr = el("tr");
+    fields.forEach(function (f) {
+      var td = el("td");
+      var inp = el("input", { "data-list": list, "data-item": it.id, "data-f": f[0], "aria-label": f[1] + ": " + (it.name || "") });
+      if (f[0] === "qty") { inp.className = "n"; inp.setAttribute("inputmode", "numeric"); }
+      inp.value = it[f[0]] == null ? "" : it[f[0]];
+      if (f[0] === "note") inp.placeholder = "—";
+      inp.disabled = !canWrite;
+      inp.addEventListener("input", onItemInput);
+      td.appendChild(inp); tr.appendChild(td);
+    });
+    var tdx = el("td", { class: "x" });
+    var x = el("button", { type: "button", class: "xbtn", "aria-label": (it.name || "Eşya") + " sil" }, "×");
+    x.disabled = !canWrite;
+    x.addEventListener("click", function () { removeFrom(list, it.id); });
+    tdx.appendChild(x); tr.appendChild(tdx);
+    return tr;
+  }
+  function renderInv() {
+    if (!S.inv) return;
+    var active = document.activeElement;
+    var keep = active && active.dataset && active.dataset.item ? { l: active.dataset.list, id: active.dataset.item, f: active.dataset.f, s: active.selectionStart } : null;
+
+    var eq = $("eqBody"); eq.textContent = "";
+    if (!S.inv.equipment.length) { var e0 = el("tr"); e0.appendChild(el("td", { colspan: "3", class: "muted" }, "Ekipman yok.")); eq.appendChild(e0); }
+    S.inv.equipment.forEach(function (it) { eq.appendChild(rowInputs("equipment", it, [["name", "Name"], ["note", "Notes"]])); });
+
+    var ib = $("itBody"); ib.textContent = "";
+    if (!S.inv.items.length) { var i0 = el("tr"); i0.appendChild(el("td", { colspan: "4", class: "muted" }, "Henüz bir şey yok.")); ib.appendChild(i0); }
+    S.inv.items.forEach(function (it) { ib.appendChild(rowInputs("items", it, [["name", "Name"], ["qty", "Qty"], ["note", "Notes"]])); });
+
+    var kit = $("kit"); kit.textContent = "";
+    S.inv.kit.forEach(function (it) {
+      var c = el("span", { class: "chip" }, it.name);
+      var x = el("button", { type: "button", class: "xbtn", "aria-label": it.name + " çıkar" }, "×");
+      x.disabled = !canWrite;
+      x.addEventListener("click", function () { removeFrom("kit", it.id); });
+      c.appendChild(x); kit.appendChild(c);
+    });
+    $("kitAdd").disabled = !canWrite;
+
+    if (keep) {
+      var back = document.querySelector('input[data-list="' + keep.l + '"][data-item="' + keep.id + '"][data-f="' + keep.f + '"]');
+      if (back) { back.focus(); try { back.setSelectionRange(keep.s, keep.s); } catch (e) {} }
+    }
+  }
+  function onItemInput(e) {
+    var list = e.target.dataset.list, id = e.target.dataset.item, f = e.target.dataset.f;
+    var it = (S.inv[list] || []).find(function (x) { return x.id === id; });
+    if (!it) return;
+    if (f === "qty") it.qty = toInt(e.target.value, 0, 99999);
+    else it[f] = e.target.value.slice(0, 200);
+    saveInv(700);
+  }
+  function removeFrom(list, id) {
+    var arr = S.inv[list], idx = arr.findIndex(function (x) { return x.id === id; });
+    if (idx < 0) return;
+    var gone = arr.splice(idx, 1)[0];
+    renderInv(); saveInv();
+    toast((gone.name || "Eşya") + " çıkarıldı.");
+  }
+  $("goldInput").addEventListener("input", function (e) {
+    if (!S.inv) return;
+    S.inv.gold = toInt(e.target.value, 0, 9999999); saveInv(700);
+  });
+  $("kitForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!S.inv) S.inv = emptyInv();
+    var v = $("kitAdd").value.trim(); if (!v) return;
+    S.inv.kit.push({ id: newId(), name: v.slice(0, 80) });
+    $("kitAdd").value = ""; renderInv(); saveInv(0); $("kitAdd").focus();
+  });
+  $("addForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!S.inv) S.inv = emptyInv();
+    var name = $("addName").value.trim(); if (!name) return;
+    var kind = $("addKind").value === "equipment" ? "equipment" : "items";
+    var it = { id: newId(), name: name.slice(0, 200), note: "" };
+    if (kind === "items") it.qty = toInt($("addQty").value, 0, 99999) || 1;
+    S.inv[kind].push(it);
+    $("addName").value = ""; $("addQty").value = "1";
+    renderInv(); saveInv(0); $("addName").focus();
+  });
+
+  /* ---------------- story ---------------- */
+  function renderStory() {
+    document.querySelectorAll("[data-story]").forEach(function (ta) {
+      if (document.activeElement !== ta) ta.value = S.story[ta.dataset.story] || "";
+      ta.disabled = !canWrite;
+    });
+  }
+  document.querySelectorAll("[data-story]").forEach(function (ta) {
+    ta.addEventListener("input", function () {
+      S.story[ta.dataset.story] = ta.value.slice(0, 20000);
+      writer(DOCS.story).push(S.story, 900);
+    });
+  });
+
+  /* ---------------- editable lists: key facts, journey ---------------- */
+  function fit(ta) { ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; }
+  var LISTS = {
+    facts: { doc: DOCS.facts, ol: "facts", form: "factForm", input: "factAdd", label: "Önemli bilgi", empty: "Henüz bilgi yok." },
+    journey: { doc: DOCS.journey, ol: "journey", form: "journeyForm", input: "journeyAdd", label: "Olay", empty: "Henüz bir şey yazılmadı." }
+  };
+  function renderList(key) {
+    var L = LISTS[key], ol = $(L.ol), arr = S[key];
+    if (!arr) return;
+    var active = document.activeElement, keep = active && active.dataset && active.dataset.li === key ? { id: active.dataset.id, s: active.selectionStart } : null;
+    ol.textContent = "";
+    if (!arr.length) ol.appendChild(el("li", { class: "muted" }, L.empty));
+    arr.forEach(function (f) {
+      var li = el("li"), row = el("div", { class: "row" });
+      var ta = el("textarea", { rows: "1", "data-li": key, "data-id": f.id, "aria-label": L.label });
+      ta.value = f.text || ""; ta.disabled = !canWrite;
+      ta.addEventListener("input", function () {
+        f.text = ta.value.slice(0, 1000); fit(ta);
+        writer(L.doc).push({ items: S[key] }, 800);
+      });
+      var x = el("button", { type: "button", class: "xbtn", "aria-label": "Bu satırı sil" }, "×");
+      x.disabled = !canWrite;
+      x.addEventListener("click", function () {
+        S[key] = S[key].filter(function (y) { return y.id !== f.id; });
+        renderList(key); writer(L.doc).push({ items: S[key] }, 0);
+      });
+      row.appendChild(ta); row.appendChild(x); li.appendChild(row); ol.appendChild(li);
+      requestAnimationFrame(function () { fit(ta); });
+    });
+    $(L.input).disabled = !canWrite;
+    if (keep) { var back = ol.querySelector('textarea[data-id="' + keep.id + '"]'); if (back) { back.focus(); try { back.setSelectionRange(keep.s, keep.s); } catch (e) {} } }
+  }
+  Object.keys(LISTS).forEach(function (key) {
+    var L = LISTS[key];
+    $(L.form).addEventListener("submit", function (e) {
+      e.preventDefault();
+      var v = $(L.input).value.trim(); if (!v) return;
+      S[key] = S[key] || [];
+      S[key].push({ id: "l" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), text: v.slice(0, 1000) });
+      $(L.input).value = ""; renderList(key); writer(L.doc).push({ items: S[key] }, 0);
+    });
+  });
+  function renderFacts() { renderList("facts"); renderList("journey"); }
+  document.querySelector('a[href="#gecmis"]').addEventListener("click", function () { setTimeout(function () { document.querySelectorAll(".facts textarea").forEach(fit); }, 0); });
+
+  /* ---------------- other characters (shared, editable) ---------------- */
+  function uidShort() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+  function savePeople(delay) { writer(DOCS.people).push(S.people, delay); }
+  function renderPeople() {
+    if (!S.people) return;
+    ["known"].forEach(function (list) {
+      var box = $("people-" + list), arr = S.people[list];
+      var active = document.activeElement, keep = active && active.dataset && active.dataset.plist === list ? { id: active.dataset.id, f: active.dataset.f, s: active.selectionStart } : null;
+      box.textContent = "";
+      if (!arr.length) box.appendChild(el("p", { class: "muted", style: "margin:8px 0" }, list === "party" ? "Henüz kimse yok." : "Henüz kimseyle tanışmadın."));
+      arr.forEach(function (pp) {
+        var row = el("div", { class: "person" });
+        var nm = el("input", { "data-plist": list, "data-id": pp.id, "data-f": "name", "aria-label": "Ad" });
+        nm.value = pp.name || ""; nm.disabled = !canWrite;
+        var inf = el("textarea", { rows: "1", "data-plist": list, "data-id": pp.id, "data-f": "info", "aria-label": (pp.name || "Karakter") + " hakkında" });
+        inf.value = pp.info || ""; inf.disabled = !canWrite; inf.placeholder = "—";
+        [nm, inf].forEach(function (inp) {
+          inp.addEventListener("input", function () {
+            pp[inp.dataset.f] = inp.value.slice(0, inp.dataset.f === "name" ? 120 : 2000);
+            if (inp.tagName === "TEXTAREA") fit(inp);
+            savePeople(800);
+          });
+        });
+        var x = el("button", { type: "button", class: "xbtn", "aria-label": (pp.name || "Karakter") + " sil" }, "×");
+        x.disabled = !canWrite;
+        x.addEventListener("click", function () {
+          S.people[list] = S.people[list].filter(function (y) { return y.id !== pp.id; });
+          renderPeople(); savePeople(0);
+        });
+        row.appendChild(nm); row.appendChild(inf); row.appendChild(x); box.appendChild(row);
+        requestAnimationFrame(function () { fit(inf); });
+      });
+      if (keep) { var back = box.querySelector('[data-id="' + keep.id + '"][data-f="' + keep.f + '"]'); if (back) { back.focus(); try { back.setSelectionRange(keep.s, keep.s); } catch (e) {} } }
+    });
+    document.querySelectorAll(".personadd input, .personadd button").forEach(function (x) { x.disabled = !canWrite; });
+  }
+  document.querySelectorAll(".personadd").forEach(function (f) {
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = f.elements.name.value.trim(), info = f.elements.info.value.trim();
+      if (!name) { f.elements.name.focus(); return; }
+      S.people = S.people || { party: [], known: [] };
+      S.people[f.dataset.list].push({ id: "p" + uidShort(), name: name.slice(0, 120), info: info.slice(0, 2000) });
+      f.elements.name.value = ""; f.elements.info.value = "";
+      renderPeople(); savePeople(0); f.elements.name.focus();
+    });
+  });
+
+  /* ---------------- quests (shared, editable) ---------------- */
+  function saveQuests(delay) { writer(DOCS.quests).push({ items: S.quests }, delay); }
+  function questRow(q) {
+    var row = el("div", { class: "quest" + (q.done ? " done" : "") });
+    var b = el("button", { type: "button", class: "qbox", "aria-pressed": String(!!q.done), "aria-label": q.done ? "Tamamlandı; yeniden aç" : "Tamamlandı olarak işaretle" }, q.done ? "✓" : "");
+    b.disabled = !canWrite;
+    b.addEventListener("click", function () { q.done = !q.done; renderQuests(); saveQuests(0); });
+    var ta = el("textarea", { rows: "1", "data-qid": q.id, "aria-label": "Görev" });
+    ta.value = q.text || ""; ta.disabled = !canWrite;
+    ta.addEventListener("input", function () { q.text = ta.value.slice(0, 2000); fit(ta); saveQuests(800); });
+    var x = el("button", { type: "button", class: "xbtn", "aria-label": "Görevi sil" }, "×");
+    x.disabled = !canWrite;
+    x.addEventListener("click", function () { S.quests = S.quests.filter(function (y) { return y.id !== q.id; }); renderQuests(); saveQuests(0); });
+    row.appendChild(b); row.appendChild(ta); row.appendChild(x);
+    requestAnimationFrame(function () { fit(ta); });
+    return row;
+  }
+  function renderQuests() {
+    if (!S.quests) return;
+    var box = $("quests");
+    var active = document.activeElement, keep = active && active.dataset && active.dataset.qid ? { id: active.dataset.qid, s: active.selectionStart } : null;
+    box.textContent = "";
+    var open = S.quests.filter(function (q) { return !q.done; }), done = S.quests.filter(function (q) { return q.done; });
+    if (!S.quests.length) box.appendChild(el("p", { class: "muted", style: "margin:8px 0" }, "Henüz görev yok."));
+    open.forEach(function (q) { box.appendChild(questRow(q)); });
+    if (done.length) { box.appendChild(el("div", { class: "qsep" }, "Tamamlananlar")); done.forEach(function (q) { box.appendChild(questRow(q)); }); }
+    $("questAdd").disabled = !canWrite;
+    if (keep) { var back = box.querySelector('textarea[data-qid="' + keep.id + '"]'); if (back) { back.focus(); try { back.setSelectionRange(keep.s, keep.s); } catch (e) {} } }
+  }
+  $("questForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var v = $("questAdd").value.trim(); if (!v) return;
+    S.quests = S.quests || [];
+    S.quests.push({ id: "q" + uidShort(), text: v.slice(0, 2000), done: false });
+    $("questAdd").value = ""; renderQuests(); saveQuests(0);
+  });
+  ["karakterler", "gorevler"].forEach(function (h) {
+    document.querySelector('a[href="#' + h + '"]').addEventListener("click", function () { setTimeout(function () { document.querySelectorAll(".person textarea, .quest textarea").forEach(fit); }, 0); });
+  });
+
+  /* ---------------- notebook (private) ---------------- */
+  var editingId = null;
+  function fmtDate(ms) {
+    try { return new Date(ms).toLocaleString("tr-TR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; }
+  }
+  function renderNotes() {
+    var box = $("notes"); box.textContent = "";
+    if (!uid) { box.appendChild(el("p", { class: "muted" }, "Defter için oturum açmış olman gerekiyor.")); return; }
+    if (!S.notes.length) { box.appendChild(el("p", { class: "muted" }, "Henüz not yok. İlk ipucunu yaz.")); return; }
+    S.notes.forEach(function (n) {
+      var card = el("article", { class: "note" });
+      card.appendChild(el("div", { class: "when" }, fmtDate(n.at)));
+      if (editingId === n.id) {
+        var ti = el("input", { class: "field", "aria-label": "Başlık" }); ti.value = n.title || "";
+        var bd = el("textarea", { class: "page", "aria-label": "Not" }); bd.value = n.body || "";
+        var acts = el("div", { class: "acts" });
+        var sv = el("button", { type: "button", class: "btn primary" }, "Kaydet");
+        var cc = el("button", { type: "button", class: "btn" }, "Vazgeç");
+        sv.addEventListener("click", function () {
+          var body = bd.value.trim(); if (!body) return;
+          db.collection("data/users/" + uid).doc(n.id).set({ title: ti.value.trim().slice(0, 200), body: body.slice(0, 20000), at: n.at, edited: Date.now() })
+            .then(function () { editingId = null; setSave("ok"); }, function () { setSave("bad", "Not kaydedilemedi"); });
+        });
+        cc.addEventListener("click", function () { editingId = null; renderNotes(); });
+        acts.appendChild(sv); acts.appendChild(cc);
+        card.appendChild(ti); card.appendChild(bd); card.appendChild(acts);
+        ti.style.marginBottom = "8px";
+      } else {
+        if (n.title) card.appendChild(el("h4", null, n.title));
+        card.appendChild(el("div", { class: "body" }, n.body));
+        var a = el("div", { class: "acts" });
+        var ed = el("button", { type: "button", class: "btn" }, "Düzenle");
+        var del = el("button", { type: "button", class: "btn danger" }, "Sil");
+        ed.addEventListener("click", function () { editingId = n.id; renderNotes(); });
+        del.addEventListener("click", function () {
+          a.textContent = "";
+          a.appendChild(el("span", { class: "small" }, "Bu not silinsin mi?"));
+          var yes = el("button", { type: "button", class: "btn danger" }, "Evet, sil");
+          var no = el("button", { type: "button", class: "btn" }, "Vazgeç");
+          yes.addEventListener("click", function () {
+            db.collection("data/users/" + uid).doc(n.id).delete().then(function () { toast("Not silindi."); }, function () { setSave("bad", "Not silinemedi"); });
+          });
+          no.addEventListener("click", renderNotes);
+          a.appendChild(yes); a.appendChild(no);
+        });
+        a.appendChild(ed); a.appendChild(del);
+        card.appendChild(a);
+      }
+      box.appendChild(card);
+    });
+  }
+  $("noteForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var body = $("noteBody").value.trim(); if (!body) return;
+    if (!db || !uid) { toast("Defter şu an kaydedemiyor."); return; }
+    var btn = $("noteSave"); btn.disabled = true;
+    db.collection("data/users/" + uid).add({ title: $("noteTitle").value.trim().slice(0, 200), body: body.slice(0, 20000), at: Date.now() })
+      .then(function () { $("noteTitle").value = ""; $("noteBody").value = ""; btn.disabled = false; toast("Deftere yazıldı."); },
+            function (err) { btn.disabled = false; setSave("bad", err && err.code === "quota_exceeded" ? "Defter doldu; eski notları sil" : "Not kaydedilemedi"); });
+  });
+
+  /* ---------------- sealed envelope ---------------- */
+  function openSeal(open) {
+    $("seal").classList.toggle("broken", open);
+    $("seal").setAttribute("aria-expanded", String(open));
+    $("card").classList.toggle("open", open);
+    $("sealHint").style.visibility = open ? "hidden" : "visible";
+    $("seal").style.pointerEvents = open ? "none" : "";
+  }
+  var SEALED = {"salt": "phb4OoMIkYBxPKR07/6fFw==", "iv": "APkbyHnWrHw3d0Hz", "ct": "9XzXZ9S0cFEDSvkvp8fOh7kMRkwIJrZHFV/J1qJDFCbgj0Ghi6TrUIxL9nl8ti73g/3fraCSx1uFAi9S/LtmlNatRA1xT9RHLWiilagfYVEt9PcVdp1MfDI5j83rxIG7Z6EtyvOvoYBdRYdCN4e5WUxvPe9tuhYhz1qfBN1XI1lqAF81sgU4Y6iBIE8QoGZsrz+NR3g9MNQYqa6ghnbXUX9BM4BE1h2/W5KTiVj/uop7RiwI9QCTGaHhtWk5WqVR+rYvq+5/KYIwzIa1Br/dmR6sVB9OXA6VLWsGAhimKoWbCok/9QQy2MdD6GC8h92cceJWqaGc/qsqhExfYfij5TcTlVxuZJ0w9QGODfLKGTJq3k6ARxkNKn38y6FW1SuBLtx51XZjUwLr62Obg/i2kpUuZqihmrmfKv/Sl2R5OohT4iYWECbLnugWaO4GWoq+H35SHq2NroqYnDWcgYbMZg==", "iter": 210000};
+  function b64d(t) { var b = atob(t), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+  async function unseal(pw) {
+    var base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+    var key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64d(SEALED.salt), iterations: SEALED.iter, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    var plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64d(SEALED.iv) }, key, b64d(SEALED.ct));
+    return new TextDecoder().decode(plain);
+  }
+  $("seal").addEventListener("click", function () { $("pwInput").focus(); });
+  $("pwForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var pw = $("pwInput").value;
+    if (!pw) return;
+    if (!window.crypto || !crypto.subtle) { $("pwMsg").textContent = "Bu tarayıcı zarfı açamıyor."; return; }
+    $("pwMsg").textContent = "";
+    unseal(pw).then(function (html) {
+      $("cardBody").innerHTML = html;
+      $("pwInput").value = ""; $("pwForm").style.display = "none";
+      openSeal(true);
+    }, function () { $("pwMsg").textContent = "Şifre yanlış."; });
+  });
+  $("reseal").addEventListener("click", function () {
+    openSeal(false); $("cardBody").textContent = ""; $("pwForm").style.display = "";
+  });
+
+  /* ---------------- write gate ---------------- */
+  function applyWriteGate() {
+    ["hpMinus", "hpPlus", "hpInput", "tmpInput", "longRest"].forEach(function (id) { $(id).disabled = !canWrite; });
+    document.querySelectorAll("#addForm input, #addForm button").forEach(function (x) { x.disabled = !canWrite; });
+    renderTable(); renderSpells(); renderInv(); renderGold(); renderStory(); renderFacts(); renderPeople(); renderQuests();
+    $("addKind").disabled = !canWrite;
+  }
+
+  /* ---------------- first paint (local) ---------------- */
+  renderTable(); renderSpells(); renderStory(); renderNotes();
+
+  /* ---------------- connect ---------------- */
+  var loadTimer = setTimeout(function () {
+    if (offline) { setSave("bad", "Bağlantı yok"); banner("Kayıtlara ulaşılamıyor. Bu görünümde yaptığın değişiklikler kaydedilmeyebilir."); }
+  }, 10000);
+
+  function watch(path, apply) {
+    db.doc(path).onSnapshot(function (snap) {
+      if (!snap.metadata.fromCache) { clearTimeout(loadTimer); if (offline) { offline = false; banner(""); setSave("ok", "Bağlı"); } }
+      if (writer(path).busy()) return;
+      apply(snap.exists ? clone(snap.data()) : null);
+    }, function (e) {
+      clearTimeout(loadTimer);
+      if (e && e.code === "revoked") { canWrite = false; applyWriteGate(); setSave("bad", "Erişim kapandı"); }
+      else { setSave("bad", "Bağlantı koptu"); banner("Kayıtlarla bağlantı koptu. Sayfayı daha sonra yeniden aç."); }
+    });
+  }
+
+  (async function connect() {
+    if (!window.claude || typeof window.claude.use !== "function") {
+      clearTimeout(loadTimer);
+      setSave("bad", "Kayıt yok");
+      banner("Bu görünümde kayıt yapılamıyor; değişiklikler sayfa kapanınca kaybolur.");
+      S.inv = emptyInv(); renderInv(); renderGold(); S.facts = []; S.journey = []; renderFacts(); S.people = { party: [], known: [] }; S.quests = []; renderPeople(); renderQuests();
+      return;
+    }
+    try { user = await window.claude.use("user"); } catch (e) { user = null; }
+    try { db = await window.claude.use("db"); } catch (e) { db = null; }
+    if (!db) {
+      clearTimeout(loadTimer);
+      setSave("bad", "Kayıt yok");
+      banner("Kayıtlara ulaşılamıyor: oturum açtığından emin ol. Değişiklikler sayfa kapanınca kaybolur.");
+      S.inv = emptyInv(); renderInv(); renderGold();
+      return;
+    }
+    try { uid = user ? await user.id() : null; } catch (e) { uid = null; }
+    try {
+      var cw = user && user.can ? await user.can("data.write") : null;
+      if (cw === false) { canWrite = false; banner("Bu sayfayı görebilirsin ama değiştiremezsin. DM'den seni düzenleyici olarak eklemesini iste."); }
+    } catch (e) {}
+    applyWriteGate();
+
+    watch(DOCS.table, function (d) { S.table = Object.assign({}, DEFAULT_TABLE, d || {}); S.table.insp = S.table.insp === true ? 1 : Math.max(0, Math.min(INSP_MAX, +S.table.insp || 0)); renderTable(); });
+    watch(DOCS.spells, function (d) { S.prepared = (d && Array.isArray(d.prepared)) ? d.prepared.filter(function (n) { return DRUID.some(function (s) { return s.n === n; }); }).slice(0, PREP_MAX) : []; renderSpells(); });
+    watch(DOCS.inv, function (d) { S.inv = normInv(d); renderInv(); renderGold(); });
+    function listFrom(d) { return d && Array.isArray(d.items) ? d.items.filter(function (x) { return x && typeof x.id === "string"; }) : []; }
+    watch(DOCS.facts, function (d) { S.facts = listFrom(d); renderList("facts"); });
+    watch(DOCS.journey, function (d) { S.journey = listFrom(d); renderList("journey"); });
+    watch(DOCS.people, function (d) {
+      var ok = function (a) { return Array.isArray(a) ? a.filter(function (x) { return x && typeof x.id === "string"; }) : []; };
+      S.people = { party: ok(d && d.party), known: ok(d && d.known) }; renderPeople();
+    });
+    watch(DOCS.quests, function (d) { S.quests = listFrom(d); renderQuests(); });
+    watch(DOCS.story, function (d) { S.story = Object.assign({ bond: "", flaw: "", look: "", tale: "" }, d || {}); renderStory(); });
+
+    if (uid) {
+      db.collection("data/users/" + uid).orderBy("at", "desc").limit(300).onSnapshot(function (qs) {
+        S.notes = qs.docs.map(function (d) { var x = d.data() || {}; return { id: d.id, title: x.title || "", body: x.body || "", at: x.at || 0 }; });
+        if (!editingId) renderNotes();
+      }, function () { $("notes").textContent = ""; $("notes").appendChild(el("p", { class: "muted" }, "Defter şu an açılamıyor.")); });
+    } else {
+      renderNotes();
+    }
+  })();
+})();
+</script>
+</body>
+</html>
