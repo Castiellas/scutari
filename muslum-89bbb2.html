@@ -546,7 +546,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       <textarea class="page" id="st-look" data-story="look" placeholder="Karakterin nasıl gözüküyor?"></textarea>
       <label for="st-tale">Character Backstory <span class="muted small">· Zümre'den önce</span></label>
       <textarea class="page" id="st-tale" data-story="tale" style="min-height:180px" placeholder="Nerede doğdun, müziği kimden öğrendin, neden yola çıktın?"></textarea>
-      <p class="small muted">Yazdıkların bu cihaza, bu tarayıcıya kaydedilir.</p>
+      <p class="small muted">Yazdıkların kaydedilir; bu sayfanın bağlantısı olan herkes (DM dahil) görebilir.</p>
     </div>
 
     <h3>Şimdiye dek</h3>
@@ -575,7 +575,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   <!-- ============ DEFTER ============ -->
   <section class="view" id="v-defter">
     <h2>Notlar</h2>
-    <p class="privacy">Notların yalnızca bu cihazda, bu tarayıcıda saklanır. DM de dahil kimse göremez.</p>
+    <p class="privacy">Notların çevrimiçi kaydedilir ve tüm cihazlarında görünür. Bu sayfanın bağlantısı olan herkes (DM dahil) okuyabilir.</p>
     <form class="composer" id="noteForm" autocomplete="off">
       <label class="sc" for="noteTitle">Yeni not</label>
       <input class="field" id="noteTitle" placeholder="Başlık (isteğe bağlı)">
@@ -695,7 +695,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   </section>
 
   <section class="backup" aria-label="Yedek">
-    <div><span class="sc">Yedek</span> <span class="small muted">Her şey bu cihaza kaydedilir. Başka bir cihaza geçmek ya da DM'e göndermek için yedek al. Yedek notlarını da içerir.</span></div>
+    <div><span class="sc">Yedek</span> <span class="small muted">Her şey çevrimiçi kaydedilir ve tüm cihazlarında aynı kalır. İstersen bir kopyasını indirebilir ya da eski bir kopyayı geri yükleyebilirsin.</span></div>
     <div class="backup-acts">
       <button type="button" class="btn" id="bkSave">Yedek al</button>
       <label class="btn" for="bkFile">Yedeği yükle</label>
@@ -760,138 +760,247 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   </div>
 </div>
 
+<script src="lib/firebase-app-compat-10.12.2.js"></script>
+<script src="lib/firebase-firestore-compat-10.12.2.js"></script>
 <script>
-/* Local stand-in for the claude.ai database: same calls, saved in this browser. */
+/* Storage for the character page.
+   With ?k=<key> in the link (remembered afterwards), everything lives in Firestore under pages/<key>/
+   and syncs live between devices and the DM. Without a key, it falls back to this browser only. */
 (function () {
   "use strict";
-  var NS = "scutari:muslum:", SEED = {"mus/facts": {"items": [{"id": "f01", "text": "Partiniz bir geri sarma yaşadı ve hepiniz onun izini taşıyorsunuz."}]}, "mus/inventory": {"gold": 100, "equipment": [{"id": "e01", "name": "Leather", "note": "Equipped"}, {"id": "e02", "name": "Rapier", "note": ""}, {"id": "e03", "name": "Dagger", "note": ""}, {"id": "e04", "name": "Dagger", "note": ""}], "kit": [{"id": "k01", "name": "Giysi"}, {"id": "k02", "name": "Sırt çantası"}, {"id": "k03", "name": "Yatak rulosu"}, {"id": "k04", "name": "Erzak"}, {"id": "k05", "name": "Su tulumu"}, {"id": "k06", "name": "Çakmak kutusu"}, {"id": "k07", "name": "Halat"}, {"id": "k08", "name": "Lamba yağı"}, {"id": "k09", "name": "Fener"}, {"id": "k10", "name": "Lir"}, {"id": "k11", "name": "Kostüm"}, {"id": "k12", "name": "Ayna"}, {"id": "k13", "name": "Zil"}], "items": []}, "mus/journey": {"items": [{"id": "j01", "text": "Zümre'de insanların kağıt değirmenlerinde çalıştığını gördün. Kasaba biraz fazla yeşildi."}, {"id": "j02", "text": "Eşkıya Osma Naga'yı yendiniz ve canını bağışladınız."}, {"id": "j03", "text": "Victor Fortis'le tanıştınız, hikâyesini dinlediniz. Size bir sikke verdi."}, {"id": "j04", "text": "Istec'in seçim ekibinin kasabaya geldiğini gördünüz; kasabadan yeteneklerine göre çocuk toplayacaklarını biliyorsunuz."}]}, "mus/people": {"known": [{"id": "p04", "name": "Victor Fortis", "info": "Dünyanın en tehlikeli adamı ve halk kahramanı. Size bir sikke verdi."}, {"id": "p05", "name": "Osma Naga", "info": "Yendiğiniz ve canını bağışladığınız eşkıya. Dolandırıcı olma ihtimali yüksek."}, {"id": "p06", "name": "Erdoser", "info": "Paladin. Biraz gergin biri."}, {"id": "p07", "name": "Carlsberg Serkan", "info": "Barmen. Size biraz fazla hayranlık duyuyor."}, {"id": "p08", "name": "Hirma", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}, {"id": "p09", "name": "Urbanus", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}, {"id": "p10", "name": "Meriva", "info": "Erdo'nun eşi. Tanrıça ve büyücüyüm dedi, ikisi de şüpheli gibi."}]}, "mus/quests": {"items": []}, "mus/story": {"trait": "", "ideal": "", "bond": "", "flaw": "", "look": "", "tale": ""}}, PATCHES = [], UID = "local";
-  function key(p) { return NS + p; }
-  function read(p) {
-    try { var v = localStorage.getItem(key(p)); if (v != null) return JSON.parse(v); } catch (e) {}
-    return Object.prototype.hasOwnProperty.call(SEED, p) ? JSON.parse(JSON.stringify(SEED[p])) : undefined;
-  }
-  function write(p, d) { localStorage.setItem(key(p), JSON.stringify(d)); }
-  function drop(p) { try { localStorage.removeItem(key(p)); } catch (e) {} }
-  var subs = {};
-  function notify(p) {
-    (subs[p] || []).forEach(function (f) { f(); });
-    var parent = p.split("/").slice(0, -1).join("/");
-    (subs[parent] || []).forEach(function (f) { f(); });
-  }
-  function snap(p) {
-    var d = read(p);
-    return { id: p.split("/").pop(), exists: d !== undefined, data: function () { return d === undefined ? undefined : JSON.parse(JSON.stringify(d)); }, metadata: { fromCache: false, hasPendingWrites: false } };
-  }
-  function docRef(p) {
-    return {
-      id: p.split("/").pop(), path: p,
-      get: function () { return Promise.resolve(snap(p)); },
-      set: function (d) { try { write(p, d); } catch (e) { return Promise.reject({ code: "quota_exceeded", message: String(e) }); } notify(p); return Promise.resolve(); },
-      update: function (d) { var c = read(p) || {}; for (var k in d) c[k] = d[k]; try { write(p, c); } catch (e) { return Promise.reject({ code: "quota_exceeded" }); } notify(p); return Promise.resolve(); },
-      delete: function () { drop(p); notify(p); return Promise.resolve(); },
-      onSnapshot: function (next) {
-        var f = function () { next(snap(p)); };
-        (subs[p] = subs[p] || []).push(f); setTimeout(f, 0);
-        return function () { subs[p] = (subs[p] || []).filter(function (x) { return x !== f; }); };
-      },
-      collection: function (c) { return collRef(p + "/" + c); }
-    };
-  }
-  function ids(prefix) {
-    var out = [], pre = key(prefix + "/");
+  var NS = "scutari:muslum:", SEED = {"mus/facts": {"items": [{"id": "f01", "text": "Partiniz bir geri sarma yaşadı ve hepiniz onun izini taşıyorsunuz."}]}, "mus/inventory": {"gold": 100, "equipment": [{"id": "e01", "name": "Leather", "note": "Equipped"}, {"id": "e02", "name": "Rapier", "note": ""}, {"id": "e03", "name": "Dagger", "note": ""}, {"id": "e04", "name": "Dagger", "note": ""}], "kit": [{"id": "k01", "name": "Giysi"}, {"id": "k02", "name": "Sırt çantası"}, {"id": "k03", "name": "Yatak rulosu"}, {"id": "k04", "name": "Erzak"}, {"id": "k05", "name": "Su tulumu"}, {"id": "k06", "name": "Çakmak kutusu"}, {"id": "k07", "name": "Halat"}, {"id": "k08", "name": "Lamba yağı"}, {"id": "k09", "name": "Fener"}, {"id": "k10", "name": "Lir"}, {"id": "k11", "name": "Kostüm"}, {"id": "k12", "name": "Ayna"}, {"id": "k13", "name": "Zil"}], "items": []}, "mus/journey": {"items": [{"id": "j01", "text": "Zümre'de insanların kağıt değirmenlerinde çalıştığını gördün. Kasaba biraz fazla yeşildi."}, {"id": "j02", "text": "Eşkıya Osma Naga'yı yendiniz ve canını bağışladınız."}, {"id": "j03", "text": "Victor Fortis'le tanıştınız, hikâyesini dinlediniz. Size bir sikke verdi."}, {"id": "j04", "text": "Istec'in seçim ekibinin kasabaya geldiğini gördünüz; kasabadan yeteneklerine göre çocuk toplayacaklarını biliyorsunuz."}]}, "mus/people": {"known": [{"id": "p04", "name": "Victor Fortis", "info": "Dünyanın en tehlikeli adamı ve halk kahramanı. Size bir sikke verdi."}, {"id": "p05", "name": "Osma Naga", "info": "Yendiğiniz ve canını bağışladığınız eşkıya. Dolandırıcı olma ihtimali yüksek."}, {"id": "p06", "name": "Erdoser", "info": "Paladin. Biraz gergin biri."}, {"id": "p07", "name": "Carlsberg Serkan", "info": "Barmen. Size biraz fazla hayranlık duyuyor."}, {"id": "p08", "name": "Hirma", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}, {"id": "p09", "name": "Urbanus", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}, {"id": "p10", "name": "Meriva", "info": "Erdo'nun eşi. Tanrıça ve büyücüyüm dedi, ikisi de şüpheli gibi."}]}, "mus/quests": {"items": []}, "mus/story": {"trait": "", "ideal": "", "bond": "", "flaw": "", "look": "", "tale": ""}}, PATCHES = [], CONFIG = {"apiKey": "AIzaSyAJw58FpK0tvLdhV0aQgCcwNPdv6tjXobw", "authDomain": "scutari-40990.firebaseapp.com", "projectId": "scutari-40990", "storageBucket": "scutari-40990.firebasestorage.app", "messagingSenderId": "351624088228", "appId": "1:351624088228:web:b20917d8011dc2d058b431"}, UID = "local";
+  var KEY_RE = /^[a-f0-9]{32}$/;
+  window.__scutariSeed = SEED;
+
+  function clone(o) { return o === undefined ? undefined : JSON.parse(JSON.stringify(o)); }
+  function lkey(p) { return NS + p; }
+  function localRead(p) { try { var v = localStorage.getItem(lkey(p)); if (v != null) return JSON.parse(v); } catch (e) {} return undefined; }
+  function localWrite(p, d) { localStorage.setItem(lkey(p), JSON.stringify(d)); }
+  function localDrop(p) { try { localStorage.removeItem(lkey(p)); } catch (e) {} }
+  function seedFor(p) { return Object.prototype.hasOwnProperty.call(SEED, p) ? clone(SEED[p]) : undefined; }
+  function isNote(p) { return p.indexOf("data/users/") === 0; }
+  function localNoteIds() {
+    var out = [], pre = lkey("data/users/" + UID + "/");
     try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k.indexOf(pre) === 0 && k.slice(pre.length).indexOf("/") < 0) out.push(k.slice(pre.length)); } } catch (e) {}
-    Object.keys(SEED).forEach(function (sp) { if (sp.indexOf(prefix + "/") === 0) { var r = sp.slice(prefix.length + 1); if (r.indexOf("/") < 0 && out.indexOf(r) < 0) out.push(r); } });
     return out;
   }
-  function collRef(prefix, opts) {
-    opts = opts || {};
-    function query() {
-      var docs = ids(prefix).map(function (id) { return snap(prefix + "/" + id); }).filter(function (d) { return d.exists; });
-      if (opts.order) docs.sort(function (a, b) { var x = (a.data() || {})[opts.order], y = (b.data() || {})[opts.order]; return (x > y ? 1 : x < y ? -1 : 0) * (opts.dir === "desc" ? -1 : 1); });
-      if (opts.limit) docs = docs.slice(0, opts.limit);
-      return { docs: docs, size: docs.length, empty: !docs.length, docChanges: function () { return []; }, metadata: { fromCache: false, hasPendingWrites: false } };
+
+  /* ---------- which character key? ---------- */
+  var KEY = null;
+  try {
+    var q = new URLSearchParams(location.search).get("k");
+    if (q && KEY_RE.test(q)) { KEY = q; localStorage.setItem(lkey("__key"), q); }
+    else { var r = localStorage.getItem(lkey("__key")); if (r && KEY_RE.test(r)) KEY = r; }
+  } catch (e) {}
+  var REMOTE = !!(KEY && window.firebase && firebase.initializeApp);
+  window.__scutariMode = REMOTE ? "remote" : "local";
+
+  /* ---------- one-time DM updates (local data) ---------- */
+  function applyPatchTo(pt, d) {
+    if (pt.list) {
+      d[pt.list] = Array.isArray(d[pt.list]) ? d[pt.list] : [];
+      (pt.items || [{ item: pt.item }]).forEach(function (en) {
+        var arr = d[pt.list], i = arr.findIndex(function (x) { return x && x.id === en.item.id; });
+        if (i < 0) arr.push(clone(en.item));
+        else if (en.prev && JSON.stringify(arr[i]) === JSON.stringify(en.prev)) arr[i] = clone(en.item);
+      });
     }
-    return {
-      path: prefix,
-      orderBy: function (f, d) { return collRef(prefix, { order: f, dir: d || "asc", limit: opts.limit }); },
-      limit: function (n) { return collRef(prefix, { order: opts.order, dir: opts.dir, limit: n }); },
-      where: function () { return collRef(prefix, opts); },
-      get: function () { return Promise.resolve(query()); },
-      onSnapshot: function (next) {
-        var f = function () { next(query()); };
-        (subs[prefix] = subs[prefix] || []).push(f); setTimeout(f, 0);
-        return function () { subs[prefix] = (subs[prefix] || []).filter(function (x) { return x !== f; }); };
-      },
-      doc: function (id) { return docRef(prefix + "/" + (id || ("n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7)))); },
-      add: function (d) { var r = this.doc(); return r.set(d).then(function () { return r; }); }
-    };
+    if (pt.fields) Object.keys(pt.fields).forEach(function (f) { if (!d[f]) d[f] = pt.fields[f]; });
+    return d;
   }
-  /* DM updates: applied once per browser on top of what the player already saved */
-  (function applyPatches() {
-    var doneKey = NS + "__patches", done = [];
+  (function localPatches() {
+    var doneKey = lkey("__patches"), done = [];
     try { done = JSON.parse(localStorage.getItem(doneKey) || "[]"); } catch (e) {}
     PATCHES.forEach(function (pt) {
       if (done.indexOf(pt.id) >= 0) return;
-      var stored = null;
-      try { stored = localStorage.getItem(key(pt.path)); } catch (e) {}
-      if (stored != null) {
-        var d = JSON.parse(stored);
-        if (pt.list) {
-          d[pt.list] = Array.isArray(d[pt.list]) ? d[pt.list] : [];
-          (pt.items || [{ item: pt.item }]).forEach(function (en) {
-            var arr = d[pt.list], i = arr.findIndex(function (x) { return x && x.id === en.item.id; });
-            if (i < 0) arr.push(en.item);
-            else if (en.prev && JSON.stringify(arr[i]) === JSON.stringify(en.prev)) arr[i] = en.item; /* only if the player hasn't edited it */
-          });
-        }
-        if (pt.fields) Object.keys(pt.fields).forEach(function (f) { if (!d[f]) d[f] = pt.fields[f]; });
-        try { write(pt.path, d); } catch (e) {}
-      }
+      var d = localRead(pt.path);
+      if (d !== undefined) { try { localWrite(pt.path, applyPatchTo(pt, d)); } catch (e) {} }
       done.push(pt.id);
     });
     try { localStorage.setItem(doneKey, JSON.stringify(done)); } catch (e) {}
   })();
-  window.__scutariSeed = SEED;
-  var db = { doc: docRef, collection: function (p) { return collRef(p); } };
+
+  var db;
+
+  if (!REMOTE) {
+    /* ---------- this browser only ---------- */
+    var subs = {};
+    var notify = function (p) {
+      (subs[p] || []).forEach(function (f) { f(); });
+      var parent = p.split("/").slice(0, -1).join("/");
+      (subs[parent] || []).forEach(function (f) { f(); });
+    };
+    var snap = function (p) {
+      var d = localRead(p); if (d === undefined) d = seedFor(p);
+      return { id: p.split("/").pop(), exists: d !== undefined, data: function () { return clone(d); }, metadata: { fromCache: false, hasPendingWrites: false } };
+    };
+    var docRef = function (p) {
+      return {
+        id: p.split("/").pop(), path: p,
+        get: function () { return Promise.resolve(snap(p)); },
+        set: function (d) { try { localWrite(p, d); } catch (e) { return Promise.reject({ code: "quota_exceeded" }); } notify(p); return Promise.resolve(); },
+        update: function (d) { var c = localRead(p) || seedFor(p) || {}; for (var k in d) c[k] = d[k]; try { localWrite(p, c); } catch (e) { return Promise.reject({ code: "quota_exceeded" }); } notify(p); return Promise.resolve(); },
+        delete: function () { localDrop(p); notify(p); return Promise.resolve(); },
+        onSnapshot: function (next) { var f = function () { next(snap(p)); }; (subs[p] = subs[p] || []).push(f); setTimeout(f, 0); return function () { subs[p] = (subs[p] || []).filter(function (x) { return x !== f; }); }; }
+      };
+    };
+    var collRef = function (prefix, opts) {
+      opts = opts || {};
+      var query = function () {
+        var docs = localNoteIds().map(function (id) { return snap(prefix + "/" + id); }).filter(function (d) { return d.exists; });
+        if (opts.order) docs.sort(function (a, b) { var x = (a.data() || {})[opts.order], y = (b.data() || {})[opts.order]; return (x > y ? 1 : x < y ? -1 : 0) * (opts.dir === "desc" ? -1 : 1); });
+        if (opts.limit) docs = docs.slice(0, opts.limit);
+        return { docs: docs, size: docs.length, empty: !docs.length, docChanges: function () { return []; }, metadata: { fromCache: false, hasPendingWrites: false } };
+      };
+      return {
+        path: prefix,
+        orderBy: function (f, d) { return collRef(prefix, { order: f, dir: d || "asc", limit: opts.limit }); },
+        limit: function (n) { return collRef(prefix, { order: opts.order, dir: opts.dir, limit: n }); },
+        get: function () { return Promise.resolve(query()); },
+        onSnapshot: function (next) { var f = function () { next(query()); }; (subs[prefix] = subs[prefix] || []).push(f); setTimeout(f, 0); return function () {}; },
+        doc: function (id) { return docRef(prefix + "/" + (id || ("n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7)))); },
+        add: function (d) { var r = this.doc(); return r.set(d).then(function () { return r; }); }
+      };
+    };
+    db = { doc: docRef, collection: function (p) { return collRef(p); } };
+  } else {
+    /* ---------- Firestore, shared and live ---------- */
+    firebase.initializeApp(CONFIG);
+    var fs = firebase.firestore();
+    try { fs.enablePersistence({ synchronizeTabs: true }).catch(function () {}); } catch (e) {}
+    var root = fs.collection("pages").doc(KEY);
+    var docName = function (p) { return p.split("/").join("--"); };
+    var remoteRef = function (p) { return isNote(p) ? root.collection("notes").doc(p.split("/")[3]) : root.collection("docs").doc(docName(p)); };
+    var mapErr = function (e, writing) {
+      var c = e && e.code;
+      if (c === "permission-denied") return { code: writing ? "invalid_argument" : "revoked", message: "Bu bağlantının anahtarı geçersiz." };
+      if (c === "resource-exhausted") return { code: "quota_exceeded", message: String(e.message || "") };
+      return { code: "unavailable", message: String((e && e.message) || "") };
+    };
+    var migrated = {};
+    var wrap = function (p, ds) {
+      var exists = ds.exists, d = exists ? ds.data() : undefined;
+      if (!exists && !isNote(p)) {
+        var loc = localRead(p);
+        if (loc !== undefined) {
+          d = loc;
+          /* first time this character is opened with a key: move what this browser had into the shared copy */
+          if (!ds.metadata.fromCache && !migrated[p]) { migrated[p] = true; remoteRef(p).set(loc).catch(function () {}); }
+        } else d = seedFor(p);
+      }
+      return { id: p.split("/").pop(), exists: d !== undefined, data: function () { return clone(d); }, metadata: { fromCache: ds.metadata.fromCache, hasPendingWrites: ds.metadata.hasPendingWrites } };
+    };
+    var docRefR = function (p) {
+      var r = remoteRef(p);
+      return {
+        id: p.split("/").pop(), path: p,
+        get: function () { return r.get().then(function (ds) { return wrap(p, ds); }, function (e) { throw mapErr(e); }); },
+        set: function (d) { return r.set(d).catch(function (e) { throw mapErr(e, true); }); },
+        update: function (d) { return r.set(d, { merge: true }).catch(function (e) { throw mapErr(e, true); }); },
+        delete: function () { return r.delete().catch(function (e) { throw mapErr(e, true); }); },
+        onSnapshot: function (next, err) {
+          return r.onSnapshot({ includeMetadataChanges: true }, function (ds) { next(wrap(p, ds)); }, function (e) { if (err) err(mapErr(e)); });
+        }
+      };
+    };
+    var collR = function (prefix, opts) {
+      opts = opts || {};
+      var q = function () {
+        var x = root.collection("notes");
+        if (opts.order) x = x.orderBy(opts.order, opts.dir || "asc");
+        if (opts.limit) x = x.limit(opts.limit);
+        return x;
+      };
+      var wrapQ = function (qs) {
+        var docs = qs.docs.map(function (d) { var v = d.data(); return { id: d.id, exists: true, data: function () { return clone(v); }, metadata: { fromCache: qs.metadata.fromCache, hasPendingWrites: d.metadata.hasPendingWrites } }; });
+        return { docs: docs, size: docs.length, empty: !docs.length, docChanges: function () { return []; }, metadata: { fromCache: qs.metadata.fromCache, hasPendingWrites: qs.metadata.hasPendingWrites } };
+      };
+      return {
+        path: prefix,
+        orderBy: function (f, d) { return collR(prefix, { order: f, dir: d || "asc", limit: opts.limit }); },
+        limit: function (n) { return collR(prefix, { order: opts.order, dir: opts.dir, limit: n }); },
+        get: function () { return q().get().then(wrapQ, function (e) { throw mapErr(e); }); },
+        onSnapshot: function (next, err) { return q().onSnapshot(function (qs) { next(wrapQ(qs)); }, function (e) { if (err) err(mapErr(e)); }); },
+        doc: function (id) { return docRefR(prefix + "/" + (id || ("n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7)))); },
+        add: function (d) { var r = this.doc(); return r.set(d).then(function () { return r; }); }
+      };
+    };
+    db = { doc: docRefR, collection: function (p) { return collR(p); } };
+
+    /* notes written in this browser before the key existed: copy them up once */
+    (function migrateNotes() {
+      var flag = lkey("__notesMigrated");
+      try { if (localStorage.getItem(flag) === KEY) return; } catch (e) {}
+      var ids = localNoteIds(); if (!ids.length) { try { localStorage.setItem(flag, KEY); } catch (e) {} return; }
+      Promise.all(ids.map(function (id) {
+        var v = localRead("data/users/" + UID + "/" + id);
+        return v ? root.collection("notes").doc(id).set(v) : null;
+      })).then(function () { try { localStorage.setItem(flag, KEY); } catch (e) {} }, function () {});
+    })();
+
+    /* DM updates on the shared copy, once */
+    (function remotePatches() {
+      if (!PATCHES.length) return;
+      var meta = root.collection("docs").doc("meta-patches");
+      meta.get().then(function (ms) {
+        var done = (ms.exists && ms.data().done) || [];
+        var todo = PATCHES.filter(function (pt) { return done.indexOf(pt.id) < 0; });
+        if (!todo.length) return;
+        return Promise.all(todo.map(function (pt) {
+          var r = remoteRef(pt.path);
+          return r.get().then(function (ds) { if (ds.exists) return r.set(applyPatchTo(pt, ds.data())); });
+        })).then(function () { return meta.set({ done: done.concat(todo.map(function (pt) { return pt.id; })) }); });
+      }).catch(function () {});
+    })();
+  }
+
   var user = { id: function () { return Promise.resolve(UID); }, can: function () { return Promise.resolve(true); }, isOwner: function () { return true; } };
   window.claude = { use: function (n) { return Promise.resolve(n === "db" ? db : n === "user" ? user : null); } };
 
-  /* backup: everything this page saved in this browser */
-  window.__scutariBackup = {
-    dump: function () {
-      var o = { page: NS, saved: new Date().toISOString(), data: {} };
-      for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k.indexOf(NS) === 0) o.data[k.slice(NS.length)] = JSON.parse(localStorage.getItem(k)); }
-      return o;
-    },
-    load: function (o) {
-      if (!o || o.page !== NS || typeof o.data !== "object") throw new Error("wrong file");
-      var drop = []; for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k.indexOf(NS) === 0) drop.push(k); }
-      drop.forEach(function (k) { localStorage.removeItem(k); });
-      Object.keys(o.data).forEach(function (p) { localStorage.setItem(NS + p, JSON.stringify(o.data[p])); });
-    }
-  };
+  /* ---------- download / restore a copy ---------- */
+  function knownPaths() {
+    var prefix = Object.keys(SEED)[0].split("/")[0];
+    var set = {}; Object.keys(SEED).forEach(function (p) { set[p] = 1; });
+    ["table", "spells", "story", "facts", "journey", "people", "quests", "inventory"].forEach(function (n) { set[prefix + "/" + n] = 1; });
+    return Object.keys(set);
+  }
+  function dump() {
+    var out = { page: NS, saved: new Date().toISOString(), data: {} };
+    var paths = knownPaths();
+    return Promise.all(paths.map(function (p) { return db.doc(p).get().then(function (sn) { if (sn.exists) out.data[p] = sn.data(); }); }))
+      .then(function () { return db.collection("data/users/" + UID).get(); })
+      .then(function (qs) { qs.docs.forEach(function (d) { out.data["data/users/" + UID + "/" + d.id] = d.data(); }); return out; });
+  }
+  function load(o) {
+    if (!o || o.page !== NS || typeof o.data !== "object") return Promise.reject(new Error("wrong file"));
+    return Promise.all(Object.keys(o.data).map(function (p) { return db.doc(p).set(o.data[p]); }));
+  }
   document.addEventListener("DOMContentLoaded", function () {
     var msg = document.getElementById("bkMsg");
+    if (!REMOTE) {
+      var b = document.getElementById("banner");
+      if (b) { b.textContent = "Bu bağlantıda karakter anahtarı yok: değişiklikler yalnızca bu cihazda kalır. DM'den sana özel bağlantıyı iste."; b.classList.add("show"); }
+    }
     document.getElementById("bkSave").addEventListener("click", function () {
-      try {
-        var blob = new Blob([JSON.stringify(window.__scutariBackup.dump(), null, 2)], { type: "application/json" });
+      msg.textContent = "Hazırlanıyor…";
+      dump().then(function (o) {
+        var blob = new Blob([JSON.stringify(o, null, 2)], { type: "application/json" });
         var a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
         a.download = NS.replace(/:/g, "-").replace(/-+$/, "") + "-yedek-" + new Date().toISOString().slice(0, 10) + ".json";
         document.body.appendChild(a); a.click(); a.remove();
         msg.textContent = "Yedek indirildi.";
-      } catch (e) { msg.textContent = "Yedek alınamadı."; }
+      }, function () { msg.textContent = "Yedek alınamadı."; });
     });
     document.getElementById("bkFile").addEventListener("change", function (e) {
       var f = e.target.files && e.target.files[0]; if (!f) return;
-      f.text().then(function (t) {
-        window.__scutariBackup.load(JSON.parse(t));
-        msg.textContent = "Yedek yüklendi; sayfa yenileniyor…";
-        setTimeout(function () { location.reload(); }, 600);
-      }).catch(function () { msg.textContent = "Bu dosya bu karakterin yedeği değil."; });
+      f.text().then(function (t) { return load(JSON.parse(t)); })
+        .then(function () { msg.textContent = "Yedek yüklendi; sayfa yenileniyor…"; setTimeout(function () { location.reload(); }, 800); })
+        .catch(function () { msg.textContent = "Bu dosya bu karakterin yedeği değil."; });
     });
   });
 })();
+
 </script>
 <script>
 (function () {
@@ -1551,7 +1660,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       apply(snap.exists ? clone(snap.data()) : null);
     }, function (e) {
       clearTimeout(loadTimer);
-      if (e && e.code === "revoked") { canWrite = false; applyWriteGate(); setSave("bad", "Erişim kapandı"); }
+      if (e && e.code === "revoked") { canWrite = false; applyWriteGate(); setSave("bad", "Erişim yok"); banner((e.message ? e.message + " " : "") + "DM'den sana özel bağlantıyı iste."); }
       else { setSave("bad", "Bağlantı koptu"); banner("Kayıtlarla bağlantı koptu. Sayfayı daha sonra yeniden aç."); }
     });
   }
