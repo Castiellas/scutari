@@ -230,6 +230,7 @@ textarea.page {
 
 /* ---------- people & quests ---------- */
 .people { display: grid; gap: 0; border-top: 1px solid var(--ink); max-width: 860px; }
+.btn.restore { margin: 10px 0 0; font-size: .85rem; }
 .row-acts { display: flex; gap: 2px; align-items: center; }
 .xbtn.mv { font-size: 1rem; }
 .xbtn:disabled { opacity: .25; cursor: default; }
@@ -571,6 +572,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     <h2>Diğer Karakterler</h2>
     <h3>Tanıdıklar</h3>
     <div class="people" id="people-known"><p class="muted">Yükleniyor…</p></div>
+    <button type="button" class="btn restore" id="restoreKnown" hidden>Silinen tanıdıkları geri getir</button>
     <form class="personadd" data-list="known" autocomplete="off">
       <input class="field" name="name" aria-label="Tanıdığın adı" placeholder="Ad">
       <input class="field" name="info" aria-label="Tanıdık hakkında" placeholder="Hakkında">
@@ -857,6 +859,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     });
     try { localStorage.setItem(doneKey, JSON.stringify(done)); } catch (e) {}
   })();
+  window.__scutariSeed = SEED;
   var db = { doc: docRef, collection: function (p) { return collRef(p); } };
   var user = { id: function () { return Promise.resolve(UID); }, can: function () { return Promise.resolve(true); }, isOwner: function () { return true; } };
   window.claude = { use: function (n) { return Promise.resolve(n === "db" ? db : n === "user" ? user : null); } };
@@ -1399,7 +1402,28 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       if (keep) { var back = box.querySelector('[data-id="' + keep.id + '"][data-f="' + keep.f + '"]'); if (back) { back.focus(); try { back.setSelectionRange(keep.s, keep.s); } catch (e) {} } }
     });
     document.querySelectorAll(".personadd input, .personadd button").forEach(function (x) { x.disabled = !canWrite; });
+    var miss = missingDefaults();
+    $("restoreKnown").hidden = !miss.length;
+    $("restoreKnown").textContent = "Silinen tanıdıkları geri getir (" + miss.length + ")";
   }
+  /* default acquaintances (the standalone build provides them) that are no longer on the list */
+  function missingDefaults() {
+    var seed = window.__scutariSeed && window.__scutariSeed["fox/people"];
+    if (!seed || !Array.isArray(seed.known) || !S.people) return [];
+    var have = S.people.known.map(function (x) { return x.id; });
+    return seed.known.filter(function (x) { return have.indexOf(x.id) < 0; });
+  }
+  $("restoreKnown").addEventListener("click", function () {
+    var miss = missingDefaults(); if (!miss.length) return;
+    var order = window.__scutariSeed["fox/people"].known.map(function (x) { return x.id; });
+    miss.forEach(function (m) { S.people.known.push(JSON.parse(JSON.stringify(m))); });
+    S.people.known.sort(function (a, b) {
+      var i = order.indexOf(a.id), j = order.indexOf(b.id);
+      return (i < 0 ? 999 : i) - (j < 0 ? 999 : j);
+    });
+    renderPeople(); savePeople(0);
+    toast(miss.length + " tanıdık geri getirildi.");
+  });
   document.querySelectorAll(".personadd").forEach(function (f) {
     f.addEventListener("submit", function (e) {
       e.preventDefault();
