@@ -230,6 +230,9 @@ textarea.page {
 
 /* ---------- people & quests ---------- */
 .people { display: grid; gap: 0; border-top: 1px solid var(--ink); max-width: 860px; }
+.row-acts { display: flex; gap: 2px; align-items: center; }
+.xbtn.mv { font-size: 1rem; }
+.xbtn:disabled { opacity: .25; cursor: default; }
 .person { display: grid; grid-template-columns: minmax(120px, 220px) 1fr auto; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--rule); align-items: start; }
 .person input, .person textarea, .quest textarea { border: 0; border-bottom: 1px dotted transparent; background: transparent; width: 100%; padding: 1px 0; resize: none; overflow: hidden; line-height: 1.5; }
 .person input { font-weight: 600; }
@@ -745,7 +748,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
 /* Local stand-in for the claude.ai database: same calls, saved in this browser. */
 (function () {
   "use strict";
-  var NS = "scutari:miss-fox:", SEED = {"fox/facts": {"items": [{"id": "f01", "text": "Partiniz bir geri sarma yaşadı ve hepiniz onun izini taşıyorsunuz."}]}, "fox/inventory": {"gold": 100, "equipment": [{"id": "e01", "name": "Shield", "note": "Equipped"}, {"id": "e02", "name": "Leather", "note": "Equipped"}, {"id": "e03", "name": "Sickle", "note": ""}, {"id": "e04", "name": "Staff", "note": ""}], "items": [{"id": "c01", "name": "Victor'un sikkesi", "qty": 1, "note": "Victor Fortis'in size verdiği sikke."}], "kit": [{"id": "k01", "name": "Giysi"}, {"id": "k02", "name": "Sırt çantası"}, {"id": "k03", "name": "Yatak rulosu"}, {"id": "k04", "name": "Erzak"}, {"id": "k05", "name": "Su tulumu"}, {"id": "k06", "name": "Çakmak kutusu"}, {"id": "k07", "name": "Meşale"}, {"id": "k08", "name": "Halat"}, {"id": "k09", "name": "Levye"}, {"id": "k10", "name": "Lamba yağı"}, {"id": "k11", "name": "Herbalism Kit"}]}, "fox/journey": {"items": [{"id": "j01", "text": "Zümre'de insanların kağıt değirmenlerinde çalıştığını gördün. Kasaba biraz fazla yeşildi."}, {"id": "j02", "text": "Eşkıya Osma Naga'yı yendiniz ve canını bağışladınız."}, {"id": "j03", "text": "Victor Fortis'le tanıştınız, hikâyesini dinlediniz. Size bir sikke verdi."}, {"id": "j04", "text": "Istec'in seçim ekibinin kasabaya geldiğini gördünüz; kasabadan yeteneklerine göre çocuk toplayacaklarını biliyorsunuz."}, {"id": "j05", "text": "Sikkeyle oynarken parmağını kestin. Kanının damladığı yerde çimenler büyüyüp canlandı."}, {"id": "j06", "text": "Sikkeyi başka kimseye veremiyorsun gibi görünüyor."}]}, "fox/people": {"known": [{"id": "p04", "info": "Size hikâyesini anlattı ve bir sikke verdi.", "name": "Victor Fortis"}, {"id": "p05", "info": "Yendiğiniz ve canını bağışladığınız eşkıya.", "name": "Osma Naga"}]}, "fox/quests": {"items": []}, "fox/spells": {"prepared": []}, "fox/story": {"trait": "Yeni bir yere girdiğimde ilk işim, değerli olan her şeyin ya da böyle şeylerin saklanabileceği yerlerin nerede olduğunu aklıma yazmaktır.", "ideal": "Hayırseverlik. Muhtaç insanlara yardım edebilmek için zenginlerden çalarım.", "bond": "", "flaw": "", "look": "", "tale": ""}}, PATCHES = [{"id": "2026-11-14-coin", "path": "fox/inventory", "list": "items", "item": {"id": "c01", "name": "Victor'un sikkesi", "qty": 1, "note": "Victor Fortis'in size verdiği sikke."}}, {"id": "2026-11-14-coin-journey", "path": "fox/journey", "list": "items", "item": {"id": "j06", "text": "Sikkeyi başka kimseye veremiyorsun gibi görünüyor."}}, {"id": "2026-11-14-story", "path": "fox/story", "fields": {"trait": "Yeni bir yere girdiğimde ilk işim, değerli olan her şeyin ya da böyle şeylerin saklanabileceği yerlerin nerede olduğunu aklıma yazmaktır.", "ideal": "Hayırseverlik. Muhtaç insanlara yardım edebilmek için zenginlerden çalarım."}}], UID = "local";
+  var NS = "scutari:miss-fox:", SEED = {"fox/facts": {"items": [{"id": "f01", "text": "Partiniz bir geri sarma yaşadı ve hepiniz onun izini taşıyorsunuz."}]}, "fox/inventory": {"gold": 100, "equipment": [{"id": "e01", "name": "Shield", "note": "Equipped"}, {"id": "e02", "name": "Leather", "note": "Equipped"}, {"id": "e03", "name": "Sickle", "note": ""}, {"id": "e04", "name": "Staff", "note": ""}], "items": [{"id": "c01", "name": "Victor'un sikkesi", "qty": 1, "note": "Victor Fortis'in size verdiği sikke."}], "kit": [{"id": "k01", "name": "Giysi"}, {"id": "k02", "name": "Sırt çantası"}, {"id": "k03", "name": "Yatak rulosu"}, {"id": "k04", "name": "Erzak"}, {"id": "k05", "name": "Su tulumu"}, {"id": "k06", "name": "Çakmak kutusu"}, {"id": "k07", "name": "Meşale"}, {"id": "k08", "name": "Halat"}, {"id": "k09", "name": "Levye"}, {"id": "k10", "name": "Lamba yağı"}, {"id": "k11", "name": "Herbalism Kit"}]}, "fox/journey": {"items": [{"id": "j01", "text": "Zümre'de insanların kağıt değirmenlerinde çalıştığını gördün. Kasaba biraz fazla yeşildi."}, {"id": "j02", "text": "Eşkıya Osma Naga'yı yendiniz ve canını bağışladınız."}, {"id": "j03", "text": "Victor Fortis'le tanıştınız, hikâyesini dinlediniz. Size bir sikke verdi."}, {"id": "j04", "text": "Istec'in seçim ekibinin kasabaya geldiğini gördünüz; kasabadan yeteneklerine göre çocuk toplayacaklarını biliyorsunuz."}, {"id": "j05", "text": "Sikkeyle oynarken parmağını kestin. Kanının damladığı yerde çimenler büyüyüp canlandı."}, {"id": "j06", "text": "Sikkeyi başka kimseye veremiyorsun gibi görünüyor."}]}, "fox/people": {"known": [{"id": "p04", "name": "Victor Fortis", "info": "Dünyanın en tehlikeli adamı ve halk kahramanı. Size bir sikke verdi."}, {"id": "p05", "name": "Osma Naga", "info": "Yendiğiniz ve canını bağışladığınız eşkıya. Dolandırıcı olma ihtimali yüksek."}, {"id": "p06", "name": "Erdoser", "info": "Paladin. Biraz gergin biri."}, {"id": "p07", "name": "Carlsberg Serkan", "info": "Barmen. Size biraz fazla hayranlık duyuyor."}, {"id": "p08", "name": "Hirma", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}, {"id": "p09", "name": "Urbanus", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}, {"id": "p10", "name": "Meriva", "info": "Erdo'nun eşi. Tanrıça ve büyücüyüm dedi, ikisi de şüpheli gibi."}]}, "fox/quests": {"items": []}, "fox/spells": {"prepared": []}, "fox/story": {"trait": "Yeni bir yere girdiğimde ilk işim, değerli olan her şeyin ya da böyle şeylerin saklanabileceği yerlerin nerede olduğunu aklıma yazmaktır.", "ideal": "Hayırseverlik. Muhtaç insanlara yardım edebilmek için zenginlerden çalarım.", "bond": "", "flaw": "", "look": "", "tale": ""}}, PATCHES = [{"id": "2026-11-14-coin", "path": "fox/inventory", "list": "items", "item": {"id": "c01", "name": "Victor'un sikkesi", "qty": 1, "note": "Victor Fortis'in size verdiği sikke."}}, {"id": "2026-11-14-coin-journey", "path": "fox/journey", "list": "items", "item": {"id": "j06", "text": "Sikkeyi başka kimseye veremiyorsun gibi görünüyor."}}, {"id": "2026-11-14-story", "path": "fox/story", "fields": {"trait": "Yeni bir yere girdiğimde ilk işim, değerli olan her şeyin ya da böyle şeylerin saklanabileceği yerlerin nerede olduğunu aklıma yazmaktır.", "ideal": "Hayırseverlik. Muhtaç insanlara yardım edebilmek için zenginlerden çalarım."}}, {"id": "2026-11-14-known", "path": "fox/people", "list": "known", "items": [{"item": {"id": "p04", "name": "Victor Fortis", "info": "Dünyanın en tehlikeli adamı ve halk kahramanı. Size bir sikke verdi."}, "prev": {"id": "p04", "info": "Size hikâyesini anlattı ve bir sikke verdi.", "name": "Victor Fortis"}}, {"item": {"id": "p05", "name": "Osma Naga", "info": "Yendiğiniz ve canını bağışladığınız eşkıya. Dolandırıcı olma ihtimali yüksek."}, "prev": {"id": "p05", "info": "Yendiğiniz ve canını bağışladığınız eşkıya.", "name": "Osma Naga"}}, {"item": {"id": "p06", "name": "Erdoser", "info": "Paladin. Biraz gergin biri."}}, {"item": {"id": "p07", "name": "Carlsberg Serkan", "info": "Barmen. Size biraz fazla hayranlık duyuyor."}}, {"item": {"id": "p08", "name": "Hirma", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}}, {"item": {"id": "p09", "name": "Urbanus", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}}, {"item": {"id": "p10", "name": "Meriva", "info": "Erdo'nun eşi. Tanrıça ve büyücüyüm dedi, ikisi de şüpheli gibi."}}]}], UID = "local";
   function key(p) { return NS + p; }
   function read(p) {
     try { var v = localStorage.getItem(key(p)); if (v != null) return JSON.parse(v); } catch (e) {}
@@ -819,7 +822,11 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
         var d = JSON.parse(stored);
         if (pt.list) {
           d[pt.list] = Array.isArray(d[pt.list]) ? d[pt.list] : [];
-          if (!d[pt.list].some(function (x) { return x && x.id === pt.item.id; })) d[pt.list].push(pt.item);
+          (pt.items || [{ item: pt.item }]).forEach(function (en) {
+            var arr = d[pt.list], i = arr.findIndex(function (x) { return x && x.id === en.item.id; });
+            if (i < 0) arr.push(en.item);
+            else if (en.prev && JSON.stringify(arr[i]) === JSON.stringify(en.prev)) arr[i] = en.item; /* only if the player hasn't edited it */
+          });
         }
         if (pt.fields) Object.keys(pt.fields).forEach(function (f) { if (!d[f]) d[f] = pt.fields[f]; });
         try { write(pt.path, d); } catch (e) {}
@@ -1320,7 +1327,25 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
           S.people[list] = S.people[list].filter(function (y) { return y.id !== pp.id; });
           renderPeople(); savePeople(0);
         });
-        row.appendChild(nm); row.appendChild(inf); row.appendChild(x); box.appendChild(row);
+        var acts = el("div", { class: "row-acts" });
+        var idx = arr.indexOf(pp);
+        [["↑", -1, "yukarı taşı"], ["↓", 1, "aşağı taşı"]].forEach(function (m) {
+          var b = el("button", { type: "button", class: "xbtn mv", "aria-label": (pp.name || "Karakter") + " " + m[2] }, m[0]);
+          var to = idx + m[1];
+          b.disabled = !canWrite || to < 0 || to >= arr.length;
+          b.addEventListener("click", function () {
+            var a = S.people[list], i = a.indexOf(pp), j = i + m[1];
+            if (i < 0 || j < 0 || j >= a.length) return;
+            a.splice(i, 1); a.splice(j, 0, pp);
+            renderPeople(); savePeople(0);
+            var again = $("people-" + list).querySelector('[data-id="' + pp.id + '"].mv' + (m[1] < 0 ? ".up" : ".down"));
+            if (again && !again.disabled) again.focus();
+          });
+          b.classList.add(m[1] < 0 ? "up" : "down"); b.setAttribute("data-id", pp.id);
+          acts.appendChild(b);
+        });
+        acts.appendChild(x);
+        row.appendChild(nm); row.appendChild(inf); row.appendChild(acts); box.appendChild(row);
         requestAnimationFrame(function () { fit(inf); });
       });
       if (keep) { var back = box.querySelector('[data-id="' + keep.id + '"][data-f="' + keep.f + '"]'); if (back) { back.focus(); try { back.setSelectionRange(keep.s, keep.s); } catch (e) {} } }
