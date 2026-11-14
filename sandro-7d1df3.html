@@ -316,8 +316,8 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     <div>
       <div class="regline">Istec Gümrük Divanı · Yolcu Kaydı · Defter IV, sıra 0420</div>
       <h1 class="name">Sandro <em>Lima</em></h1>
-      <div class="level"><span class="lv-k">Seviye</span><span class="lv-n">1</span></div>
-      <div class="idline">Rogue 1 &nbsp;·&nbsp; Human · Medium</div>
+      <div class="level"><span class="lv-k">Seviye</span><span class="lv-n">2</span></div>
+      <div class="idline">Rogue 2 &nbsp;·&nbsp; Human · Medium</div>
     </div>
     <figure class="photo">
       <img src="sandro-portrait.jpg" width="560" height="504" alt="Sandro Lima'nın portresi: işlemeli siyah bir başlığın altında örgülü sarı saçlı, yanağında yara izi olan, kaşlarını çatmış genç bir kadın; omzunda deri kayışlar.">
@@ -327,7 +327,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
 
   <div class="figures">
     <div class="fig"><div class="lbl">Armor Class</div><div class="val">13</div></div>
-    <div class="fig"><div class="lbl">Hit Points</div><div class="val"><span id="figHp">10</span><small> / 10</small></div></div>
+    <div class="fig"><div class="lbl">Hit Points</div><div class="val"><span id="figHp">17</span><small> / 17</small></div></div>
     <div class="fig"><div class="lbl">Speed</div><div class="val">30<small> ft</small></div></div>
     <div class="fig"><div class="lbl">Initiative</div><div class="val">+4</div></div>
     <div class="fig"><div class="lbl">Proficiency</div><div class="val">+2</div></div>
@@ -345,10 +345,10 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
         <span class="lbl" id="hpLbl">Hit Points</span>
         <div class="hpbox">
           <button type="button" id="hpMinus" aria-label="Hit Points −1">−</button>
-          <input id="hpInput" class="num" inputmode="numeric" aria-labelledby="hpLbl" value="10">
+          <input id="hpInput" class="num" inputmode="numeric" aria-labelledby="hpLbl" value="17">
           <button type="button" id="hpPlus" aria-label="Hit Points +1">+</button>
         </div>
-        <span class="muted num">/ 10</span>
+        <span class="muted num">/ 17</span>
       </div>
       <div class="trk">
         <label class="lbl" for="tmpInput">Temp HP</label>
@@ -443,9 +443,9 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
         <h3>Proficiencies &amp; Training</h3>
         <dl class="feats">
           <dt>Armor</dt><dd>Light Armor</dd>
-          <dt>Weapons</dt><dd>Simple Weapons, Hand Crossbow, Rapier, Scimitar, Shortsword, Whip</dd>
+          <dt>Weapons</dt><dd>Simple Weapons, Bola, Hand Crossbow, Rapier, Scimitar, Shortsword, Weighted Chain, Whip</dd>
           <dt>Tools</dt><dd>Thieves' Tools, Vehicles (Water)</dd>
-          <dt>Languages</dt><dd>Common, Common Sign Language, Giant, Thieves' Cant</dd>
+          <dt>Languages</dt><dd>Common, Common Sign Language, Giant, Goblin, Thieves' Cant</dd>
         </dl>
 
         <h3>Features &amp; Traits</h3>
@@ -456,6 +456,8 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
           <dd>Investigation ve Sleight of Hand'de yeterlilik bonusun iki katıdır.</dd>
           <dt>Thieves' Cant</dt>
           <dd>Hırsızların gizli dilini bilirsin.</dd>
+          <dt>Cunning Action</dt>
+          <dd>Her turunda Bonus Action ile Dash, Disengage ya da Hide yapabilirsin.</dd>
           <dt>Weapon Mastery</dt>
           <dd>Dagger (Nick): Light silahla yaptığın ek saldırıyı Bonus Action yerine Attack action'ın içinde yapabilirsin. İkinci silah ustalığın DM ile belirlenecek.</dd>
           <dt>Alert</dt>
@@ -736,9 +738,11 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     <div class="sc modal-k">Short Rest</div>
     <h2 id="shortTitle">Kısa bir mola</h2>
     <p>Her Long Rest arasında <b>2 Short Rest</b> hakkın var (ev kuralı).</p>
-    <p>İstersen bu molada bir Hit Die harcayarak iyileşebilirsin: <b>d8 + 2</b> at ve sonucu yaz. Her seviye için 1 Hit Die'ın var; Long Rest'te geri gelir. Zar atmayacaksan kutuyu boş bırak.</p>
+    <p>İstersen bu molada Hit Die harcayarak iyileşebilirsin: harcadığın her zar için <b>d8 + 2</b> at ve sonucu yaz. Birden fazla zar harcarsan sonuçları topla. Her seviye için 1 Hit Die'ın var; Long Rest'te geri gelir. Zar atmayacaksan kutuyu boş bırak.</p>
     <p class="small muted" id="shortLeft"></p>
     <form id="shortForm" class="modal-acts" autocomplete="off">
+      <label class="small" for="shortDice" style="align-self:center">Zar</label>
+      <input class="field num" id="shortDice" type="number" min="1" value="1" style="width:64px">
       <input class="field num" id="shortRoll" inputmode="numeric" aria-label="Zarın sonucu (d8 + 2)" placeholder="Sonuç" style="width:110px">
       <button type="submit" class="btn primary" id="shortHeal">Dinlen</button>
       <button type="button" class="btn" id="shortClose">Vazgeç</button>
@@ -897,7 +901,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   "use strict";
 
   /* ---------------- fixed sheet facts ---------------- */
-  var MAX_HP = 10, SLOTS = 0, HIT_DICE = 1, PREP_MAX = 4, INSP_MAX = 4, SHORT_RESTS = 2;
+  var MAX_HP = 17, SLOTS = 0, HIT_DICE = 2, PREP_MAX = 4, INSP_MAX = 4, SHORT_RESTS = 2;
   var DOCS = { table: "san/table", inv: "san/inventory", story: "san/story", spells: "san/spells", facts: "san/facts", journey: "san/journey", people: "san/people", quests: "san/quests" };
 
   var CANTRIPS = [], ALWAYS = [], DRUID = [];
@@ -1063,7 +1067,8 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     var left = HIT_DICE - (S.table.hdUsed || 0), rests = SHORT_RESTS - (S.table.srUsed || 0);
     $("shortLeft").textContent = "Bu moladan sonra kalan Short Rest: " + Math.max(0, rests - 1) + "/" + SHORT_RESTS + " · " +
       (left > 0 ? "Kalan Hit Dice: " + left + "/" + HIT_DICE : "Hit Dice'ın kalmadı.");
-    $("shortRoll").disabled = left <= 0 || !canWrite;
+    $("shortRoll").disabled = $("shortDice").disabled = left <= 0 || !canWrite;
+    $("shortDice").max = String(Math.max(1, left)); $("shortDice").value = left > 0 ? "1" : "0";
     $("shortHeal").disabled = rests <= 0 || !canWrite;
     $("shortRoll").value = "";
     $("shortModal").hidden = false;
@@ -1079,12 +1084,13 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     var n = $("shortRoll").disabled ? 0 : toInt($("shortRoll").value, 0, 99);
     var before = S.table.hp;
     S.table.srUsed = (S.table.srUsed || 0) + 1;
+    var dice = toInt($("shortDice").value, 1, Math.max(1, HIT_DICE - (S.table.hdUsed || 0)));
     if (n > 0) {
       S.table.hp = Math.min(MAX_HP, S.table.hp + n);
-      S.table.hdUsed = Math.min(HIT_DICE, (S.table.hdUsed || 0) + 1);
+      S.table.hdUsed = Math.min(HIT_DICE, (S.table.hdUsed || 0) + dice);
     }
     commitTable(0); closeShort();
-    toast(n > 0 ? "Short Rest: +" + (S.table.hp - before) + " Hit Points, Hit Die harcandı." : "Short Rest alındı.");
+    toast(n > 0 ? "Short Rest: +" + (S.table.hp - before) + " Hit Points, " + dice + " Hit Die harcandı." : "Short Rest alındı.");
   });
 
   /* ---------------- long-rest reminder ---------------- */
@@ -1135,7 +1141,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     var i = S.prepared.indexOf(name);
     if (i >= 0) S.prepared.splice(i, 1);
     else {
-      if (S.prepared.length >= PREP_MAX) { toast("En fazla 4 büyü hazırlayabilirsin. Önce birini bırak."); return; }
+      if (S.prepared.length >= PREP_MAX) { toast("En fazla " + PREP_MAX + " büyü hazırlayabilirsin. Önce birini bırak."); return; }
       S.prepared.push(name);
     }
     renderSpells();
