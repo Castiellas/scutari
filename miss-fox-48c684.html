@@ -363,7 +363,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       <div class="trk"><span class="lbl">Death Saves</span><div class="pips" id="dsOk"></div><div class="pips" id="dsBad"></div></div>
       <div class="rest">
         <button type="button" class="btn" id="shortRest">Short Rest</button>
-        <span class="rest-note">Hit Dice: d8 + 1 <span id="hdLeft">(1/1)</span></span>
+        <span class="rest-note"><span id="srLeft">2/2 kaldı</span> · Hit Dice d8 + 1 <span id="hdLeft">(1/1)</span></span>
       </div>
       <div class="rest">
         <button type="button" class="btn primary" id="longRest">Long Rest</button>
@@ -745,12 +745,13 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   <div class="modal-card">
     <div class="sc modal-k">Short Rest</div>
     <h2 id="shortTitle">Kısa bir mola</h2>
-    <p>Kısa dinlenmede Hit Dice harcayarak iyileşebilirsin: <b>d8 + 1</b> at ve sonucu yaz. Her seviye için 1 Hit Die'ın var; Long Rest'te geri gelir.</p>
+    <p>Her Long Rest arasında <b>2 Short Rest</b> hakkın var (ev kuralı).</p>
+    <p>İstersen bu molada bir Hit Die harcayarak iyileşebilirsin: <b>d8 + 1</b> at ve sonucu yaz. Her seviye için 1 Hit Die'ın var; Long Rest'te geri gelir. Zar atmayacaksan kutuyu boş bırak.</p>
     <p class="small muted" id="shortLeft"></p>
     <form id="shortForm" class="modal-acts" autocomplete="off">
       <input class="field num" id="shortRoll" inputmode="numeric" aria-label="Zarın sonucu (d8 + 1)" placeholder="Sonuç" style="width:110px">
-      <button type="submit" class="btn primary" id="shortHeal">İyileş</button>
-      <button type="button" class="btn" id="shortClose">Kapat</button>
+      <button type="submit" class="btn primary" id="shortHeal">Dinlen</button>
+      <button type="button" class="btn" id="shortClose">Vazgeç</button>
     </form>
   </div>
 </div>
@@ -759,7 +760,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   <div class="modal-card">
     <div class="sc modal-k">Long Rest</div>
     <h2 id="restTitle">Büyülerini seçme zamanı</h2>
-    <p>Dinlendin: Hit Points, slotlar, Hit Dice ve Transformations yenilendi, 1 Heroic Inspiration kazandın.</p>
+    <p>Dinlendin: Hit Points, slotlar, Hit Dice, Short Rest hakların ve Transformations yenilendi, 1 Heroic Inspiration kazandın.</p>
     <p>Şimdi bugün hazırlayacağın <b>4 büyüyü</b> seç. İstersen dünküleri koruyabilirsin.</p>
     <div class="modal-acts">
       <button type="button" class="btn primary" id="restGo">Büyüleri seç</button>
@@ -906,7 +907,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   "use strict";
 
   /* ---------------- fixed sheet facts ---------------- */
-  var MAX_HP = 9, SLOTS = 2, HIT_DICE = 1, PREP_MAX = 4, INSP_MAX = 4;
+  var MAX_HP = 9, SLOTS = 2, HIT_DICE = 1, PREP_MAX = 4, INSP_MAX = 4, SHORT_RESTS = 2;
   var DOCS = { table: "fox/table", inv: "fox/inventory", story: "fox/story", spells: "fox/spells", facts: "fox/facts", journey: "fox/journey", people: "fox/people", quests: "fox/quests" };
 
   var CANTRIPS = [
@@ -943,7 +944,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     { n: "Thunderwave", m: "1 Action · Self (15 ft Cube) · Instantaneous · CON 12", d: "Başaramayan 2d8 Thunder hasarı alır ve 10 ft itilir; başaran yarı hasar alır. Ses 300 ft öteden duyulur." }
   ];
 
-  var DEFAULT_TABLE = { hp: MAX_HP, temp: 0, slotsUsed: 0, hdUsed: 0, insp: 0, afUsed: false, tfUsed: 0, dsOk: 0, dsBad: 0 };
+  var DEFAULT_TABLE = { hp: MAX_HP, temp: 0, slotsUsed: 0, hdUsed: 0, insp: 0, afUsed: false, tfUsed: 0, srUsed: 0, dsOk: 0, dsBad: 0 };
 
   /* ---------------- state ---------------- */
   var S = {
@@ -1056,6 +1057,9 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       }));
     })(i);
     $("hdLeft").textContent = "(" + (HIT_DICE - (t.hdUsed || 0)) + "/" + HIT_DICE + ")";
+    var srLeft = SHORT_RESTS - (t.srUsed || 0);
+    $("srLeft").textContent = srLeft + "/" + SHORT_RESTS + " kaldı";
+    $("shortRest").disabled = !canWrite || srLeft <= 0;
     var ip = $("inspPips"); ip.textContent = "";
     for (i = 0; i < INSP_MAX; i++) (function (i) {
       var on = i < t.insp;
@@ -1098,12 +1102,14 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   var shortBack = null;
   function openShort() {
     shortBack = document.activeElement;
-    var left = HIT_DICE - (S.table.hdUsed || 0);
-    $("shortLeft").textContent = left > 0 ? "Kalan Hit Dice: " + left + "/" + HIT_DICE : "Hit Dice'ın kalmadı; Long Rest'te geri gelir.";
-    $("shortRoll").disabled = $("shortHeal").disabled = left <= 0 || !canWrite;
+    var left = HIT_DICE - (S.table.hdUsed || 0), rests = SHORT_RESTS - (S.table.srUsed || 0);
+    $("shortLeft").textContent = "Bu moladan sonra kalan Short Rest: " + Math.max(0, rests - 1) + "/" + SHORT_RESTS + " · " +
+      (left > 0 ? "Kalan Hit Dice: " + left + "/" + HIT_DICE : "Hit Dice'ın kalmadı.");
+    $("shortRoll").disabled = left <= 0 || !canWrite;
+    $("shortHeal").disabled = rests <= 0 || !canWrite;
     $("shortRoll").value = "";
     $("shortModal").hidden = false;
-    (left > 0 ? $("shortRoll") : $("shortClose")).focus();
+    (left > 0 ? $("shortRoll") : $("shortHeal")).focus();
   }
   function closeShort() { $("shortModal").hidden = true; if (shortBack && shortBack.focus) shortBack.focus(); }
   $("shortRest").addEventListener("click", openShort);
@@ -1111,13 +1117,16 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   $("shortModal").addEventListener("click", function (e) { if (e.target === $("shortModal")) closeShort(); });
   $("shortForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    var n = toInt($("shortRoll").value, 0, 99);
-    if (!n) { $("shortRoll").focus(); return; }
+    if ((S.table.srUsed || 0) >= SHORT_RESTS) return;
+    var n = $("shortRoll").disabled ? 0 : toInt($("shortRoll").value, 0, 99);
     var before = S.table.hp;
-    S.table.hp = Math.min(MAX_HP, S.table.hp + n);
-    S.table.hdUsed = Math.min(HIT_DICE, (S.table.hdUsed || 0) + 1);
+    S.table.srUsed = (S.table.srUsed || 0) + 1;
+    if (n > 0) {
+      S.table.hp = Math.min(MAX_HP, S.table.hp + n);
+      S.table.hdUsed = Math.min(HIT_DICE, (S.table.hdUsed || 0) + 1);
+    }
     commitTable(0); closeShort();
-    toast("+" + (S.table.hp - before) + " Hit Points. Hit Die harcandı.");
+    toast(n > 0 ? "Short Rest: +" + (S.table.hp - before) + " Hit Points, Hit Die harcandı." : "Short Rest alındı.");
   });
 
   /* ---------------- long-rest reminder ---------------- */
