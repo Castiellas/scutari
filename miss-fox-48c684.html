@@ -62,6 +62,9 @@ button, input, textarea { font: inherit; color: inherit; }
 .name { font-family: var(--f-display); font-size: clamp(2.4rem, 7vw, 3.6rem); line-height: 1; margin: 6px 0 6px; letter-spacing: .02em; }
 .name em { font-style: normal; color: var(--accent); }
 .idline { font-size: 1rem; }
+.level { display: inline-flex; align-items: baseline; gap: 8px; margin: 2px 0 6px; padding: 2px 12px 3px; border: 1.5px solid var(--accent); background: var(--accent-soft); }
+.level .lv-k { font-family: var(--f-display); letter-spacing: .08em; font-size: 1rem; color: var(--accent); }
+.level .lv-n { font-family: var(--f-num); font-size: 1.35rem; font-weight: 500; color: var(--ink); }
 .stamp {
   align-self: start; justify-self: end; transform: rotate(-7deg);
   border: 3px double var(--seal); color: var(--seal); padding: 8px 14px 6px;
@@ -297,6 +300,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     <div>
       <div class="regline">Istec Gümrük Divanı · Yolcu Kaydı · Defter IV, sıra 0417</div>
       <h1 class="name">Miss <em>Fox</em></h1>
+      <div class="level"><span class="lv-k">Seviye</span><span class="lv-n">1</span></div>
       <div class="idline">Druid 1 · Warden &nbsp;·&nbsp; Human · Small &nbsp;·&nbsp; Neutral</div>
     </div>
     <div class="stamp" aria-hidden="true"><b>GEÇTİ</b><span>ZÜMRE KAPISI</span></div>
@@ -335,7 +339,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       <div class="trk"><span class="lbl">Hit Dice d8</span><div class="pips" id="hdPips"></div></div>
       <div class="trk"><span class="lbl">Heroic Inspiration</span><div class="pips" id="inspPips"></div></div>
       <div class="trk"><span class="lbl">Animal Friendship 1/LR</span><div class="pips" id="afPips"></div></div>
-      <div class="trk"><span class="lbl">Transformations 3/gün</span><div class="pips" id="tfPips"></div></div>
+      <div class="trk"><span class="lbl">Transformations</span><div class="pips" id="tfPips"></div></div>
     </div>
     <div class="masa-row">
       <div class="trk"><span class="lbl">Death Saves</span><div class="pips" id="dsOk"></div><div class="pips" id="dsBad"></div></div>
