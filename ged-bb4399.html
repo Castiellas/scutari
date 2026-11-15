@@ -224,7 +224,19 @@ div.people, div.quests { border-top: 1px solid rgba(31, 36, 30, .24); }
 .person, .quest { border-bottom-color: rgba(31, 36, 30, .14); }
 .person:last-child, .quest:last-child, .tablewrap tbody tr:last-child td { border-bottom: none; }
 .tablewrap + .tablewrap, .tablewrap + p, .people + .btn, .people + form, .quests + form { margin-top: 10px; }
-@media (max-width: 560px) { .tablewrap, .people, .quests { padding: 4px 10px 6px; } }
+/* the same cards for Karakter Geçmişi and Notlar */
+.idgrid, .ta, form.composer, .notes .note {
+  background: #f3f5ef; border: 1px solid rgba(31, 36, 30, .24); border-radius: 2px;
+  box-shadow: 2px 3px 0 rgba(31, 36, 30, .07);
+}
+.idgrid { max-width: 76ch; }
+.ta, form.composer { padding: 6px 16px 14px; max-width: 76ch; }
+form.composer { padding-top: 12px; margin-bottom: 4px; }
+.ta label:first-child { margin-top: .6rem; }
+.ta textarea.page, form.composer textarea.page, form.composer .field { border-color: rgba(31, 36, 30, .3); max-width: 100%; }
+.ta > p.small { margin: 10px 0 0; }
+.notes .note { padding: 12px 14px; max-width: 76ch; }
+@media (max-width: 560px) { .tablewrap, .people, .quests { padding: 4px 10px 6px; } .ta, form.composer { padding: 4px 10px 10px; } }
 .facts { margin: 6px 0 8px; padding-left: 1.4rem; }
 .facts li { margin-bottom: 2px; }
 .facts .row { display: flex; gap: 6px; align-items: flex-start; }
