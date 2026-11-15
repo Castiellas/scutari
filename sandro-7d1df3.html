@@ -116,7 +116,8 @@ button, input, textarea { font: inherit; color: inherit; }
 .banner.show { display: block; }
 
 /* ---------- tabs ---------- */
-nav.tabs { display: flex; gap: 4px; margin: 26px 0 0; border-bottom: 1.5px solid var(--ink); overflow-x: auto; scrollbar-width: thin; }
+nav.tabs { display: flex; gap: 4px; margin: 26px 0 0; padding: 6px 6px 0; background: #d9e0d4; border: 1px solid rgba(31, 36, 30, .2); border-bottom: 1.5px solid var(--ink); border-radius: 3px 3px 0 0; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45); overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; }
+nav.tabs a:not([aria-current="page"]):hover { background: rgba(255, 255, 255, .35); }
 nav.tabs a {
   flex: 0 0 auto; text-decoration: none; color: var(--ink-soft); font-family: var(--f-display); letter-spacing: .05em;
   padding: 7px 10px 5px; font-size: .95rem; letter-spacing: .03em; border: 1px solid transparent; border-bottom: 0; margin-bottom: -1.5px; white-space: nowrap;
@@ -204,24 +205,27 @@ blockquote .src { display: block; font-size: .8rem; color: var(--ink-soft); font
 .ta label { font-family: var(--f-display); letter-spacing: .04em; display: block; margin: 1rem 0 .3rem; }
 textarea.page {
   width: 100%; max-width: 72ch; min-height: 92px; resize: vertical; border: 1px solid var(--ink); padding: 8px 10px;
-  background: var(--paper) repeating-linear-gradient(to bottom, transparent 0 26px, var(--rule) 26px 27px); line-height: 27px;
+  background: #fafbf7; line-height: 1.6;
 }
 .journey { max-width: 70ch; }
 .journey li { margin-bottom: .35rem; }
 .player-know { border: 1px solid var(--accent); padding: 8px 12px; margin-top: 12px; max-width: 70ch; }
 .player-know .sc { color: var(--accent); font-size: .95rem; }
 /* panels: lists and tables read as cards pasted into the notebook */
-.tablewrap, .people, .quests, ol.facts.journey {
+.tablewrap, .people, .listcard {
   background: #f3f5ef; border: 1px solid rgba(31, 36, 30, .24); border-radius: 2px;
   box-shadow: 2px 3px 0 rgba(31, 36, 30, .07); padding: 6px 14px 8px;
 }
 .player-know { background: #f3f5ef; box-shadow: 2px 3px 0 rgba(31, 36, 30, .07); border-radius: 2px; }
-ol.facts.journey { padding: 8px 14px 8px 2.2rem; }
+.listcard { padding: 8px 14px 10px; max-width: 72ch; }
+.listcard ol.facts { margin: 0 0 8px; padding-left: 1.6rem; }
+.listcard .factadd .field { width: 100%; max-width: 100%; }
+.listhint { margin: 6px 0 0; font-size: .78rem; }
 .player-know ol.facts { padding-left: 1.4rem; }
 div.people, div.quests { border-top: 1px solid rgba(31, 36, 30, .24); }
 .person, .quest { border-bottom-color: rgba(31, 36, 30, .14); }
 .person:last-child, .quest:last-child, .tablewrap tbody tr:last-child td { border-bottom: none; }
-.tablewrap + .tablewrap, .tablewrap + p, .people + .btn, .people + form, .quests + form { margin-top: 10px; }
+.tablewrap + .tablewrap, .tablewrap + p, .people + .btn, .people + form { margin-top: 10px; }
 /* the same cards for Karakter Geçmişi and Notlar */
 .idgrid, .ta, form.composer, .notes .note {
   background: #f3f5ef; border: 1px solid rgba(31, 36, 30, .24); border-radius: 2px;
@@ -234,7 +238,7 @@ form.composer { padding-top: 12px; margin-bottom: 4px; }
 .ta textarea.page, form.composer textarea.page, form.composer .field { border-color: rgba(31, 36, 30, .3); max-width: 100%; }
 .ta > p.small { margin: 10px 0 0; }
 .notes .note { padding: 12px 14px; max-width: 76ch; }
-@media (max-width: 560px) { .tablewrap, .people, .quests { padding: 4px 10px 6px; } .ta, form.composer { padding: 4px 10px 10px; } }
+@media (max-width: 560px) { .tablewrap, .people, .listcard { padding: 4px 10px 6px; } .ta, form.composer { padding: 4px 10px 10px; } }
 .facts { margin: 6px 0 8px; padding-left: 1.4rem; }
 .facts li { margin-bottom: 2px; }
 .facts .row { display: flex; gap: 6px; align-items: flex-start; }
@@ -578,8 +582,11 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     </div>
 
     <h3>Şimdiye dek</h3>
-    <ol class="facts journey" id="journey"><li class="muted">Yükleniyor…</li></ol>
-    <form id="journeyForm" autocomplete="off" class="factadd" style="max-width:70ch"><input class="field" id="journeyAdd" aria-label="Şimdiye dek listesine ekle" placeholder="+ yeni olay ekle"></form>
+    <div class="listcard">
+      <ol class="facts journey" id="journey"><li class="muted">Yükleniyor…</li></ol>
+      <form id="journeyForm" autocomplete="off" class="factadd"><input class="field" id="journeyAdd" aria-label="Şimdiye dek listesine ekle" placeholder="+ yeni olay ekle"></form>
+      <p class="small muted listhint">Enter yeni madde açar · Shift+Enter aynı maddede alt satıra geçer</p>
+    </div>
     <div class="player-know">
       <div class="sc">Önemli bilgiler</div>
       <ol class="facts" id="facts"><li class="muted">Yükleniyor…</li></ol>
@@ -616,8 +623,18 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   <!-- ============ GÖREVLER ============ -->
   <section class="view" id="v-gorevler">
     <h2>Görevler</h2>
-    <div class="quests" id="quests"><p class="muted">Yükleniyor…</p></div>
-    <form id="questForm" autocomplete="off" class="factadd" style="max-width:72ch;margin-top:10px"><input class="field" id="questAdd" aria-label="Yeni görev" placeholder="+ yeni görev ekle"></form>
+    <h3>Önemli Olaylar</h3>
+    <div class="listcard">
+      <ol class="facts journey" id="mainq"><li class="muted">Yükleniyor…</li></ol>
+      <form id="mainForm" autocomplete="off" class="factadd"><input class="field" id="mainAdd" aria-label="Yeni önemli olay" placeholder="+ yeni olay ekle"></form>
+      <p class="small muted listhint">Enter yeni madde açar · Shift+Enter aynı maddede alt satıra geçer</p>
+    </div>
+    <h3>Yan Hikayeler</h3>
+    <div class="listcard">
+      <ol class="facts journey" id="sideq"><li class="muted">Yükleniyor…</li></ol>
+      <form id="sideForm" autocomplete="off" class="factadd"><input class="field" id="sideAdd" aria-label="Yeni yan hikaye" placeholder="+ yeni hikaye ekle"></form>
+      <p class="small muted listhint">Enter yeni madde açar · Shift+Enter aynı maddede alt satıra geçer</p>
+    </div>
   </section>
 
   <!-- ============ DÜNYA ============ -->
@@ -989,7 +1006,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   function knownPaths() {
     var prefix = Object.keys(SEED)[0].split("/")[0];
     var set = {}; Object.keys(SEED).forEach(function (p) { set[p] = 1; });
-    ["table", "spells", "story", "facts", "journey", "people", "quests", "inventory"].forEach(function (n) { set[prefix + "/" + n] = 1; });
+    ["table", "spells", "story", "facts", "journey", "people", "quests", "side", "inventory"].forEach(function (n) { set[prefix + "/" + n] = 1; });
     return Object.keys(set);
   }
   function dump() {
@@ -1036,7 +1053,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
 
   /* ---------------- fixed sheet facts ---------------- */
   var MAX_HP = 17, SLOTS = 0, HIT_DICE = 2, PREP_MAX = 4, INSP_MAX = 4, SHORT_RESTS = 2;
-  var DOCS = { table: "san/table", inv: "san/inventory", story: "san/story", spells: "san/spells", facts: "san/facts", journey: "san/journey", people: "san/people", quests: "san/quests" };
+  var DOCS = { table: "san/table", inv: "san/inventory", story: "san/story", spells: "san/spells", facts: "san/facts", journey: "san/journey", people: "san/people", quests: "san/quests", side: "san/side" };
 
   var CANTRIPS = [], ALWAYS = [], DRUID = [];
 
@@ -1415,12 +1432,16 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   }
   var LISTS = {
     facts: { doc: DOCS.facts, ol: "facts", form: "factForm", input: "factAdd", label: "Önemli bilgi", empty: "Henüz bilgi yok." },
-    journey: { doc: DOCS.journey, ol: "journey", form: "journeyForm", input: "journeyAdd", label: "Olay", empty: "Henüz bir şey yazılmadı." }
+    journey: { doc: DOCS.journey, ol: "journey", form: "journeyForm", input: "journeyAdd", label: "Olay", empty: "Henüz bir şey yazılmadı." },
+    main: { doc: DOCS.quests, ol: "mainq", form: "mainForm", input: "mainAdd", label: "Önemli olay", empty: "Henüz bir şey yazılmadı." },
+    side: { doc: DOCS.side, ol: "sideq", form: "sideForm", input: "sideAdd", label: "Yan hikaye", empty: "Henüz bir şey yazılmadı." }
   };
-  function renderList(key) {
+  function newListId() { return "l" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+  function renderList(key, focus) {
     var L = LISTS[key], ol = $(L.ol), arr = S[key];
     if (!arr) return;
     var active = document.activeElement, keep = active && active.dataset && active.dataset.li === key ? { id: active.dataset.id, s: active.selectionStart } : null;
+    if (focus) keep = focus;
     ol.textContent = "";
     if (!arr.length) ol.appendChild(el("li", { class: "muted" }, L.empty));
     arr.forEach(function (f) {
@@ -1430,6 +1451,25 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       ta.addEventListener("input", function () {
         f.text = ta.value.slice(0, 1000); fit(ta);
         writer(L.doc).push({ items: S[key] }, 800);
+      });
+      /* Enter opens a new numbered item below (text after the caret moves with it); Shift+Enter breaks a line.
+         Backspace in an empty item removes it and jumps back to the end of the one above. */
+      ta.addEventListener("keydown", function (e) {
+        if (!canWrite || e.isComposing || e.altKey || e.ctrlKey || e.metaKey) return;
+        var i = S[key].findIndex(function (y) { return y.id === f.id; }); if (i < 0) return;
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          var nf = { id: newListId(), text: ta.value.slice(ta.selectionEnd) };
+          f.text = ta.value.slice(0, ta.selectionStart);
+          S[key][i].text = f.text;
+          S[key].splice(i + 1, 0, nf);
+          renderList(key, { id: nf.id, s: 0 }); writer(L.doc).push({ items: S[key] }, 0);
+        } else if (e.key === "Backspace" && ta.value === "" && i > 0) {
+          e.preventDefault();
+          var prev = S[key][i - 1];
+          S[key].splice(i, 1);
+          renderList(key, { id: prev.id, s: (prev.text || "").length }); writer(L.doc).push({ items: S[key] }, 0);
+        }
       });
       var x = el("button", { type: "button", class: "xbtn", "aria-label": "Bu satırı sil" }, "×");
       x.disabled = !canWrite;
@@ -1449,11 +1489,11 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       e.preventDefault();
       var v = $(L.input).value.trim(); if (!v) return;
       S[key] = S[key] || [];
-      S[key].push({ id: "l" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), text: v.slice(0, 1000) });
+      S[key].push({ id: newListId(), text: v.slice(0, 1000) });
       $(L.input).value = ""; renderList(key); writer(L.doc).push({ items: S[key] }, 0);
     });
   });
-  function renderFacts() { renderList("facts"); renderList("journey"); }
+  function renderFacts() { Object.keys(LISTS).forEach(function (k) { renderList(k); }); }
   document.querySelector('a[href="#gecmis"]').addEventListener("click", function () { setTimeout(function () { document.querySelectorAll(".facts textarea").forEach(fit); }, 0); });
 
   /* ---------------- other characters (shared, editable) ---------------- */
@@ -1543,44 +1583,8 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     });
   });
 
-  /* ---------------- quests (shared, editable) ---------------- */
-  function saveQuests(delay) { writer(DOCS.quests).push({ items: S.quests }, delay); }
-  function questRow(q) {
-    var row = el("div", { class: "quest" + (q.done ? " done" : "") });
-    var b = el("button", { type: "button", class: "qbox", "aria-pressed": String(!!q.done), "aria-label": q.done ? "Tamamlandı; yeniden aç" : "Tamamlandı olarak işaretle" }, q.done ? "✓" : "");
-    b.disabled = !canWrite;
-    b.addEventListener("click", function () { q.done = !q.done; renderQuests(); saveQuests(0); });
-    var ta = el("textarea", { rows: "1", "data-qid": q.id, "aria-label": "Görev" });
-    ta.value = q.text || ""; ta.disabled = !canWrite;
-    ta.addEventListener("input", function () { q.text = ta.value.slice(0, 2000); fit(ta); saveQuests(800); });
-    var x = el("button", { type: "button", class: "xbtn", "aria-label": "Görevi sil" }, "×");
-    x.disabled = !canWrite;
-    x.addEventListener("click", function () { S.quests = S.quests.filter(function (y) { return y.id !== q.id; }); renderQuests(); saveQuests(0); });
-    row.appendChild(b); row.appendChild(ta); row.appendChild(x);
-    requestAnimationFrame(function () { fit(ta); });
-    return row;
-  }
-  function renderQuests() {
-    if (!S.quests) return;
-    var box = $("quests");
-    var active = document.activeElement, keep = active && active.dataset && active.dataset.qid ? { id: active.dataset.qid, s: active.selectionStart } : null;
-    box.textContent = "";
-    var open = S.quests.filter(function (q) { return !q.done; }), done = S.quests.filter(function (q) { return q.done; });
-    if (!S.quests.length) box.appendChild(el("p", { class: "muted", style: "margin:8px 0" }, "Henüz görev yok."));
-    open.forEach(function (q) { box.appendChild(questRow(q)); });
-    if (done.length) { box.appendChild(el("div", { class: "qsep" }, "Tamamlananlar")); done.forEach(function (q) { box.appendChild(questRow(q)); }); }
-    $("questAdd").disabled = !canWrite;
-    if (keep) { var back = box.querySelector('textarea[data-qid="' + keep.id + '"]'); if (back) { back.focus(); try { back.setSelectionRange(keep.s, keep.s); } catch (e) {} } }
-  }
-  $("questForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    var v = $("questAdd").value.trim(); if (!v) return;
-    S.quests = S.quests || [];
-    S.quests.push({ id: "q" + uidShort(), text: v.slice(0, 2000), done: false });
-    $("questAdd").value = ""; renderQuests(); saveQuests(0);
-  });
   ["karakterler", "gorevler"].forEach(function (h) {
-    document.querySelector('a[href="#' + h + '"]').addEventListener("click", function () { setTimeout(function () { document.querySelectorAll(".person textarea, .quest textarea").forEach(fit); }, 0); });
+    document.querySelector('a[href="#' + h + '"]').addEventListener("click", function () { setTimeout(function () { document.querySelectorAll(".person textarea, .facts textarea").forEach(fit); }, 0); });
   });
 
   /* ---------------- notebook (private) ---------------- */
@@ -1659,7 +1663,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   function applyWriteGate() {
     ["hpMinus", "hpPlus", "hpInput", "tmpInput", "longRest", "shortRest"].forEach(function (id) { $(id).disabled = !canWrite; });
     document.querySelectorAll("#addForm input, #addForm button").forEach(function (x) { x.disabled = !canWrite; });
-    renderTable(); renderSpells(); renderInv(); renderGold(); renderStory(); renderFacts(); renderPeople(); renderQuests();
+    renderTable(); renderSpells(); renderInv(); renderGold(); renderStory(); renderFacts(); renderPeople();
     $("addKind").disabled = !canWrite;
   }
 
@@ -1688,7 +1692,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       clearTimeout(loadTimer);
       setSave("bad", "Kayıt yok");
       banner("Bu görünümde kayıt yapılamıyor; değişiklikler sayfa kapanınca kaybolur.");
-      S.inv = emptyInv(); renderInv(); renderGold(); S.facts = []; S.journey = []; renderFacts(); S.people = { party: [], known: [] }; S.quests = []; renderPeople(); renderQuests();
+      S.inv = emptyInv(); renderInv(); renderGold(); S.facts = []; S.journey = []; renderFacts(); S.people = { party: [], known: [] }; S.main = []; S.side = []; renderPeople(); renderFacts();
       return;
     }
     try { user = await window.claude.use("user"); } catch (e) { user = null; }
@@ -1717,7 +1721,8 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       var ok = function (a) { return Array.isArray(a) ? a.filter(function (x) { return x && typeof x.id === "string"; }) : []; };
       S.people = { party: ok(d && d.party), known: ok(d && d.known) }; renderPeople();
     });
-    watch(DOCS.quests, function (d) { S.quests = listFrom(d); renderQuests(); });
+    watch(DOCS.quests, function (d) { S.main = listFrom(d).map(function (x) { return { id: x.id, text: x.text || "" }; }); renderList("main"); });
+    watch(DOCS.side, function (d) { S.side = listFrom(d); renderList("side"); });
     watch(DOCS.story, function (d) { S.story = Object.assign({ trait: "", ideal: "", bond: "", flaw: "", look: "", tale: "" }, d || {}); renderStory(); });
 
     if (uid) {
