@@ -212,9 +212,19 @@ textarea.page {
 .journey li { margin-bottom: .35rem; }
 .player-know { border: 1px solid var(--accent); padding: 8px 12px; margin-top: 12px; max-width: 70ch; }
 .player-know .sc { color: var(--accent); font-size: .95rem; }
-.tablewrap, .people, .quests, .player-know, ol.facts.journey { background: var(--paper); }
-.people, .quests { padding: 0 8px; }
+/* panels: lists and tables read as cards pasted into the notebook */
+.tablewrap, .people, .quests, ol.facts.journey {
+  background: #f3f5ef; border: 1px solid rgba(31, 36, 30, .24); border-radius: 2px;
+  box-shadow: 2px 3px 0 rgba(31, 36, 30, .07); padding: 6px 14px 8px;
+}
+.player-know { background: #f3f5ef; box-shadow: 2px 3px 0 rgba(31, 36, 30, .07); border-radius: 2px; }
+ol.facts.journey { padding: 8px 14px 8px 2.2rem; }
+.player-know ol.facts { padding-left: 1.4rem; }
+div.people, div.quests { border-top: 1px solid rgba(31, 36, 30, .24); }
 .person, .quest { border-bottom-color: rgba(31, 36, 30, .14); }
+.person:last-child, .quest:last-child, .tablewrap tbody tr:last-child td { border-bottom: none; }
+.tablewrap + .tablewrap, .tablewrap + p, .people + .btn, .people + form, .quests + form { margin-top: 10px; }
+@media (max-width: 560px) { .tablewrap, .people, .quests { padding: 4px 10px 6px; } }
 .facts { margin: 6px 0 8px; padding-left: 1.4rem; }
 .facts li { margin-bottom: 2px; }
 .facts .row { display: flex; gap: 6px; align-items: flex-start; }
