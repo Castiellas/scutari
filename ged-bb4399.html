@@ -855,7 +855,8 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   function applyPatchTo(pt, d) {
     if (pt.list) {
       d[pt.list] = Array.isArray(d[pt.list]) ? d[pt.list] : [];
-      (pt.items || [{ item: pt.item }]).forEach(function (en) {
+      if (pt.remove) d[pt.list] = d[pt.list].filter(function (x) { return !(x && pt.remove.indexOf(x.id) >= 0); });
+      if (pt.item || pt.items) (pt.items || [{ item: pt.item }]).forEach(function (en) {
         var arr = d[pt.list], i = arr.findIndex(function (x) { return x && x.id === en.item.id; });
         if (i < 0) arr.push(clone(en.item));
         else if (en.prev && JSON.stringify(arr[i]) === JSON.stringify(en.prev)) arr[i] = clone(en.item);
