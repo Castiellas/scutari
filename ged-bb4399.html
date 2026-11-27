@@ -1076,11 +1076,45 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     { n: "Find Familiar", m: "Permanent", d: "Papağan Erdo hep yanındadır. 100 ft içindeyken onunla zihinden konuşursun; Bonus Action ile onun gözünden görüp kulağından duyabilirsin. Touch menzilli büyülerini onun üzerinden yapabilirsin. Büyüyü yalnızca Erdo ölürse yeniden yaparak onu geri çağırırsın." }
   ];
   var DRUID = [
-    { n: "Detect Magic", m: "1 Action · Self · Concentration, 10 minutes · Ritual", d: "30 ft içindeki büyüyü sezersin; görebildiğin büyülü bir şeyin aurasını ve okulunu öğrenebilirsin." },
+    { n: "Absorb Elements", m: "1 Reaction · Self · 1 round", d: "Acid, Cold, Fire, Lightning veya Thunder hasarı aldığında Reaction olarak bu büyüyü yaparsın. O hasar türüne karşı kısa süreli Resistance kazanırsın (ilgili hasarı yarıya indirir). Sonraki turunda yakın dövüş saldırın isabet ederse ayrıca 1d6 aynı türden hasar verirsin." },
+    { n: "Alarm", m: "1 Minute · 30 ft (20 ft Cube) · 8 hours · Ritual", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Burning Hands", m: "1 Action · Self (15 ft Cone) · Instantaneous · DEX 12", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Buzzing Bee", m: "1 Action · 120 ft · Concentration, 1 minute", d: "Gürültüyle vızıldayan hayaletimsi bir arı çağırırsın. 120 ft menzil içinde görebildiğin bir yaratığı hedef seçersin. Arı, hedefin en fazla 3 ft yakınında uçarak onu takip eder ve dikkatini dağıtır. Büyü devam ettiği sürece hedef, Wisdom (Perception) ve Dexterity (Stealth) kontrollerinde, ayrıca Concentration'ını korumak için yaptığı Constitution Saving Throw atışlarında Disadvantage alır. Invisible condition'ının sağladığı avantajlardan yararlanamaz. Hedef senden 120 ft'den fazla uzaklaşırsa veya büyü sona ererse arı kaybolur." },
+    { n: "Catapult", m: "1 Action · 60 ft · Instantaneous · DEX 12", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Cause Fear", m: "1 Action · 60 ft · Concentration, 1 minute · WIS 12", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Charm Person", m: "1 Action · 30 ft · 1 hour · WIS 12", d: "30 ft içindeki bir insansı hedef Wisdom Saving Throw yapar (DC 12). Başaramazsa 1 saat boyunca sana karşı Charmed olur: sana saldırmaz ve onunla sosyal etkileşimlerinde Advantage kazanırsın. Ancak emirlerine koşulsuz uymaz. Büyü bitince büyülendiğini fark eder." },
+    { n: "Chromatic Orb", m: "1 Action · 90 ft · Instantaneous · +4", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Color Spray", m: "1 Action · Self (15 ft Cone) · Instantaneous · CON 12", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Comprehend Languages", m: "1 Action · Self · 1 hour · Ritual", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Detect Magic", m: "1 Action · Self (30 ft Sphere) · Concentration, 10 minutes · Ritual", d: "30 ft içindeki büyüyü sezersin; görebildiğin büyülü bir şeyin aurasını ve okulunu öğrenebilirsin." },
+    { n: "Disguise Self", m: "1 Action · Self · 1 hour", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Earth Tremor", m: "1 Action · 10 ft · Instantaneous · DEX 12", d: "Yere bir sarsıntı gönderirsin. 10 ft yakınındaki diğer yaratıklar Dexterity Saving Throw yapar (DC 12). Başaramayanlar 1d6 Bludgeoning hasarı alır ve Prone olur (yere düşer). Gevşek zemin, Difficult Terrain'e dönüşür." },
+    { n: "Expeditious Retreat", m: "1 Bonus Action · Self · Concentration, 10 minutes", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "False Life", m: "1 Action · Self · Instantaneous", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Feather Fall", m: "1 Reaction · 60 ft · 1 minute", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Feign Interest", m: "1 Action · Self · 1 hour", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Fog Cloud", m: "1 Action · 120 ft (20 ft Sphere) · Concentration, 1 hour", d: "120 ft uzaklığa kadar seçtiğin noktada 20 ft yarıçaplı yoğun bir sis oluşturursun. Sis içini görmeyi engeller; hem içeriden hem dışarıdan görüşü zorlaştırır. Bir saate kadar Concentration gerektirir." },
+    { n: "Grease", m: "1 Action · 60 ft (10 ft Square) · 1 minute · DEX 12", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Ice Knife", m: "1 Action · 60 ft (5 ft Sphere) · Instantaneous · +4 / DEX 12", d: "60 ft içindeki bir hedefe buzdan bıçak fırlatırsın: büyü saldırısı için d20 + 4 atarsın. İsabet ederse hedef 1d10 Piercing hasar alır. İsabet etse de etmese de bıçak patlar; yakınındaki yaratıklar Dexterity Saving Throw'unu (DC 12) başaramazsa 2d6 Cold hasarı alır." },
+    { n: "Identify", m: "1 Minute · Touch · Instantaneous · Ritual", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Illusory Script", m: "1 Minute · Touch · 10 days · Ritual", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
     { n: "Jump", m: "1 Bonus Action · Touch · 1 minute", d: "Dokunduğun yaratık 10 ft hareket harcayarak 30 ft'e kadar zıplayabilir." },
+    { n: "Longstrider", m: "1 Action · Touch · 1 hour", d: "Dokunduğun kişinin hareket hızı 1 saat boyunca 10 ft artar. Örneğin 30 ft hareket eden biri artık 40 ft hareket eder." },
+    { n: "Mage Armor", m: "1 Action · Touch · 8 hours", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Magic Missile", m: "1 Action · 120 ft · Instantaneous", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Protection from Evil and Good", m: "1 Action · Touch · Concentration, 10 minutes", d: "Dokunduğun istekli birini belirli doğaüstü yaratıklara karşı korursun: Aberration, Celestial, Elemental, Fey, Fiend ve Undead. Bu türlerin hedefe saldırıları Disadvantage alır; ayrıca onu Charmed veya Frightened durumuna sokamaz ya da ele geçiremezler. Concentration gerektirir." },
+    { n: "Quick Clothier", m: "1 Action · Touch · 24 hours", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Ray of Sickness", m: "1 Action · 60 ft · Instantaneous · +4", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Shield", m: "1 Reaction · Self · 1 round", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Silent Image", m: "1 Action · 60 ft (15 ft Cube) · Concentration, 10 minutes", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
     { n: "Sleep", m: "1 Action · 60 ft (5 ft Sphere) · Concentration, 1 minute · WIS 12", d: "Alandakiler Wisdom save yapar; başaramayan Incapacitated olur. Bir sonraki turunun sonunda yine başaramazsa büyü boyunca Unconscious kalır." },
+    { n: "Snare", m: "1 Minute · Touch · 8 hours · DEX 12", d: "Bir dakika uğraşarak büyülü ve fark edilmesi zor bir tuzak hazırlarsın. Tuzağa yakalanan yaratık Dexterity Saving Throw'unu (DC 12) başaramazsa baş aşağı asılır ve Restrained olur (hareketi kısıtlanır). Tuzak 8 saate kadar etkili kalır." },
     { n: "Tasha's Caustic Brew", m: "1 Action · Self (30 ft Line) · Concentration, 1 minute · DEX 12", d: "Bir asit fışkırtırsın; hattaki yaratıklar Dexterity save'i başaramazsa asitle kaplanır ve temizlenene kadar her turun başında 2d4 Acid hasar alır." },
-    { n: "Unseen Servant", m: "1 Action · 60 ft · 1 hour · Ritual", d: "Görünmez, akılsız bir hizmetkâr çağırırsın; basit işler yapar: eşya taşır, temizler, kapı açar, sofra kurar." }
+    { n: "Tasha's Hideous Laughter", m: "1 Action · 30 ft · Concentration, 1 minute · WIS 12", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Tenser's Floating Disk", m: "1 Action · 30 ft · 1 hour · Ritual", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." },
+    { n: "Thunderwave", m: "1 Action · Self (15 ft Cube) · Instantaneous · CON 12", d: "Kendinden dışarıya doğru 15 ft kenarlı küp biçiminde güçlü bir ses dalgası yayarsın. Alandaki yaratıklar Constitution Saving Throw yapar (DC 12). Başaramayanlar 2d8 Thunder hasarı alır ve 10 ft geriye itilir; başaranlar yarı hasar alır ve itilmez. Ses çok uzaklardan duyulabilir." },
+    { n: "Unseen Servant", m: "1 Action · 60 ft · 1 hour · Ritual", d: "Görünmez, akılsız bir hizmetkâr çağırırsın; basit işler yapar: eşya taşır, temizler, kapı açar, sofra kurar." },
+    { n: "Witch Bolt", m: "1 Action · 60 ft · Concentration, 1 minute · +4", d: "Ayrıntılar için D&D Beyond'daki açıklamaya bak." }
   ];
 
   var DEFAULT_TABLE = { hp: MAX_HP, temp: 0, slotsUsed: 0, hdUsed: 0, insp: 0, arUsed: 0, cwUsed: 0, srUsed: 0, dsOk: 0, dsBad: 0 };
