@@ -160,6 +160,10 @@ dl.feats dd { margin: .1rem 0 0; max-width: 64ch; }
 .spell .nm { font-weight: 600; }
 .spell .meta { font-family: var(--f-num); font-size: .74rem; color: var(--ink-soft); letter-spacing: .02em; }
 .spell .ds { grid-column: 2; font-size: .95rem; max-width: 70ch; }
+.spell .ds p { margin: 0 0 .5em; }
+.spell .ds p:last-child, .spell .ds ul.dsl:last-child { margin-bottom: 0; }
+.spell .ds ul.dsl { margin: .1em 0 .5em; padding-left: 1.3em; }
+.spell .ds ul.dsl li { margin: .1em 0; }
 #cantrips:not(:empty), #always:not(:empty), #druidList:not(:empty) {
   background: #f3f5ef; border: 1px solid rgba(31, 36, 30, .24); border-radius: 2px;
   box-shadow: 2px 3px 0 rgba(31, 36, 30, .07); padding: 4px 16px; max-width: 860px;
@@ -1274,6 +1278,23 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   });
 
   /* ---------------- spells ---------------- */
+  function descNode(t) {
+    var box = el("div", { class: "ds" });
+    String(t || "").split(/\n{2,}/).forEach(function (para) {
+      var ul = null, p = null;
+      para.split("\n").forEach(function (ln) {
+        if (/^- /.test(ln)) {
+          if (!ul) { ul = el("ul", { class: "dsl" }); box.appendChild(ul); p = null; }
+          ul.appendChild(el("li", null, ln.slice(2)));
+        } else {
+          ul = null;
+          if (!p) { p = el("p"); box.appendChild(p); } else p.appendChild(document.createElement("br"));
+          p.appendChild(document.createTextNode(ln));
+        }
+      });
+    });
+    return box;
+  }
   function spellRow(sp, mode) {
     var row = el("div", { class: "spell" });
     var box;
@@ -1291,7 +1312,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     head.appendChild(el("div", { class: "nm" }, sp.n));
     head.appendChild(el("div", { class: "meta" }, sp.m));
     row.appendChild(head);
-    row.appendChild(el("div", { class: "ds" }, sp.d));
+    row.appendChild(descNode(sp.d));
     return row;
   }
   function renderSpells() {
