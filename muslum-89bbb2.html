@@ -363,12 +363,12 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
 
   <div class="figures">
     <div class="fig"><div class="lbl">Armor Class</div><div class="val">12</div></div>
-    <div class="fig"><div class="lbl">Hit Points</div><div class="val"><span id="figHp">21</span><small> / 21</small></div></div>
+    <div class="fig"><div class="lbl">Hit Points</div><div class="val"><span id="figHp">15</span><small> / 15</small></div></div>
     <div class="fig"><div class="lbl">Speed</div><div class="val">30<small> ft</small></div></div>
     <div class="fig"><div class="lbl">Initiative</div><div class="val">+1</div></div>
     <div class="fig"><div class="lbl">Proficiency</div><div class="val">+2</div></div>
     <div class="fig"><div class="lbl">Passive Perception</div><div class="val">11</div></div>
-    <div class="fig"><div class="lbl">Spell DC / Attack</div><div class="val">12<small> / </small>+4</div></div>
+    <div class="fig"><div class="lbl">Spell DC / Attack</div><div class="val">13<small> / </small>+5</div></div>
   </div>
 
   <div class="masa" aria-label="Masa takibi">
@@ -381,10 +381,10 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
         <span class="lbl" id="hpLbl">Hit Points</span>
         <div class="hpbox">
           <button type="button" id="hpMinus" aria-label="Hit Points −1">−</button>
-          <input id="hpInput" class="num" inputmode="numeric" aria-labelledby="hpLbl" value="21">
+          <input id="hpInput" class="num" inputmode="numeric" aria-labelledby="hpLbl" value="15">
           <button type="button" id="hpPlus" aria-label="Hit Points +1">+</button>
         </div>
-        <span class="muted num">/ 21</span>
+        <span class="muted num">/ 15</span>
       </div>
       <div class="trk">
         <label class="lbl" for="tmpInput">Temp HP</label>
@@ -399,7 +399,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       <div class="trk"><span class="lbl">Death Saves</span><div class="pips" id="dsOk"></div><div class="pips" id="dsBad"></div></div>
       <div class="rest">
         <button type="button" class="btn" id="shortRest">Short Rest</button>
-        <span class="rest-note"><span id="srLeft">2/2 kaldı</span> · Hit Dice d8 + 2 <span id="hdLeft">(1/1)</span></span>
+        <span class="rest-note"><span id="srLeft">2/2 kaldı</span> · Hit Dice d8 + 1 <span id="hdLeft">(1/1)</span></span>
       </div>
       <div class="rest">
         <button type="button" class="btn primary" id="longRest">Long Rest</button>
@@ -425,11 +425,11 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   <section class="view" id="v-karakter">
     <div class="abilities">
       <div class="ab"><div class="k">Strength</div><div class="m">+2</div><div class="s">15</div><div class="sv">Save +2</div></div>
-      <div class="ab"><div class="k">Dexterity</div><div class="m">+1</div><div class="s">12</div><div class="sv prof">Save +3</div></div>
-      <div class="ab"><div class="k">Constitution</div><div class="m">+2</div><div class="s">14</div><div class="sv">Save +2</div></div>
+      <div class="ab"><div class="k">Dexterity</div><div class="m">+1</div><div class="s">13</div><div class="sv prof">Save +3</div></div>
+      <div class="ab"><div class="k">Constitution</div><div class="m">+1</div><div class="s">13</div><div class="sv">Save +1</div></div>
       <div class="ab"><div class="k">Intelligence</div><div class="m">−1</div><div class="s">8</div><div class="sv">Save −1</div></div>
-      <div class="ab"><div class="k">Wisdom</div><div class="m">+0</div><div class="s">11</div><div class="sv">Save +0</div></div>
-      <div class="ab"><div class="k">Charisma</div><div class="m">+2</div><div class="s">15</div><div class="sv prof">Save +4</div></div>
+      <div class="ab"><div class="k">Wisdom</div><div class="m">+0</div><div class="s">10</div><div class="sv">Save +0</div></div>
+      <div class="ab"><div class="k">Charisma</div><div class="m">+3</div><div class="s">16</div><div class="sv prof">Save +5</div></div>
     </div>
 
     <div class="cols" style="margin-top:22px">
@@ -440,19 +440,19 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
           <thead><tr><th></th><th>Skill</th><th class="r">Mod</th></tr></thead>
           <tbody>
             <tr><td><span class="dot on"></span></td><td>Acrobatics <span class="en">Dex</span></td><td class="r num">+3</td></tr>
-            <tr><td><span class="dot on"></span></td><td>Animal Handling <span class="en">Wis</span></td><td class="r num">+2</td></tr>
+            <tr><td><span class="dot"></span></td><td>Animal Handling <span class="en">Wis</span></td><td class="r num">+1</td></tr>
             <tr><td><span class="dot"></span></td><td>Arcana <span class="en">Int</span></td><td class="r num">+0</td></tr>
             <tr><td><span class="dot"></span></td><td>Athletics <span class="en">Str</span></td><td class="r num">+3</td></tr>
-            <tr><td><span class="dot"></span></td><td>Deception <span class="en">Cha</span></td><td class="r num">+3</td></tr>
+            <tr><td><span class="dot on"></span></td><td>Deception <span class="en">Cha</span></td><td class="r num">+5</td></tr>
             <tr><td><span class="dot"></span></td><td>History <span class="en">Int</span></td><td class="r num">+0</td></tr>
             <tr><td><span class="dot on" title="Expertise"></span></td><td>Insight <span class="en">Wis · Expertise</span></td><td class="r num">+4</td></tr>
-            <tr><td><span class="dot"></span></td><td>Intimidation <span class="en">Cha</span></td><td class="r num">+3</td></tr>
+            <tr><td><span class="dot"></span></td><td>Intimidation <span class="en">Cha</span></td><td class="r num">+4</td></tr>
             <tr><td><span class="dot"></span></td><td>Investigation <span class="en">Int</span></td><td class="r num">+0</td></tr>
             <tr><td><span class="dot"></span></td><td>Medicine <span class="en">Wis</span></td><td class="r num">+1</td></tr>
-            <tr><td><span class="dot on"></span></td><td>Nature <span class="en">Int</span></td><td class="r num">+1</td></tr>
+            <tr><td><span class="dot"></span></td><td>Nature <span class="en">Int</span></td><td class="r num">+0</td></tr>
             <tr><td><span class="dot"></span></td><td>Perception <span class="en">Wis</span></td><td class="r num">+1</td></tr>
-            <tr><td><span class="dot on" title="Expertise"></span></td><td>Performance <span class="en">Cha · Expertise</span></td><td class="r num">+6</td></tr>
-            <tr><td><span class="dot"></span></td><td>Persuasion <span class="en">Cha</span></td><td class="r num">+3</td></tr>
+            <tr><td><span class="dot on" title="Expertise"></span></td><td>Performance <span class="en">Cha · Expertise</span></td><td class="r num">+7</td></tr>
+            <tr><td><span class="dot on"></span></td><td>Persuasion <span class="en">Cha</span></td><td class="r num">+5</td></tr>
             <tr><td><span class="dot"></span></td><td>Religion <span class="en">Int</span></td><td class="r num">+0</td></tr>
             <tr><td><span class="dot"></span></td><td>Sleight of Hand <span class="en">Dex</span></td><td class="r num">+2</td></tr>
             <tr><td><span class="dot"></span></td><td>Stealth <span class="en">Dex</span></td><td class="r num">+2</td></tr>
@@ -481,14 +481,14 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
         <dl class="feats">
           <dt>Armor</dt><dd>Light Armor</dd>
           <dt>Weapons</dt><dd>Simple Weapons</dd>
-          <dt>Tools</dt><dd>Carpenter's Tools, Clarinet, Drum, Viol</dd>
+          <dt>Tools</dt><dd>Clarinet, Drum, Harp, Viol</dd>
           <dt>Languages</dt><dd>Common, Common Sign Language, Dwarvish</dd>
         </dl>
 
         <h3>Features &amp; Traits</h3>
         <dl class="feats">
           <dt>Bardic Inspiration</dt>
-          <dd>Bonus Action ile 60 ft içinde seni görebilen ya da duyabilen birine bir Bardic Inspiration zarı (d6) verirsin. Bir saat içinde bir D20 Test'inde başarısız olursa zarı atıp sonuca ekleyebilir. Long Rest başına 2 kez (Masa'da işaretle).</dd>
+          <dd>Bonus Action ile 60 ft içinde seni görebilen ya da duyabilen birine bir Bardic Inspiration zarı (d6) verirsin. Bir saat içinde bir D20 Test'inde başarısız olursa zarı atıp sonuca ekleyebilir. Long Rest başına 3 kez (Masa'da işaretle).</dd>
           <dt>Spellcasting</dt>
           <dd>Büyülerini Charisma ile yaparsın. Bir müzik aletini büyü odağı olarak kullanabilirsin.</dd>
           <dt>Expertise</dt>
@@ -497,8 +497,8 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
           <dd>Yeterliliğin olmayan skill'lerde Proficiency Bonus'unun yarısını (+1) eklersin. Bu yüzden diğer skill'lerin de 1 yüksek.</dd>
           <dt>Lucky</dt>
           <dd>2 Luck Point'in var. Bir D20 Test'inde 1 puan harcayıp Advantage alabilir ya da sana yapılan bir saldırıya Disadvantage verdirebilirsin. Long Rest'te yenilenir.</dd>
-          <dt>Tough</dt>
-          <dd>Maksimum Hit Points'in her seviye için 2 fazladır.</dd>
+          <dt>Musician</dt>
+          <dd>Encouraging Song: bir Short ya da Long Rest'i bitirirken yeterliliğin olan bir müzik aletiyle şarkı çalarsan, seni duyan en fazla 2 müttefikine Heroic Inspiration verirsin.</dd>
           <dt>Resourceful</dt>
           <dd>Her Long Rest sonunda 1 Heroic Inspiration kazanırsın. Ev kuralı: en fazla 4 biriktirebilirsin.</dd>
         </dl>
@@ -511,7 +511,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     <div class="spellhead">
       <h2 style="margin:0">Büyüler</h2>
       <span>Spellcasting Ability <b>Charisma</b></span>
-      <span class="num">Spell Save DC 12 · Spell Attack +4</span>
+      <span class="num">Spell Save DC 13 · Spell Attack +5</span>
       <span>1st Level Slots <b class="num">3</b> <span class="muted small">(Masa'da işaretle)</span></span>
     </div>
 
@@ -784,12 +784,12 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     <div class="sc modal-k">Short Rest</div>
     <h2 id="shortTitle">Kısa bir mola</h2>
     <p>Her Long Rest arasında <b>2 Short Rest</b> hakkın var (ev kuralı).</p>
-    <p>İstersen bu molada Hit Die harcayarak iyileşebilirsin: harcadığın her zar için <b>d8 + 2</b> at ve sonucu yaz. Birden fazla zar harcarsan sonuçları topla. Her seviye için 1 Hit Die'ın var; Long Rest'te geri gelir. Zar atmayacaksan kutuyu boş bırak.</p>
+    <p>İstersen bu molada Hit Die harcayarak iyileşebilirsin: harcadığın her zar için <b>d8 + 1</b> at ve sonucu yaz. Birden fazla zar harcarsan sonuçları topla. Her seviye için 1 Hit Die'ın var; Long Rest'te geri gelir. Zar atmayacaksan kutuyu boş bırak.</p>
     <p class="small muted" id="shortLeft"></p>
     <form id="shortForm" class="modal-acts" autocomplete="off">
       <label class="small" for="shortDice" style="align-self:center">Zar</label>
       <input class="field num" id="shortDice" type="number" min="1" value="1" style="width:64px">
-      <input class="field num" id="shortRoll" inputmode="numeric" aria-label="Zarın sonucu (d8 + 2)" placeholder="Sonuç" style="width:110px">
+      <input class="field num" id="shortRoll" inputmode="numeric" aria-label="Zarın sonucu (d8 + 1)" placeholder="Sonuç" style="width:110px">
       <button type="submit" class="btn primary" id="shortHeal">Dinlen</button>
       <button type="button" class="btn" id="shortClose">Vazgeç</button>
     </form>
@@ -817,7 +817,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
    and syncs live between devices and the DM. Without a key, it falls back to this browser only. */
 (function () {
   "use strict";
-  var NS = "scutari:muslum:", SEED = {"mus/facts": {"items": [{"id": "f01", "text": "Partiniz bir geri sarma yaşadı ve hepiniz onun izini taşıyorsunuz."}]}, "mus/inventory": {"gold": 100, "equipment": [{"id": "e01", "name": "Leather", "note": "Equipped"}, {"id": "e02", "name": "Rapier", "note": ""}, {"id": "e03", "name": "Dagger", "note": ""}, {"id": "e04", "name": "Dagger", "note": ""}], "kit": [{"id": "k01", "name": "Giysi"}, {"id": "k02", "name": "Sırt çantası"}, {"id": "k03", "name": "Yatak rulosu"}, {"id": "k04", "name": "Erzak"}, {"id": "k05", "name": "Su tulumu"}, {"id": "k06", "name": "Çakmak kutusu"}, {"id": "k07", "name": "Halat"}, {"id": "k08", "name": "Lamba yağı"}, {"id": "k09", "name": "Fener"}, {"id": "k10", "name": "Lir"}, {"id": "k11", "name": "Kostüm"}, {"id": "k12", "name": "Ayna"}, {"id": "k13", "name": "Zil"}], "items": []}, "mus/journey": {"items": [{"id": "j01", "text": "Zümre'de insanların kağıt değirmenlerinde çalıştığını gördün. Kasaba biraz fazla yeşildi."}, {"id": "j02", "text": "Eşkıya Osma Naga'yı yendiniz ve canını bağışladınız."}, {"id": "j03", "text": "Victor Fortis'le tanıştınız, hikâyesini dinlediniz. Size bir sikke verdi."}, {"id": "j04", "text": "Istec'in seçim ekibinin kasabaya geldiğini gördünüz; kasabadan yeteneklerine göre çocuk toplayacaklarını biliyorsunuz."}]}, "mus/people": {"known": [{"id": "p04", "name": "Victor Fortis", "info": "Dünyanın en tehlikeli adamı ve halk kahramanı. Size bir sikke verdi."}, {"id": "p05", "name": "Osma Naga", "info": "Yendiğiniz ve canını bağışladığınız eşkıya. Dolandırıcı olma ihtimali yüksek."}, {"id": "p06", "name": "Erdoser", "info": "Paladin. Biraz gergin biri."}, {"id": "p07", "name": "Carlsberg Serkan", "info": "Barmen. Size biraz fazla hayranlık duyuyor."}, {"id": "p08", "name": "Hirma", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}, {"id": "p09", "name": "Urbanus", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}, {"id": "p10", "name": "Meriva", "info": "Erdo'nun eşi. Tanrıça ve büyücüyüm dedi, ikisi de şüpheli gibi."}]}, "mus/quests": {"items": []}, "mus/story": {"trait": "", "ideal": "", "bond": "", "flaw": "", "look": "", "tale": ""}}, PATCHES = [], CONFIG = {"apiKey": "AIzaSyAJw58FpK0tvLdhV0aQgCcwNPdv6tjXobw", "authDomain": "scutari-40990.firebaseapp.com", "projectId": "scutari-40990", "storageBucket": "scutari-40990.firebasestorage.app", "messagingSenderId": "351624088228", "appId": "1:351624088228:web:b20917d8011dc2d058b431"}, UID = "local";
+  var NS = "scutari:muslum:", SEED = {"mus/facts": {"items": [{"id": "f01", "text": "Partiniz bir geri sarma yaşadı ve hepiniz onun izini taşıyorsunuz."}]}, "mus/inventory": {"gold": 115, "equipment": [{"id": "e01", "name": "Leather", "note": "Equipped"}, {"id": "e02", "name": "Rapier", "note": ""}, {"id": "e03", "name": "Dagger", "note": ""}, {"id": "e04", "name": "Dagger", "note": ""}], "kit": [{"id": "k01", "name": "Giysi"}, {"id": "k02", "name": "Sırt çantası"}, {"id": "k03", "name": "Yatak rulosu"}, {"id": "k04", "name": "Erzak"}, {"id": "k05", "name": "Su tulumu"}, {"id": "k06", "name": "Çakmak kutusu"}, {"id": "k07", "name": "Halat"}, {"id": "k08", "name": "Lamba yağı"}, {"id": "k09", "name": "Fener"}, {"id": "k10", "name": "Lir"}, {"id": "k11", "name": "Kostüm"}, {"id": "k12", "name": "Ayna"}, {"id": "k13", "name": "Zil"}], "items": []}, "mus/journey": {"items": [{"id": "j01", "text": "Zümre'de insanların kağıt değirmenlerinde çalıştığını gördün. Kasaba biraz fazla yeşildi."}, {"id": "j02", "text": "Eşkıya Osma Naga'yı yendiniz ve canını bağışladınız."}, {"id": "j03", "text": "Victor Fortis'le tanıştınız, hikâyesini dinlediniz. Size bir sikke verdi."}, {"id": "j04", "text": "Istec'in seçim ekibinin kasabaya geldiğini gördünüz; kasabadan yeteneklerine göre çocuk toplayacaklarını biliyorsunuz."}]}, "mus/people": {"known": [{"id": "p04", "name": "Victor Fortis", "info": "Dünyanın en tehlikeli adamı ve halk kahramanı. Size bir sikke verdi."}, {"id": "p05", "name": "Osma Naga", "info": "Yendiğiniz ve canını bağışladığınız eşkıya. Dolandırıcı olma ihtimali yüksek."}, {"id": "p06", "name": "Erdoser", "info": "Paladin. Biraz gergin biri."}, {"id": "p07", "name": "Carlsberg Serkan", "info": "Barmen. Size biraz fazla hayranlık duyuyor."}, {"id": "p08", "name": "Hirma", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}, {"id": "p09", "name": "Urbanus", "info": "Paladin Erdo'nun çekmecesindeki kağıtlarda ismi yasaklı olarak geçen biri."}, {"id": "p10", "name": "Meriva", "info": "Erdo'nun eşi. Tanrıça ve büyücüyüm dedi, ikisi de şüpheli gibi."}]}, "mus/quests": {"items": []}, "mus/story": {"trait": "", "ideal": "", "bond": "", "flaw": "", "look": "", "tale": ""}}, PATCHES = [{"id": "2026-11-27-gold", "path": "mus/inventory", "set": {"gold": 115}}], CONFIG = {"apiKey": "AIzaSyAJw58FpK0tvLdhV0aQgCcwNPdv6tjXobw", "authDomain": "scutari-40990.firebaseapp.com", "projectId": "scutari-40990", "storageBucket": "scutari-40990.firebasestorage.app", "messagingSenderId": "351624088228", "appId": "1:351624088228:web:b20917d8011dc2d058b431"}, UID = "local";
   var KEY_RE = /^[a-f0-9]{32}$/;
   window.__scutariSeed = SEED;
 
@@ -855,6 +855,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       });
     }
     if (pt.fields) Object.keys(pt.fields).forEach(function (f) { if (!d[f]) d[f] = pt.fields[f]; });
+    if (pt.set) Object.keys(pt.set).forEach(function (f) { d[f] = pt.set[f]; });
     return d;
   }
   (function localPatches() {
@@ -1056,7 +1057,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
   "use strict";
 
   /* ---------------- fixed sheet facts ---------------- */
-  var MAX_HP = 21, SLOTS = 3, HIT_DICE = 2, PREP_MAX = 4, INSP_MAX = 4, SHORT_RESTS = 2;
+  var MAX_HP = 15, SLOTS = 3, HIT_DICE = 2, PREP_MAX = 4, INSP_MAX = 4, SHORT_RESTS = 2;
   var DOCS = { table: "mus/table", inv: "mus/inventory", story: "mus/story", spells: "mus/spells", facts: "mus/facts", journey: "mus/journey", people: "mus/people", quests: "mus/quests", side: "mus/side" };
 
   var CANTRIPS = [
@@ -1064,10 +1065,10 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
     { n: "Mending", m: "1 Minute · Touch · Instantaneous", d: "Kırık ya da yırtık bir eşyayı onarırsın; hasar bir ayaktan büyük olmamalı." }
   ];
   var ALWAYS = [
-    { n: "Dissonant Whispers", m: "1 Action · 60 ft · Instantaneous · WIS 12", d: "Hedef Wisdom save yapar; başaramazsa 3d6 Psychic hasar alır ve Reaction'ını kullanıp senden uzaklaşmak zorunda kalır. Başarırsa yarı hasar alır." },
+    { n: "Dissonant Whispers", m: "1 Action · 60 ft · Instantaneous · WIS 13", d: "Hedef Wisdom save yapar; başaramazsa 3d6 Psychic hasar alır ve Reaction'ını kullanıp senden uzaklaşmak zorunda kalır. Başarırsa yarı hasar alır." },
     { n: "Feather Fall", m: "1 Reaction · 60 ft · 1 minute", d: "Düşen en fazla beş yaratık yavaşça süzülür ve düşme hasarı almaz." },
-    { n: "Sleep", m: "1 Action · 60 ft (5 ft Sphere) · Concentration, 1 minute · WIS 12", d: "Alandakiler Wisdom save yapar; başaramayan Incapacitated olur. Bir sonraki turunun sonunda yine başaramazsa büyü boyunca Unconscious kalır." },
-    { n: "Tasha's Hideous Laughter", m: "1 Action · 30 ft · Concentration, 1 minute · WIS 12", d: "Hedef Wisdom save'i başaramazsa kahkahadan yere yıkılır: Prone ve Incapacitated olur. Her turunun sonunda ve hasar aldığında yeniden save yapabilir." }
+    { n: "Sleep", m: "1 Action · 60 ft (5 ft Sphere) · Concentration, 1 minute · WIS 13", d: "Alandakiler Wisdom save yapar; başaramayan Incapacitated olur. Bir sonraki turunun sonunda yine başaramazsa büyü boyunca Unconscious kalır." },
+    { n: "Tasha's Hideous Laughter", m: "1 Action · 30 ft · Concentration, 1 minute · WIS 13", d: "Hedef Wisdom save'i başaramazsa kahkahadan yere yıkılır: Prone ve Incapacitated olur. Her turunun sonunda ve hasar aldığında yeniden save yapabilir." }
   ];
   var DRUID = [];
 
@@ -1192,7 +1193,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       var on = i < t.insp;
       ip.appendChild(pip("", !on, "Heroic Inspiration " + (i + 1) + (on ? ", var" : ", yok"), function () { S.table.insp = on ? i : i + 1; commitTable(); }));
     })(i);
-    [["biPips", "biUsed", 2, "Bardic Inspiration"], ["lpPips", "lpUsed", 2, "Luck Point"]].forEach(function (c) {
+    [["biPips", "biUsed", 3, "Bardic Inspiration"], ["lpPips", "lpUsed", 2, "Luck Point"]].forEach(function (c) {
       var box = $(c[0]); box.textContent = "";
       for (var k = 0; k < c[2]; k++) (function (k) {
         var spent = k >= c[2] - (t[c[1]] || 0);

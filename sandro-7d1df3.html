@@ -858,6 +858,7 @@ footer { margin-top: 18px; border-top: 1px solid var(--ink); padding-top: 8px; f
       });
     }
     if (pt.fields) Object.keys(pt.fields).forEach(function (f) { if (!d[f]) d[f] = pt.fields[f]; });
+    if (pt.set) Object.keys(pt.set).forEach(function (f) { d[f] = pt.set[f]; });
     return d;
   }
   (function localPatches() {
